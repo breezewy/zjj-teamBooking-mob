@@ -47,7 +47,7 @@
     },
     methods:{
       order(){
-        this.$router.push({path:'/observe'})
+        this.$router.push({path:'/fix'})
       }
     }
   };

@@ -1,0 +1,105 @@
+.ticket-list-container
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background: #efeff4
+  .wrapper
+    height: calc(100% - 40px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    .search-box-wrapper
+      display: flex
+      margin: 10px 10px;
+      align-items: center
+      box-sizing: border-box
+      padding: 10px
+      height: 32px;
+      background-color: #fff
+      border-radius: 8px;
+      border:1px solid #ddd;
+      .icon-search
+        font-size: 14px
+        color: #222
+      .box
+        margin: 5px;
+        padding 5px;
+        line-height: 18px;
+        color: #666
+        font-size: 14px;
+      .week
+        font-size:14px;
+        color: #666
+    .scroll-container
+      position: fixed;
+      width: 100%;
+      top: 92px;
+      bottom: 0;
+      .scroll-contain
+        height :100%
+        overflow :hidden
+        .wrap-list
+          margin: 0px 5px;
+          height: calc(100%+20px);
+          .wrap-item
+            margin 8px 0
+            padding : 5px 10px
+            box-shadow: 0 1px 2px rgba(0,0,0,.3);
+            border-radius :5px
+            background-color:#fff
+            .time-slot
+              display :inline-block
+              position relative
+              height 45px
+              line-height 45px
+              .start-time
+                display :inline-block
+                padding-right :5px;
+                color: #409eff
+                font-size 22px;
+              .line
+                display inline-block
+                position: relative;
+                top: -7px;
+                width 18px
+                height 1px
+                background-color :#666
+              .total
+                display :inline-block
+                position: relative;
+                top:-3px;
+                font-size 12px;
+                color:#666
+              .end-time
+                display :inline-block
+                padding-left :5px;
+                color: #000000
+                font-size 22px;
+              .place
+                position :absolute
+                top:29px
+                right 3px;
+                font-size: 12px;
+                color:#666
+            .info
+              font-size :12px;
+              color:#666
+              .name
+                float:left
+                font-size 12px
+              .seat
+                float:right
+            .detail
+              height :40px
+              line-height :40px;
+              font-size:12px
+              .show-place
+                float:left
+                color: #000
+                font-size :14px;
+              .ticket-count
+                float:right
+                color:#666
+        .cube-pulldown-loaded
+          font-size 14px

@@ -1,0 +1,213 @@
+.ticket-detail-container
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background: #efeff4
+  .header
+    position: relative;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #edf0f4;
+    box-shadow: 0 1px 6px #ccc;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    z-index: 5;
+    h1
+      font-size: 16px
+      font-weight: 700;
+    .cubeic-back
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 0 15px;
+      color: #fc9153;
+      font-size: 16px
+  .wrapper
+    height: calc(100% - 40px)
+    overflow-x: hidden
+    overflow-y: auto
+    .wrap-list
+      margin: 0px 5px;
+      .wrap-item
+        margin 8px 0
+        padding : 5px 10px
+        box-shadow: 0 1px 2px rgba(0,0,0,.3);
+        border-radius :5px
+        background-color:#fff
+        .time-slot
+          display :inline-block
+          position relative
+          height 45px
+          line-height 45px
+          .start-time
+            display :inline-block
+            padding-right :5px;
+            color: #409eff
+            font-size 22px;
+          .line
+            display inline-block
+            position: relative;
+            top: -7px;
+            width 18px
+            height 1px
+            background-color :#666
+          .total
+            display :inline-block
+            position: relative;
+            top:-3px;
+            font-size 12px;
+            color:#666
+          .end-time
+            display :inline-block
+            padding-left :5px;
+            color: #000000
+            font-size 22px;
+          .place
+            position :absolute
+            top:29px
+            right 3px;
+            font-size: 12px;
+            color:#666
+        .info
+          font-size :12px;
+          color:#666
+          .name
+            float:left
+            color: #000
+            font-size :14px;
+          .seat
+            float:right
+        .detail
+          height :40px
+          line-height :40px;
+          font-size:12px
+          .show-place
+            float:left
+            font-size 12px;
+          .ticket-count
+            float:right
+            color:#666
+    .seat-list
+      margin 0 5px;
+      padding 10px
+      background-color #fff
+      .seat-item
+        width: 100%
+        display :flex
+        height 40px
+        line-height :40px;
+        font-size 14px;
+        color:#2e2e2e
+
+        text-align center
+        border-bottom:1px solid #ededed
+        .seat-name
+          flex:1
+          font-weight :700
+
+        .introduce
+          flex:1
+          color:#409eff
+          //font-weight :700
+        .input-count
+          width:120px
+          text-align center
+          outline none
+    .card
+      position: relative
+      background-color:#fff;
+      box-shadow: 0 1px 2px rgba(0,0,0,.3);
+      border-radius:2px;
+      margin : 8px 5px;
+      font-size 15px
+      .card-content
+        position: relative
+        .card-content-inner
+          padding 5px 15px;
+          position:relative
+          .list-block
+            margin : -15px
+            ul
+              padding 20px 0
+              position relative
+              li
+                box-sizing: border-box
+                .item-content
+                  box-sizing: border-box
+                  padding-left: 20px;
+                  height :40px;
+                  line-height 40px
+
+                  .item-title
+                    float: left
+                    width: 30%
+                  .item-input
+                    position :relative
+                    float: left
+                    width: 70%
+                    .seat
+                      height 28px
+                      padding-left :5px
+                    .date
+                      color:red;
+                      font-size:16px;
+                    .enter
+                      position: absolute;
+                      top:-1px;
+                      right:13px;
+                  .cube-select
+                    float left
+                    width 65%
+                    margin-top 3px
+                    padding: 6px 20px 6px 10px;
+                .item-content-remark
+                  box-sizing: border-box
+                  padding-left: 20px;
+                  .item-title
+                    margin-top:12px
+                    float: left
+                    width: 30%
+                  .item-input
+                    float: left
+                    width: 70%
+                    .seat
+                      height 28px
+                      padding-left :5px
+                  .cube-select
+                    float left
+                    width 65%
+                    margin-top 3px
+          .searchbar
+            padding: 2px 0;
+            overflow: hidden;
+            /*height: 44px;*/
+            .search-input
+              position relative
+              display:flex
+              border 1px solid #ddd;
+              padding:2px;
+              .icon
+                font-size: 14px;
+                color: #b4b4b4;
+                padding :3px 8px 3px 2px;
+                position relative
+                top:3px;
+                left:2px;
+              .searchClient
+                height: 28px;
+                flex:1
+    .order-btn
+      margin 20px 5px
+      .reverse
+        display block
+        width :100%
+        height 40px;
+        line-height 40px
+        text-align center
+        background-color #fc9153
+        color: #ffffff
+        font-size 14px
+        border-radius :5px;

@@ -41,7 +41,7 @@
                 <span class="show">场次：{{item.performTime}}</span>
               </div>
               <div class="name">
-                江苏绿色国际旅行社有限公司 {{item.travelName }}
+                {{item.travelName }}
               </div>
               <div class="order">
                 <span class="status">订单状态：{{item.billStatus =='01'? '预定状态': item.billStatus =='02'? '准预定':

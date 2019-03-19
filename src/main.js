@@ -12,11 +12,16 @@ import App from './App'
 // Vue.component('MtCell', Cell)
 
 import router from './router'
+import store from './store'
 
 import './cube-ui'
 import './mint-ui'
 
 import '@/common/stylus/index.styl'
+
+import moment from 'moment'
+import 'moment/locale/zh-cn'
+moment.locale('zh-cn');
 
 
 import http from '@/utils/request'
@@ -38,6 +43,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })

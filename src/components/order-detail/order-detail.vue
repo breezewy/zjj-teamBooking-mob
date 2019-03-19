@@ -59,7 +59,7 @@
                 <div class="card-content-inner">
                   <div class="list-block">
                     <ul>
-                      <li v-for="item in cloneOrderDetails">
+                      <li v-for="item in orderDetails">
                         <div class="item-content">
                           <div class="item-media"></div>
                           <div class="item-inner">
@@ -94,7 +94,8 @@
         popupShow:false,
         orders:{},
         orderDetails:[],
-        cloneOrderDetails:[],     //克隆的订单详情数据
+        // cloneOrderDetails:[],     //克隆的订单详情数据
+        copyInGetDetailInfo:[],           //克隆的座位详情数据
         performCode:'00017945',
         performCodeSelect:[]            //场次下拉框数据
       }
@@ -117,7 +118,11 @@
           }
           this.orders = res.data.orders
           this.orderDetails = res.data.orderDetails
-          this.cloneOrderDetails = JSON.parse(JSON.stringify(this.orderDetails))  //这是克隆的订单详情数据
+          let cloneOrderDetails = JSON.parse(JSON.stringify(this.orderDetails))  //这是克隆的订单详情数据
+          this.copyInGetDetailInfo = [];      //先把他清空
+          for(const value of cloneOrderDetails){
+            this.copyInGetDetailInfo.push({areaCode: value.areaCode, areaName: value.areaName ,bookCount: value.bookCount})
+          }
           if(this.orders.performDate){
             this.performCode = this.orders.performCode
             this.showSeesion(this.orders.performDate)
@@ -194,16 +199,22 @@
        *  这是弹出框中的更新
        */
       updateHandle(){
-        let arr = JSON.parse(JSON.stringify(this.cloneOrderDetails))
-        let formatArr = []
-        for(const value of arr){
-          formatArr.push({areaCode: value.areaCode,areaName:value.areaName,count: value.bookCount})
+        let  copyDataOrderDetails = JSON.parse(JSON.stringify(this.orderDetails));
+        let arr =[];
+        for(const value of copyDataOrderDetails){
+          for(const val of this.copyInGetDetailInfo){
+            if(value.areaCode == val.areaCode){
+              arr.push({areaCode: value.areaCode, areaName: value.areaName ,count: value.bookCount,bookCount: val.bookCount})
+            }
+          }
         }
         let data= {
-          detailRequestList: formatArr,
+          detailRequestList: arr,
           orderId: this.orders.id,
           performCode: this.performCode
         }
+        console.log(data)
+
         this.$http.put(`/wap/updateOrder`,data).then(({ data: res }) => {
             if(res.code !== '200'){
               this.$createToast({
@@ -212,13 +223,13 @@
               }).show()
               return
             }
-
             this.$createToast({
               txt: '更新成功',
               type: 'correct'
             }).show()
             setTimeout(() =>{
               this.popupShow = false
+              this.getOrderDetailInfo()
             },200)
 
 

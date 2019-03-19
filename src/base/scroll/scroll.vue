@@ -29,6 +29,10 @@
         type: Boolean,
         default: false
       },
+      pulldown: {
+        type: Boolean,
+        default: false
+      },
       beforeScroll: {
         type: Boolean,
         default: false
@@ -49,11 +53,13 @@
         if (!this.$refs.wrapper) {
           return
         }
+
         this.scroll = new BetterScroll(this.$refs.wrapper, {
           probeType: this.probeType,
           click: this.click,
         })
-
+        console.log(this.scroll)
+        console.log(this.pulldown)
         if (this.listenScroll) {
           let me = this
           this.scroll.on('scroll', (pos) => {
@@ -66,6 +72,16 @@
             if (this.scroll.y <= (this.scroll.maxScrollY + 50)) {
               // this.$emit('pullup')
               this.$emit('scrollToEnd')
+            }
+          })
+        }
+
+        if (this.pulldown) {
+          this.scroll.on('touchEnd', (pos) => {
+            console.log(pos)
+            // 下拉动作
+            if (pos.y > 50) {
+              this.$emit('pulldown')
             }
           })
         }

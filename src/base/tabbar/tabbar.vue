@@ -36,7 +36,7 @@
           },
           {
             txt:'预定',
-            page:'observe',
+            page:'fix',
             selfFont:'iconfont icon-yudingzhongxin1'
           },
           {
