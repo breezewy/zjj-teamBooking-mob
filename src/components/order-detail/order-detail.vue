@@ -25,10 +25,10 @@
             <span class="item scene">场次：{{orders.performTime}}</span>
             <div class="seat-detail" v-for="item in orderDetails">
               <span class="item">座位区：{{item.areaName}}</span>
-              <span class="item">预定人数：0</span>
-              <span class="item">核团人数：{{item.bookCount}}</span>
-              <span class="item">排位人数：0</span>
-              <span class="item">销售人数：0</span>
+              <span class="item">预定人数：{{item.bookCount}}</span>
+              <span class="item">核团人数：{{item.lastCount}}</span>
+              <span class="item">排位人数：{{item.arrangeCount}}</span>
+              <span class="item">销售人数：{{item.saleCount}}</span>
             </div>
 
           </div>
@@ -65,7 +65,7 @@
                           <div class="item-inner">
                             <div class="item-title label">{{item.areaName}}</div>
                             <div class="item-input">
-                              <input type="text" v-model.number="item.bookCount" class="count" placeholder="数量">
+                              <input type="text" v-model.number="item.lastCount" class="count" placeholder="数量">
                             </div>
                           </div>
                         </div>
@@ -118,15 +118,15 @@
           }
           this.orders = res.data.orders
           this.orderDetails = res.data.orderDetails
-          let cloneOrderDetails = JSON.parse(JSON.stringify(this.orderDetails))  //这是克隆的订单详情数据
-          this.copyInGetDetailInfo = [];      //先把他清空
-          for(const value of cloneOrderDetails){
-            this.copyInGetDetailInfo.push({areaCode: value.areaCode, areaName: value.areaName ,bookCount: value.bookCount})
-          }
-          if(this.orders.performDate){
-            this.performCode = this.orders.performCode
-            this.showSeesion(this.orders.performDate)
-          }
+          // let cloneOrderDetails = JSON.parse(JSON.stringify(this.orderDetails))  //这是克隆的订单详情数据
+          // this.copyInGetDetailInfo = [];      //先把他清空
+          // for(const value of cloneOrderDetails){
+          //   this.copyInGetDetailInfo.push({areaCode: value.areaCode, areaName: value.areaName ,bookCount: value.bookCount})
+          // }
+          // if(this.orders.performDate){
+          //   this.performCode = this.orders.performCode
+          //   this.showSeesion(this.orders.performDate)
+          // }
 
         })
       },
@@ -178,10 +178,11 @@
                 MessageBox.alert(res.msg)
                 return
               }
-              this.$createToast({
-                txt: '核团成功',
-                type: 'correct'
-              }).show()
+              Toast('核团成功')
+              setTimeout(() =>{
+                this.$router.push({path:'/order'})
+              },700)
+
 
             }).catch(() => {
             })
@@ -200,21 +201,23 @@
        */
       updateHandle(){
         let  copyDataOrderDetails = JSON.parse(JSON.stringify(this.orderDetails));
-        let arr =[];
+        // let arr =[];
+        // for(const value of copyDataOrderDetails){
+        //   for(const val of this.copyInGetDetailInfo){
+        //     if(value.areaCode == val.areaCode){
+        //       arr.push({areaCode: value.areaCode, areaName: value.areaName ,count: value.bookCount,bookCount: val.bookCount})
+        //     }
+        //   }
+        // }
+        let formatArr = [];
         for(const value of copyDataOrderDetails){
-          for(const val of this.copyInGetDetailInfo){
-            if(value.areaCode == val.areaCode){
-              arr.push({areaCode: value.areaCode, areaName: value.areaName ,count: value.bookCount,bookCount: val.bookCount})
-            }
-          }
+          formatArr.push({areaCode: value.areaCode, areaName: value.areaName ,count: value.lastCount,bookCount: value.bookCount})
         }
         let data= {
-          detailRequestList: arr,
+          detailRequestList: formatArr,
           orderId: this.orders.id,
           performCode: this.performCode
         }
-        console.log(data)
-
         this.$http.put(`/wap/updateOrder`,data).then(({ data: res }) => {
             if(res.code !== '200'){
               this.$createToast({
@@ -367,7 +370,7 @@
         color: #fc9153;
         font-size: 16px
     .wrapper
-      height: calc(100% - 90px);
+      height: calc(100% - 40px);
       overflow-x: hidde
       overflow-y: auto;n;
       padding-bottom 50px;
@@ -396,14 +399,14 @@
           //.item:first-child
           //  /*border-top:1px solid #999*/
       .handle-contain
-        position: fixed;
-        width: 100%;
-        height: 50px;
-        bottom: 0;
-        background-color: #fff;
+        //position: fixed;
+        //width: 100%;
+        //height: 50px;
+        //bottom: 0;
+        //background-color: #fff;
         .handle-detail
           display: flex
-          margin :10px
+          margin :30px 10px
           font-size: 14px;
           .btn
             flex: 1

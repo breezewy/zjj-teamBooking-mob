@@ -173,14 +173,7 @@
           for(const value of copyDetailRequestList){
            arr.push({areaCode: value.areaCode, areaName: value.areaName,count: value.inputCount})
           }
-          if(!this.travelAgency){
-            Toast('旅行社名称不能为空')
-            return
-          }
-          if(!this.touristOrigin){
-            Toast('客源地不能为空')
-            return
-          }
+
           // 游玩日期  ？？？、
           if(!this.teamType){
             Toast('团队类型不能为空')
@@ -200,9 +193,17 @@
           }
           for(const value of arr){
             if(!isInteger(value.count)){
-              Toast('席位都不能为空且为整数')
+              Toast('席位不能为空且都为整数')
               return
             }
+          }
+          if(!this.travelAgency){
+            Toast('旅行社名称不能为空')
+            return
+          }
+          if(!this.touristOrigin){
+            Toast('客源地不能为空')
+            return
           }
 
           let data ={

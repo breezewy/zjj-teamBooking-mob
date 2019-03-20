@@ -81,6 +81,7 @@
         title: '订单列表',
         current:1,                  //第几页
         orderList: [],
+        select_date:'',            //sessionStorage的内容
         performDate:'游玩日期',
         dataArray:[],                 //未格式化的日期格式
         formatDateList:[],               //格式化的日期格式
@@ -90,7 +91,13 @@
       }
     },
     created(){
-      this.getDate()    //根据日期查询订单列表
+      // this.select_date =  sessionStorage.getItem('SET_DATE')
+      // if(this.select_date){
+      //   this.getOrderList(this.select_date)
+      // }else{
+      //   this.getDate()    //根据日期查询订单列表
+      // }
+      this.getDate()
     },
     methods:{
       // /**
@@ -104,7 +111,13 @@
           }
           this.dataArray = res.data
           if(this.dataArray.length){
-            this.performDate = this.dataArray[0]
+            this.select_date =  sessionStorage.getItem('SET_DATE')
+            if(this.select_date){
+              this.performDate = this.select_date
+            }else{
+              this.performDate = this.dataArray[0]
+            }
+            // sessionStorage.setItem('SET_DATE',this.performDate)
             this.formatDateList = this.dataArray.map(item => {
               return { date: item };
             })
@@ -150,6 +163,7 @@
               onClick: function (evl, date, price) {
                 p.calendarShow = false;
                 p.performDate = date;
+                sessionStorage.setItem('SET_DATE',p.performDate)
                 p.getOrderList(date);
               },
               optionsdays: data,

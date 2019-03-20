@@ -8,8 +8,9 @@
         <div class="wrapper">
           <div class="start-info">
             <div class="name">宋城千古情演出</div>
-            <div class="date-content" @click="shijianCK">
-              <p class="date border-bottom-1px">{{performDate}}</p>
+            <div class="date-content clear-fix" @click="shijianCK">
+              <!--<p class="date border-bottom-1px">{{performDate}}</p>-->
+              <p class="date">{{performDate}}</p>
               <!--<span class="day">今天</span>-->
               <span class="day">{{performDate==today ? '今天': performDate== tomorrow?'明天': performDate== dayAfterTomorrow? '后天':''}}</span>
               <span class="week">星期{{week=='1'?'一':week=='2'?'二': week=='3'?'三': week=='4'?'四': week=='5'? '五': week=='6'?'六':week=='0'?'日':''}}</span>
