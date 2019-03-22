@@ -1,6 +1,6 @@
 <template>
   <transition name="slide">
-    <div class="guideInfo-container">
+    <div class="travelInfo-container">
       <header class="header">
         <h1>个人信息</h1>
         <i @click="back" class="cubeic-back"></i>
@@ -8,29 +8,34 @@
       <div class="wrapper">
         <ul class="wrap-info">
           <li class="card">
-            <span class="text">姓名：</span>
-            <span class="info">{{guideInfo.name}}</span>
+            <span class="text">名称：</span>
+            <span class="info">{{travelInfo.name}}</span>
+          </li>
+          <li class="card">
+            <span class="text">银行账户：</span>
+            <span class="info">{{travelInfo.bankAccount }}</span>
           </li>
           <li class="card">
             <span class="text">手机号：</span>
-            <span class="info">{{guideInfo.mobile}}</span>
+            <span class="info">{{travelInfo.telNo}}</span>
           </li>
-          <!--<li class="card">-->
-            <!--<span class="text">导游姓名：</span>-->
-            <!--<span class="info">{{guideInfo.name}}</span>-->
-          <!--</li>-->
+
           <li class="card">
-            <span class="text">证件类型：</span>
-            <span class="info">{{guideInfo.certType=='106001'?'导游证': guideInfo.certType=='106002'? '身份证': uideInfo.certType=='106003'?'学生证':''}}</span>
+            <span class="text">积分 ：</span>
+            <span class="info">{{travelInfo.pointSum}}</span>
           </li>
           <li class="card">
-            <span class="text">证件号：</span>
-            <span class="info">{{guideInfo.certNo}}</span>
+            <span class="text">卡号：</span>
+            <span class="info">{{travelInfo.certNo}}</span>
           </li>
-          <!--<li class="card">-->
-            <!--<span class="text">所属片区：</span>-->
-            <!--<span class="info">按时发放</span>-->
-          <!--</li>-->
+          <li class="card">
+            <span class="text">传真：</span>
+            <span class="info">{{travelInfo.faxNo}}</span>
+          </li>
+          <li class="card">
+            <span class="text">备注 ：</span>
+            <span class="info">{{travelInfo.remark }}</span>
+          </li>
 
         </ul>
       </div>
@@ -39,12 +44,11 @@
 </template>
 
 <script>
-
   export default {
-    name: "guideInfo",
+    name: "travelInfo",
     data(){
       return {
-        guideInfo: {}
+        travelInfo: {}
       }
     },
     created(){
@@ -55,7 +59,7 @@
        * 获取导游信息
        */
       getUseInfo(){
-        this.$http.get(`/wap/guide/info`).then(({ data: res }) => {
+        this.$http.get(`/wap/travel/info`).then(({ data: res }) => {
           if(res.code !== '200'){
             this.$createToast({
               txt: res.msg,
@@ -64,8 +68,8 @@
             return
           }
 
-          this.guideInfo = res.data
-          console.log(this.guideInfo)
+          this.travelInfo = res.data
+          console.log(this.travelInfo)
 
         })
       },
@@ -86,7 +90,7 @@
 </style>
 
 <style lang="stylus"  rel="stylesheet/stylus">
-  .guideInfo-container
+  .travelInfo-container
     position: absolute
     z-index: 10
     top: 0

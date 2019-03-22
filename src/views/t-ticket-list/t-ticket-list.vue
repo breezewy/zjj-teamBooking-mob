@@ -66,7 +66,7 @@
   import {addDate } from "../../common/js/format";
   import moment from 'moment'
   export default {
-    name: "ticket-list",
+    name: "t-ticket-list",
     components:{
       VTop,
       Scroll
@@ -144,7 +144,7 @@
        */
       goDetail(item){
         sessionStorage.setItem('ticketDetail', JSON.stringify(item))
-        this.$router.push({ path:'/ticket-detail'})
+        this.$router.push({ path:'/travel-ticket-detail'})
       },
       showSession(date){
         this.$http.get(`/wap/performPlan/${date}`).then(({ data: res }) => {

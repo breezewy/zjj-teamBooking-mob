@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="order-container">
+    <div class="travel-order-container">
       <v-top :title="title"></v-top>
       <div class="wrapper">
         <div class="search-box-wrapper" @click="shijianCK()">
@@ -72,13 +72,14 @@
 
 <script>
   import { Toast } from 'mint-ui'
-  import TabBar from '@/base/tabbar/tabbar'
+  import TabBar from '@/base/travelTabBar/travelTabBar'
   import VTop from '@/base/vtop/vtop'
   const perpage = 1000
   export default {
-    name: "order",
+    name: "torder",
     data(){
       return {
+        selectedTabBar:'travel-order',
         title: '订单列表',
         current:1,                  //第几页
         orderList: [],
@@ -87,7 +88,7 @@
         dataArray:[],                 //未格式化的日期格式
         formatDateList:[],               //格式化的日期格式
         calendarShow: false,
-        selectedTabBar:'order'
+
 
       }
     },
@@ -186,7 +187,7 @@
        * 跳转到订单详情
        */
       goOrderDetail(id){
-        this.$router.push({ path:`/order-detail/${id}`})
+        this.$router.push({ path:`/travel-order-detail/${id}`})
       },
     },
     components:{
@@ -197,7 +198,7 @@
 </script>
 
 <style scoped lang="stylus"  rel="stylesheet/stylus">
-  .order-container
+  .travel-order-container
     position: absolute
     z-index: 10
     top: 0

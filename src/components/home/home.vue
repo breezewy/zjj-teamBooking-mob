@@ -26,7 +26,29 @@
             <li>1、通过首页开票按钮进入页面输入开票订单号进行开票。</li>
             <li>2、进入订单列表根据游玩日期查询订单信息，点击开发票按钮进行开票。</li>
           </ul>
-          <span class="order-btn">订单开票</span>
+          <a href="http://receipt.51dmq.com/receipt/index.htm" class="order-btn">订单开票</a>
+        </div>
+
+        <div class="notice clear-fix" v-if="isTodayOrderShow">
+          <h1 class="title">当天订单</h1>
+          <ul class="list">
+            <li>编号：{{noConfirmOrderInfo.billNo}}</li>
+            <li>订单状态：{{noConfirmOrderInfo.billStatus =='01'? '未审核': noConfirmOrderInfo.billStatus =='02'? '准预定':
+              noConfirmOrderInfo.billStatus =='03'? '已审核': noConfirmOrderInfo.billStatus =='04'? '已销售':
+              noConfirmOrderInfo.billStatus =='05'?'已撤销':''
+              }}</li>
+            <li>订单类型：{{noConfirmOrderInfo.billType=='01'?'现场售票': noConfirmOrderInfo.billType=='02'? '预定':'' }}</li>
+            <li>{{noConfirmOrderInfo.performDate}} &nbsp;&nbsp;&nbsp;{{noConfirmOrderInfo.performTime}}</li>
+            <li>{{noConfirmOrderInfo.travelName}}</li>
+            <li style="margin-top:20px;font-size: 15px">
+              截止时间：{{noConfirmOrderInfo.performDate}} {{noConfirmOrderInfo.checkTime}}:00:00
+            </li>
+            <li style="font-size: 15px"> 倒计时：【<span style="color:red">{{lastTime}}</span>】</li>
+          </ul>
+          <div class="handle-detail">
+            <span class="update btn" @click="viewOrder()">查看订单</span>
+            <span class="nuclei btn" @click="nuclearByNow()">立即核团</span>
+          </div>
         </div>
       </div>
       <tab-bar :selected="selectedTabBar"></tab-bar>
@@ -34,21 +56,125 @@
 </template>
 
 <script>
+  import {countDown} from "../../utils/format";
   import TabBar from '@/base/tabbar/tabbar'
+  import { Toast,MessageBox  } from 'mint-ui'
   export default {
     name: "home",
     components:{
       TabBar,
     },
+    created(){
+      // /wap/noConfirmOrder
+      this.getNoConfirmOrder()
+    },
     data(){
       return {
-        selectedTabBar:'home'
+        selectedTabBar:'home',
+        noConfirmOrderInfo:{},
+        isTodayOrderShow:false,
+        performDate:'',             //游玩的日期
+        orderId:'',
+        lastTime:'',                 //显示的日期
+        timestamp2:'',                //核团的日期
+        timer: null                 //定时器
       }
     },
+    // watch:{
+    //   lastTime(){
+    //
+    //   }
+    // },
     methods:{
       order(){
-        this.$router.push({path:'/fix'})
+        this.$router.push({path:'/order'})
+      },
+      getNoConfirmOrder(){
+        this.$http.get('/wap/noConfirmOrder').then(({ data: res }) => {
+          console.log(res)
+          if(res.code !== '200'){
+            Toast(res.msg)
+          }
+          let data = res.data
+         if(Object.keys(data).length ==0){
+           this.isTodayOrderShow = false
+         }else{
+           this.isTodayOrderShow = true
+           this.noConfirmOrderInfo = data
+           this.performDate = this.noConfirmOrderInfo.performDate
+           this.orderId = this.noConfirmOrderInfo.id
+           let playDate = this.performDate
+           let checkTime = this.noConfirmOrderInfo.checkTime
+           let formatCheckTime = checkTime+':00:00'
+           let totalCheckTime = playDate+' '+formatCheckTime
+
+           if(this.noConfirmOrderInfo.billStatus=='01' || this.noConfirmOrderInfo.billStatus=='02'){
+             let date = new Date(totalCheckTime);
+             this.timestamp2 = date.getTime()
+             this.countTime()
+           }else{
+             this.lastTime = '核团时间已过期'
+           }
+         }
+
+        })
+      },
+      countTime(){
+          var date = new Date();
+           var now = date.getTime();
+          // let lai = date.setTime(date.getTime() + 30)
+          //  //设置截止时间
+          //  var str="2017/5/17 00:00:00";
+          //  var endDate = new Date(str);
+          //  var end = endDate.getTime()
+           //时间差
+           // var leftTime = this.timestamp2-now;
+           var leftTime = this.timestamp2-now;
+           console.log(leftTime)
+
+           //定义变量 d,h,m,s保存倒计时的时间
+           var d,h,m,s;
+           if (leftTime/1000>=0) {
+             // console.log(leftTime)
+               d = Math.floor(leftTime/1000/60/60/24);
+               h = Math.floor(leftTime/1000/60/60%24);
+               m = Math.floor(leftTime/1000/60%60);
+               s = Math.floor(leftTime/1000%60);
+               if(d){
+                 this.lastTime = `${d}天${h}时${m}分${s}秒`
+               }else{
+                 this.lastTime = `${h}时${m}分${s}秒`
+               }
+
+              this.timer=setTimeout(this.countTime,1000);
+           }else{
+             this.lastTime= '核团时间已过期'
+             clearTimeout(this.timer)
+           }
+
+      },
+
+
+      /**
+       * 查看订单
+       */
+      viewOrder(){
+        sessionStorage.setItem('SET_DATE',this.performDate)
+        this.$router.push({ path:'/order'})
+      },
+      /**
+       * 立即核团
+       */
+      nuclearByNow(){
+
+                sessionStorage.setItem('SET_DATE',this.performDate)
+                // this.$router.push({path:'/order'})
+                // this.$router.push({ name: 'order-detail', params: { heId: '111111',id:this.orderId }})
+                this.$router.push({ name: 'order-detail', params: {id:this.orderId }})
       }
+    },
+    beforeDestroy(){
+      this.timer = null
     }
   };
 </script>
@@ -115,5 +241,26 @@
           font-size 14px
           color: #fc9153;
 
+        .handle-detail
+          display: flex
+          /*margin :10px 20px*/
+          margin-left 10px
+          width 200px
+          font-size: 14px;
+          .btn
+            flex: 1
+            height :35px;
+            line-height :35px
+            text-align center
+            color:#fc9153
+
+            border :1px solid #fc9153
+            border-radius: .25rem 0 0 .25rem;
+          .update
+            border-right :none
+          .nuclei
+            border-radius: 0 .25rem .25rem 0;
+          .bill
+            border-radius: .25rem
 
 </style>

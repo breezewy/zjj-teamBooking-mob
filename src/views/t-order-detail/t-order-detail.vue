@@ -34,7 +34,7 @@
           </div>
           <div class="handle-contain">
             <!--<div class="handle-detail" v-if="orders.billStatus=='01'">-->
-            <div class="handle-detail">
+            <div class="handle-detail" >
               <span class="bill btn" @click="modify()">核团</span>
               <!--<span class="nuclei btn" @click="nucleiGroup()">核团</span>-->
             </div>
@@ -66,7 +66,7 @@
                       <li v-for="item in orderDetails">
                         <div class="item-content">
                           <div class="item-media"></div>
-                          <div class="item-inner clear-fix">
+                          <div class="item-inner">
                             <div class="item-title label">{{item.areaName}}</div>
                             <div class="item-input">
                               <input type="text" v-model.number="item.lastCount" class="count" placeholder="数量">
@@ -91,7 +91,7 @@
 <script>
   import { Toast,MessageBox  } from 'mint-ui';
   export default {
-    name: "order-detail",
+    name: "t-order-detail",
     data(){
       return {
         title: '订单详情',      // head中我的
@@ -105,10 +105,6 @@
       }
     },
     created(){
-      console.log(this.$route)
-      // if(this.$route.params.heId==='111111'){
-      //   this.popupShow = true
-      // }
         this.getOrderDetailInfo()
     },
     methods:{
@@ -126,6 +122,15 @@
           }
           this.orders = res.data.orders
           this.orderDetails = res.data.orderDetails
+          // let cloneOrderDetails = JSON.parse(JSON.stringify(this.orderDetails))  //这是克隆的订单详情数据
+          // this.copyInGetDetailInfo = [];      //先把他清空
+          // for(const value of cloneOrderDetails){
+          //   this.copyInGetDetailInfo.push({areaCode: value.areaCode, areaName: value.areaName ,bookCount: value.bookCount})
+          // }
+          // if(this.orders.performDate){
+          //   this.performCode = this.orders.performCode
+          //   this.showSeesion(this.orders.performDate)
+          // }
 
         })
       },
@@ -165,13 +170,14 @@
 
       },
       nucleiGroup(){
+
         MessageBox.confirm('确定执行核团操作?').then(action => {
           if(action ==='confirm'){
             let data= {
               orderId: this.orders.id
             };
             this.$http.put(`/wap/confirmOrder`,data
-              ).then(({ data: res }) => {
+            ).then(({ data: res }) => {
               if(res.code !=='200'){
                 MessageBox.alert(res.msg)
                 return
@@ -217,24 +223,19 @@
           performCode: this.performCode
         }
 
-        this.$http.put(`/wap/confirmOrder`,data
-        ).then(({ data: res }) => {
+        this.$http.put(`/wap/confirmOrder`,data).then(({ data: res }) => {
+
           if(res.code !=='200'){
             MessageBox.alert(res.msg)
             return
           }
           Toast('核团成功')
           setTimeout(() =>{
-            this.$router.push({path:'/order'})
+            this.$router.push({path:'/travel-order'})
           },700)
-
 
         }).catch(() => {
         })
-
-
-
-
 
 
         // this.$http.put(`/wap/updateOrder`,data).then(({ data: res }) => {
@@ -328,11 +329,11 @@
                   line-height 50px
                   .item-title
                     float: left
-                    width: 75%
+                    width: 40%
                   .item-input
                     position :relative
                     float: left
-                    width: 25%
+                    width: 60%
                     .count
                       outline :none
                       height 40px;

@@ -18,14 +18,6 @@
              </span>
       </div>
     </div>
-    <div class="stroke-type clear-fix">
-      <span class="stroke">类型</span>
-      <!--<span class="icon iconfont icon-arrow-right"></span>-->
-      <!--<span class="icon">单选</span>-->
-      <span class="radio">
-                <cube-radio-group v-model.number="userType" :options="userTypeSelectData" :horizontal="true" />
-          </span>
-    </div>
     <div class="content" v-if="loginStatus==='userPwd'">
       <div>
 
@@ -42,7 +34,7 @@
           <span class="sign" @click="signInByName">登录</span>
         </div>
         <!--<div class="btn-contain">-->
-          <!--<span class="reset">重置</span>-->
+        <!--<span class="reset">重置</span>-->
         <!--</div>-->
       </div>
     </div>
@@ -60,7 +52,7 @@
         <span class="sign" @click="signInByMobile()">登录</span>
       </div>
       <!--<div class="btn-contain">-->
-        <!--<span class="reset">重置</span>-->
+      <!--<span class="reset">重置</span>-->
       <!--</div>-->
     </div>
   </div>
@@ -71,13 +63,9 @@
   import { isMobile } from '@/utils/validation'
   import Cookies from 'js-cookie'
   export default {
-    name: "login",
+    name: "guidelogin",
     data(){
       return {
-
-        userType:'',                //用户类型
-        userTypeSelectData:[{ value: 'guide', label: '导游' },{ value: 'travel', label: '旅行社' }],          //行程类型下拉框
-
         loginStatus:'userPwd',       //登录方式
 
         username:'17682331278',
@@ -91,10 +79,6 @@
         sendTimer:null,              //验证码倒计时计时器
         codeText:'发送验证码',
       }
-    },
-    created(){
-      let userType = localStorage.getItem('userType')
-      this.userType = userType
     },
     methods:{
       /**
@@ -136,22 +120,19 @@
        *  用户名登录
        */
       signInByName(){
-        if(!this.userType){
-          Toast('类型不能为空')
-          return
-        }
+
         if(!this.username){
-          Toast('用户名不能为空')
+          Toast('请填写用户名')
           return
         }
         if(!this.password){
-          Toast('密码不能为空')
+          Toast('请填写密码')
           return
         }
         let data ={
           username: this.username,
           password: this.password,
-          userType: this.userType,
+          userType: 'guide',
           loginType:'username'
         };
         this.$http.post('/auth/login', data).then(({ data: res }) => {
@@ -159,15 +140,8 @@
             Toast(res.msg)
             return
           }
-          console.log(res);
-          localStorage.setItem('userType',this.userType)
           Cookies.set('token', res.data.token)
-          if(this.userType==='guide'){
             this.$router.replace({ path: '/home' })
-          }else if(this.userType ==='travel'){
-            this.$router.replace({ path: '/travel-home' })
-          }
-
         }).catch(() => {})
       },
       /**
@@ -176,7 +150,7 @@
       sendCode(){
 
         if(!this.mobile){
-          Toast('手机号不能为空')
+          Toast('请填写手机号')
           return
         }
         if(!isMobile(this.mobile)){
@@ -209,12 +183,8 @@
        *  手机号登录
        */
       signInByMobile(){
-        if(!this.userType){
-          Toast('类型不能为空')
-          return
-        }
         if(!this.mobile){
-          Toast('手机号不能为空')
+          Toast('请填写手机号')
           return
         }
         if(!isMobile(this.mobile)){
@@ -223,12 +193,12 @@
         }
         if(!this.captcha){
           Toast('验证码不能为空')
-           return
+          return
         }
         let data={
           username: this.mobile,
           captcha: this.captcha,
-          userType: this.userType,
+          userType: 'guide',
           loginType:'mobile'
         };
         this.$http.post('/auth/login', data).then(({ data: res }) => {
@@ -236,7 +206,6 @@
             Toast(res.msg)
             return
           }
-          localStorage.setItem('userType',this.userType)
           Cookies.set('token', res.data.token)
           console.log(this.$router)
           this.$router.replace({ path: '/home' })
@@ -316,7 +285,7 @@
       .field-content
         position:relative
         width: 100%
-        margin-bottom 30px;
+        margin-top 30px;
         display:flex
         height 40px;
         border-bottom: 1px solid #ddd;

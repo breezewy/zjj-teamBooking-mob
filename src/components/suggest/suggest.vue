@@ -69,7 +69,7 @@
           },
           name: this.query
         };
-        this.$http.post(this.searchtype==='travel'?'/wap/travel/name':'/wap/area/name', data).then(({ data: res }) => {
+        this.$http.post(this.searchtype==='travel'?'/wap/travel/name': this.searchtype==='origin'? '/wap/area/name':'/wap/guide/name', data).then(({ data: res }) => {
            if(res.code === '200'){
              this.result = res.data.records
              this._checkMore(res.data)

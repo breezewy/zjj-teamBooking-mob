@@ -51,7 +51,7 @@
               <div class="search-input">
                 <!--<label for="search" class="icon iconfont icon-cx"></label>-->
                 <span class="icon iconfont icon-cx"></span>
-                <input type="text" v-model="travelAgency" @focus="focusTravel" class="searchClient" placeholder="输入旅行社名称">
+                <input type="text" v-model="guideInfo" @focus="focusGuide" class="searchClient" placeholder="输入导游名称或者手机号">
               </div>
             </div>
             <div class="searchbar">
@@ -99,14 +99,15 @@
   import { isInteger } from '@/utils/validation'
   import Search from '@/components/search/search'
   export default {
-    name: "ticket-detail",
+    name: "t-ticket-detail",
     components:{
       Search
     },
     data(){
       return {
-        guideinfo:{},
-        guideId:'',
+        travelInfo:{},
+        travelInfoId:'',           //旅行社id
+
         performCodeList:[],
         seatInputCount:0,
         ticketDetail: {},
@@ -117,7 +118,7 @@
         teamTypeText:'',
         routingTypeText:'',
         //后面添加的
-        travelAgency:'',
+        guideInfo:'',   //导游信息
         touristOrigin:'',
         remark:'',
         isSearchShow:false,
@@ -131,6 +132,11 @@
           name:''
         },
 
+        guide:{
+          id:'',
+          name:''
+        }
+
       }
     },
     created(){
@@ -140,6 +146,7 @@
       this.routingTypeText = this.filter.routingTypeText
       this.teamType = this.filter.teamType               //团队类型
       this.routingType  = this.filter.routingType
+
       this.ticketDetail = JSON.parse(sessionStorage.getItem('ticketDetail'))
       if(!this.ticketDetail){
         this.showSession(this.performDate)
@@ -148,24 +155,23 @@
         this.getPerformSeatDetail(this.performCode)
       }
 
-      this.getUseInfo()
+      this.getTravelInfo()
     },
     methods:{
       back(){
         this.$router.go(-1)
       },
-      getUseInfo(){
-        this.$http.get(`/wap/guide/info`).then(({ data: res }) => {
-          if(res.code !== '200'){
-            this.$createToast({
-              txt: res.msg,
-              type: 'txt'
-            }).show()
+      getTravelInfo(){
+        this.$http.get(`/wap/travel/info`).then(({ data: res }) => {
+          if(res.code !=='200'){
+            Toast(res.msg)
             return
           }
-          this.guideInfo = res.data
-          console.log(this.guideInfo)
-          this.guideId = res.data.id
+          this.travelInfo = res.data
+          console.log(this.travelInfo)
+          this.travelInfoId = res.data.id
+
+        }).catch(() => {
         })
       },
       showSession(date){
@@ -189,6 +195,7 @@
           for(const value of copyDetailRequestList){
            arr.push({areaCode: value.areaCode, areaName: value.areaName,count: value.inputCount})
           }
+
           // 游玩日期  ？？？、
           if(!this.teamType){
             Toast('团队类型不能为空')
@@ -212,8 +219,8 @@
               return
             }
           }
-          if(!this.travelAgency){
-            Toast('旅行社名称不能为空')
+          if(!this.guideInfo){
+            Toast('导游信息不能为空')
             return
           }
           if(!this.touristOrigin){
@@ -222,8 +229,8 @@
           }
 
           let data ={
-            guideId:this.guideId,
-            travelId: this.travel.id,               //旅行社id
+            travelId: this.travelInfoId,               //旅行社id
+            guideId: this.guide.id,
             areaCode: this.area.areaCode,           //客源地
             performDate: this.performDate,           //游玩日期
             teamType: this.teamType,                 //团队类型
@@ -243,10 +250,14 @@
               Toast(res.msg)
               return
             }
+            sessionStorage.setItem('SET_DATE',this.performDate)
             Toast('下单成功')
             setTimeout(() =>{
-              this.$router.push({ path:'/order'})
+              this.$router.push({ path:'/travel-order'})
             },1000)
+
+
+
           }).catch(() => {
 
           })
@@ -274,10 +285,10 @@
           console.log(this.detailRequestList)
         })
       },
-      focusTravel(){
-        this.travelAgency = ''      //清空旅行社名称
-        this.placeholdertype = '输入旅行社名称或拼音缩写'
-        this.searchtype = 'travel'
+      focusGuide(){
+        this.guideInfo = ''      //清空旅行社名称
+        this.placeholdertype = '输入导游名称或者手机号'
+        this.searchtype = 'guide'
         this.isSearchShow = true;
       },
       focusTourist(){
@@ -300,7 +311,10 @@
         if(item.areaName){
           this.touristOrigin = item.areaName
           this.area =  item
-        }else{
+        }else if(item.certNo ){
+          this.guideInfo= item.name
+          this.guide = item
+        } else{
           this.travelAgency = item.name
           this.travel =  item
         }
