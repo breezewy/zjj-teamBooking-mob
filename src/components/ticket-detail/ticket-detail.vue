@@ -10,17 +10,17 @@
           <div class="time-slot">
             <span class="start-time">{{ticketDetail.performTime? ticketDetail.performTime.split('-')[0] :'' }}</span>
             <span class="line"></span>
-            <span class="total">1小时</span>
+            <span class="total">{{ticketDetail.intervalTime}}</span>
             <span class="line"></span>
             <span class="end-time">{{ticketDetail.performTime? ticketDetail.performTime.split('-')[1] :''}}</span>
             <!--<span class="place">杭州</span>-->
           </div>
           <div class="info clear-fix">
             <span class="name">{{ticketDetail.performDate}}</span>
-            <span class="seat">杭州</span>
+            <!--<span class="seat">杭州</span>-->
           </div>
           <div class="detail clear-fix">
-            <span class="show-place">一号剧院</span>
+            <span class="show-place">{{ticketDetail.locationName}}</span>
             <span class="ticket-count">{{ticketDetail.performName}}</span>
           </div>
         </li>
@@ -29,8 +29,8 @@
         <ul>
           <li class="seat-item" v-for="item in detailRequestList">
             <span class="seat-name">{{item.areaName}}</span>
-            <span class="introduce">有票</span>
-            <input type="number" v-model.number="item.inputCount" class="input-count">
+            <span class="introduce">{{item.retSeats >0 ? '有票':'无票'}}</span>
+            <input type="number" v-model.number="item.inputCount" placeholder="输入" class="input-count">
           </li>
           <!--<li class="seat-item">-->
             <!--<span class="seat-name">观众席</span>-->
@@ -47,7 +47,7 @@
       <div class="card">
         <div class="card-content">
           <div class="card-content-inner">
-            <div class="searchbar">
+            <div class="searchbar" style="margin-bottom: 10px;">
               <div class="search-input">
                 <!--<label for="search" class="icon iconfont icon-cx"></label>-->
                 <span class="icon iconfont icon-cx"></span>
@@ -66,7 +66,7 @@
       </div>
       <div class="card">
         <div class="card-content">
-          <div class="card-content-inner">
+          <div class="card-content-inner" style="padding: 5px 15px">
             <div class="list-block">
               <ul style="padding: 10px 0">
                 <li>
@@ -85,6 +85,7 @@
         </div>
       </div>
 
+
       <div class="order-btn">
         <a href="javascript:;" class="reverse" @click="reserve()">预定</a>
       </div>
@@ -95,7 +96,7 @@
 </template>
 
 <script>
-  import { Toast,Indicator } from 'mint-ui'
+  import { Toast,Indicator,MessageBox } from 'mint-ui'
   import { isInteger } from '@/utils/validation'
   import Search from '@/components/search/search'
   export default {
@@ -171,10 +172,39 @@
       showSession(date){
         this.$http.get(`/wap/performPlan/${date}`).then(({ data: res }) => {
           if(res.code !=='200'){
+            Toast(res.msg)
             return
           }
-          this.performCodeList= res.data
-          console.log(this.performCodeList)
+          let data= res.data
+          for(const value of data){
+            let performTime = value.performTime
+            if(performTime){
+              let timestamp1 = performTime.split('-')[0]
+              let timestamp2 = performTime.split('-')[1]
+              let formatTime1= this.performDate+' '+timestamp1+':00'
+              let formatTime2= this.performDate+' '+timestamp2+':00'
+              let date1 = new Date(formatTime1);
+              let date2 = new Date(formatTime2);
+              let formatDate1 = date1.getTime()
+              let formatDate2 = date2.getTime()
+              let leftTime = formatDate2-formatDate1;
+              var d,h,m,s;
+              if (leftTime/1000>=0) {
+                d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
+                m = Math.floor(leftTime / 1000 / 60 % 60);
+                s = Math.floor(leftTime / 1000 % 60);
+                if(h && m){
+                  value.intervalTime = `${h}小时${m}分`
+                }else if(h && !m){
+                  value.intervalTime = `${h}小时`
+                }else if(!h && m){
+                  value.intervalTime = `${m}分`
+                }
+              }
+            }
+          }
+          this.performCodeList = data
         }).catch(() => {
         })
       },
@@ -182,8 +212,7 @@
        * 提交订单
        */
       reserve(){
-        console.log(isInteger(20))
-        console.log(this.detailRequestList)
+
           let copyDetailRequestList =  JSON.parse(JSON.stringify(this.detailRequestList))
           let arr = []
           for(const value of copyDetailRequestList){
@@ -212,6 +241,16 @@
               return
             }
           }
+          let isMoreThanZero = false
+
+          let arrCountSeat =[]
+          for(const value of arr){
+            if(value.count >0){
+              arrCountSeat.push({value: value.count,name:value.areaName})
+              isMoreThanZero = true
+            }
+          }
+
           if(!this.travelAgency){
             Toast('旅行社名称不能为空')
             return
@@ -221,35 +260,62 @@
             return
           }
 
-          let data ={
-            guideId:this.guideId,
-            travelId: this.travel.id,               //旅行社id
-            areaCode: this.area.areaCode,           //客源地
-            performDate: this.performDate,           //游玩日期
-            teamType: this.teamType,                 //团队类型
-            routingType : this.routingType,          //行程类型
-            performCode: this.performCode,
-            detailRequestList:arr,     //席位总数组
-            remark: this.remark                           //备注
-          };
-          console.log(data)
-          Indicator.open({
-            text: '加载中...',
-            spinnerType: 'fading-circle'
-          });
-          this.$http.post('/wap/downOrder',data).then(({ data: res }) => {
-            Indicator.close();
-            if(res.code !== '200'){
-              Toast(res.msg)
-              return
-            }
-            Toast('下单成功')
-            setTimeout(() =>{
-              this.$router.push({ path:'/order'})
-            },1000)
-          }).catch(() => {
+        if(!isMoreThanZero){
+            Toast('席位至少有一个大于0')
+            return
+        }
+        var htmls = `<div class><p style="line-height: 2">${this.performDate} ${this.ticketDetail.performTime}</p><p style="line-height: 2">${this.travel.name}</p>`
 
-          })
+        for (var item of arrCountSeat){
+          var str = `<p style="line-height: 2">${item.name}${item.value}人</p>`;
+          htmls += str
+        }
+        MessageBox.confirm('',{
+          message: htmls,
+          title: '下单信息',
+        }).then(action => {
+          if (action == 'confirm') {     //确认的回调
+            let data ={
+              guideId:this.guideId,
+              travelId: this.travel.id,               //旅行社id
+              areaCode: this.area.areaCode,           //客源地
+              performDate: this.performDate,           //游玩日期
+              teamType: this.teamType,                 //团队类型
+              routingType : this.routingType,          //行程类型
+              performCode: this.performCode,
+              detailRequestList:arr,     //席位总数组
+              remark: this.remark                           //备注
+            };
+            console.log(data)
+            Indicator.open({
+              text: '加载中...',
+              spinnerType: 'snake'
+            });
+            this.$http.post('/wap/downOrder',data).then(({ data: res }) => {
+              Indicator.close();
+              if(res.code !== '200'){
+                // Toast(res.msg)
+                MessageBox({
+                  title: ' ',
+                  message: res.msg,
+                  closeOnClickModal: false
+                });
+                return
+              }
+              sessionStorage.setItem('SET_DATE',this.performDate)
+              Toast('下单成功')
+              setTimeout(() =>{
+                this.$router.push({ path:'/order'})
+              },1000)
+            }).catch(() => {
+
+            })
+          }
+        }).catch(err => {
+          // if (err == 'cancel') {     //取消的回调
+          //   console.log(2);
+          // }
+        });
         },
 
       /**

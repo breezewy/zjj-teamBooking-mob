@@ -13,18 +13,23 @@
             <span class="item">旅行社：{{orders.travelName }}</span>
             <span class="item">游玩日期：{{orders.performDate}}</span>
             <span class="item">场次：{{orders.performTime}}</span>
-            <span class="item">团队类型：{{orders.teamType}}</span>
-            <span class="item"> 证件类型：导游证 </span>
+            <span class="item">团队类型：{{orders.teamTypeName}}</span>
+            <!--<span class="item"> 证件类型：导游证 </span>-->
             <span class="item">行程类型：{{orders.routingType=='0'? '加点':orders.routingType=='1'? '行程':''}}</span>
-            <span class="item">最晚核团时间：</span>
-            <span class="item">退单原因：</span>
-            <span class="item">原始信息：{{orders.oldData}}</span>
+            <span class="item">最晚核团时间：{{orders.performDate}} {{orders.checkTime}}:00</span>
+            <!--<span class="item">退单原因：</span>-->
+            <span class="item"  @click="$refs.tip.show()" style="color:#1c9ae7">
+              原始信息：{{orders.oldData}}
+            </span>
+            <cube-tip ref="tip" direction="bottom" style="left:30px;right:30px;
+              top:248px;z-index: 10;height:100px;max-height: 100px">{{orders.oldData}}</cube-tip>
+
           </div>
-          <div class="order-info">
+          <div class="order-info" style="margin-bottom: 80px;">
             <h1>订单明细</h1>
             <span class="item scene">场次：{{orders.performTime}}</span>
             <div class="seat-detail" v-for="item in orderDetails">
-              <span class="item">座位区：{{item.areaName}}</span>
+              <span class="item" style="color:red">座位区：{{item.areaName}}</span>
               <span class="item">预定人数：{{item.bookCount}}</span>
               <span class="item">核团人数：{{item.lastCount}}</span>
               <span class="item">排位人数：{{item.arrangeCount}}</span>
@@ -32,20 +37,24 @@
             </div>
 
           </div>
-          <div class="handle-contain">
+          <div class="handle-contain" v-if="orders.billStatus=='01' || orders.billStatus=='02'">
+          <!--<div class="handle-contain" >-->
             <!--<div class="handle-detail" v-if="orders.billStatus=='01'">-->
-            <div class="handle-detail">
-              <span class="bill btn" @click="modify()">核团</span>
+            <div class="handle-detail" >
+              <span class="bill btn" @click="modify()">去核团</span>
               <!--<span class="nuclei btn" @click="nucleiGroup()">核团</span>-->
             </div>
-            <div class="handle-detail" v-if="orders.billStatus=='04'">
+
+          </div>
+          <div class="handle-contain"  v-if="orders.billStatus=='04'">
+            <div class="handle-detail">
               <a class="bill btn" :href="'http://receipt.51dmq.com/receipt/index.htm?bookBillNo='+orders.billNo">开取发票</a>
             </div>
           </div>
 
         </div>
           <div class="popup" :class="{ 'popup-show': popupShow }">
-            <div class="date-select">
+            <div class="date-select clear-fix">
               <span class="text">演出场次</span>
               <!--<select class="select" name="" id="">-->
                 <!--<option value="">19:30-20:30</option>-->
@@ -67,7 +76,7 @@
                         <div class="item-content">
                           <div class="item-media"></div>
                           <div class="item-inner clear-fix">
-                            <div class="item-title label">{{item.areaName}}</div>
+                            <div class="item-title label">{{item.areaName? item.areaName.split('-')[1] :''}}</div>
                             <div class="item-input">
                               <input type="text" v-model.number="item.lastCount" class="count" placeholder="数量">
                             </div>
@@ -98,6 +107,7 @@
         popupShow:false,
         orders:{},
         orderDetails:[],
+        teamTypeSelectData:[],             //团队类型下拉框
         // cloneOrderDetails:[],     //克隆的订单详情数据
         copyInGetDetailInfo:[],           //克隆的座位详情数据
         performCode:'00017945',
@@ -105,15 +115,38 @@
       }
     },
     created(){
-      console.log(this.$route)
       // if(this.$route.params.heId==='111111'){
       //   this.popupShow = true
       // }
+      Promise.all([
+        this.getTeamTypeSelect(),
+      ]).then(() => {
         this.getOrderDetailInfo()
+      })
     },
     methods:{
       back(){
         this.$router.go(-1)
+      },
+      /**
+       *  获取团队类型select
+       */
+      getTeamTypeSelect(){
+        return this.$http.get(`/common/teamType`).then(({ data: res }) => {
+          if(res.code !== '200'){
+            this.$createToast({
+              txt: res.msg,
+              type: 'txt'
+            }).show()
+          }
+          let data = res.data
+          let arr = []
+          for(var key in data){
+            arr.push({id:key , name: data[key] })
+          }
+          this.teamTypeSelectData= arr
+
+        })
       },
       getOrderDetailInfo(){
         let id = this.$route.params.id
@@ -125,6 +158,12 @@
             }).show()
           }
           this.orders = res.data.orders
+          for(const value of this.teamTypeSelectData){
+            if(value.id == this.orders.teamType){
+              this.orders.teamTypeName = value.name
+            }
+          }
+          console.log(this.orders)
           this.orderDetails = res.data.orderDetails
 
         })
@@ -142,13 +181,15 @@
       },
       showSeesion(date){
         this.$http.get(`/wap/performPlan/${date}`).then(({ data: res }) => {
-          if(res.code ==='200'){
-            let performCodeList= res.data
-            this.performCodeSelect = performCodeList.map(item => {
-              return {text: item.performTime, value: item.performCode };
-            });
-            console.log(this.performCodeSelect)
+          if(res.code !== '200'){
+            Toast(res.msg)
+            return;
           }
+
+          let performCodeList= res.data
+          this.performCodeSelect = performCodeList.map(item => {
+            return {text: item.performTime, value: item.performCode };
+          });
 
         }).catch(() => {
         })
@@ -198,65 +239,50 @@
        *  这是弹出框中的更新
        */
       updateHandle(){
-        let  copyDataOrderDetails = JSON.parse(JSON.stringify(this.orderDetails));
-        // let arr =[];
-        // for(const value of copyDataOrderDetails){
-        //   for(const val of this.copyInGetDetailInfo){
-        //     if(value.areaCode == val.areaCode){
-        //       arr.push({areaCode: value.areaCode, areaName: value.areaName ,count: value.bookCount,bookCount: val.bookCount})
-        //     }
-        //   }
-        // }
+        let  copyDataOrderDetails = JSON.parse(JSON.stringify(this.orderDetails))
         let formatArr = [];
         for(const value of copyDataOrderDetails){
           formatArr.push({areaCode: value.areaCode, areaName: value.areaName ,count: value.lastCount,bookCount: value.bookCount})
         }
-        let data= {
-          detailRequestList: formatArr,
-          orderId: this.orders.id,
-          performCode: this.performCode
-        }
 
-        this.$http.put(`/wap/confirmOrder`,data
-        ).then(({ data: res }) => {
-          if(res.code !=='200'){
-            MessageBox.alert(res.msg)
-            return
+
+        let htmls ='请先确认人数，如有变动请先修改以上信息再进行核团，核团后将不可再次修改，是否确定？'
+        MessageBox.confirm('',{
+          message: htmls,
+          title: '下单信息',
+        }).then(action => {
+          if (action == 'confirm') {     //确认的回调
+            let data= {
+              detailRequestList: formatArr,
+              orderId: this.orders.id,
+              performCode: this.performCode
+            }
+            this.$http.put(`/wap/confirmOrder`,data
+            ).then(({ data: res }) => {
+              if(res.code !=='200'){
+                MessageBox({
+                  title: ' ',
+                  message: res.msg,
+                  closeOnClickModal: false
+                });
+                return
+              }
+              Toast('核团成功')
+              setTimeout(() =>{
+                this.$router.push({path:'/order'})
+              },700)
+            }).catch(() => {
+            })
           }
-          Toast('核团成功')
-          setTimeout(() =>{
-            this.$router.push({path:'/order'})
-          },700)
-
-
-        }).catch(() => {
-        })
+        }).catch(err => {});
 
 
 
 
 
 
-        // this.$http.put(`/wap/updateOrder`,data).then(({ data: res }) => {
-        //     if(res.code !== '200'){
-        //       this.$createToast({
-        //         txt: res.msg,
-        //         type: 'txt'
-        //       }).show()
-        //       return
-        //     }
-        //     this.$createToast({
-        //       txt: '更新成功',
-        //       type: 'correct'
-        //     }).show()
-        //     setTimeout(() =>{
-        //       this.popupShow = false
-        //       this.getOrderDetailInfo()
-        //     },200)
-        //
-        //
-        // }).catch(() => {
-        // })
+
+
 
       }
     }
@@ -277,15 +303,16 @@
     .date-select
       margin :20px;
       align-items center
-      padding :0 30px;
+      padding :0 15px;
       height 50px;
       line-height 50px;
       font-size 16px
       box-shadow: 0 1px 2px rgba(0,0,0,.3);
       .text
-        width 35%
-        display inline-block
+        width 43%
+        float :left
       .select
+        float:right
         appearance:none
         outline none
         box-sizing: border-box;
@@ -293,13 +320,14 @@
         background: 0 0;
         border-radius: 0;
         box-shadow: none;
-        display: inline-block;
         padding-left: 20px;
-        width: 55%;
+        padding-right 20px;
         height: 40px;
         color: #3d4145;
         font-size:16px;
         font-family: inherit;
+        position relative
+        top:8px;
 
     .card
       position: relative
@@ -323,17 +351,18 @@
                 box-sizing: border-box
                 .item-content
                   box-sizing: border-box
-                  padding-left: 30px;
+                  padding-left: 15px;
                   height :50px;
                   line-height 50px
+                  font-size:16px
                   .item-title
                     float: left
-                    width: 75%
                   .item-input
                     position :relative
-                    float: left
-                    width: 25%
+                    float: right
+                    width: 115px
                     .count
+                      width: 100%
                       outline :none
                       height 40px;
                       line-height:40px
@@ -386,7 +415,7 @@
         top: 0;
         left: 0;
         padding: 0 15px;
-        color: #fc9153;
+        color: #1c9ae7;
         font-size: 16px
     .wrapper
       height: calc(100% - 40px);
@@ -394,8 +423,9 @@
       overflow-y: auto;n;
       padding-bottom 50px;
       .order-info
-        font-size :16px;
+        position relative
         padding :10px;
+        font-size :16px;
         h1
           height: 40px
           line-height: 40px
@@ -418,14 +448,14 @@
           //.item:first-child
           //  /*border-top:1px solid #999*/
       .handle-contain
-        //position: fixed;
-        //width: 100%;
-        //height: 50px;
-        //bottom: 0;
-        //background-color: #fff;
+        position: fixed;
+        width: 100%;
+        height: 64px;
+        bottom: 0;
+        background-color: #fff;
         .handle-detail
           display: flex
-          margin :30px 10px
+          margin :20px 10px
           font-size: 14px;
           .btn
             flex: 1

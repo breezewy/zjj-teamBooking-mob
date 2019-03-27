@@ -35,8 +35,7 @@
       text-align center
       height 80px
       line-height 80px
-      border: 1px solid #666
-      background-color:green
+      background-color:#1c9ae7
       color:#fff;
       font-size 20px
       border-radius :10px

@@ -132,7 +132,7 @@
         let data ={
           username: this.username,
           password: this.password,
-          userType: 'guide',
+          userType: 'travel',
           loginType:'username'
         };
         this.$http.post('/auth/login', data).then(({ data: res }) => {
@@ -141,7 +141,7 @@
             return
           }
           Cookies.set('token', res.data.token)
-          this.$router.replace({ path: '/home' })
+          this.$router.replace({ path: '/travel-home' })
         }).catch(() => {})
       },
       /**
@@ -234,7 +234,7 @@
         width :46px;
         height 46px
         border-radius:50%
-        color:#fc9153
+        color:#1c9ae7
         font-size 46px
     .tab
       display: flex
@@ -318,7 +318,7 @@
           display:block
           height 44px
           line-height 44px
-          background-color: #fc9153
+          background-color: #1c9ae7
           text-align:center
           font-size :16px;
           color:#fff;

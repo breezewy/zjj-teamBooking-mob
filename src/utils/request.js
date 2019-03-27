@@ -4,7 +4,7 @@ import qs from 'qs'
 import router from '@/router'
 import { clearLoginInfo } from '@/utils'
 import Cookies from 'js-cookie'
-
+import {Toast} from 'mint-ui'
 const http = axios.create({
   baseURL: process.env.API_ROOT,
   timeout: 5000
@@ -66,6 +66,7 @@ http.interceptors.response.use(response => {
 
     clearLoginInfo()
     router.replace({ path: '/' })
+    Toast(response.data.msg)
     return Promise.reject(response.data.msg)
   }
 

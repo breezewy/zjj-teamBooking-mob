@@ -265,7 +265,7 @@
         width :46px;
         height 46px
         border-radius:50%
-        color:#fc9153
+        color:#1c9ae7
         font-size 46px
     .tab
       display: flex
@@ -349,7 +349,7 @@
           display:block
           height 44px
           line-height 44px
-          background-color: #fc9153
+          background-color: #1c9ae7
           text-align:center
           font-size :16px;
           color:#fff;

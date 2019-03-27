@@ -6,8 +6,8 @@
           <span class="text" v-text='item.txt'></span>
       </span>
       <span v-show='item.page==selected' style="display: block">
-        <i style="color:#fc9153" class="foot-icon" :class="item.selfFont"></i>
-        <span class="text" style="color:#fc9153"  v-text='item.txt' ></span>
+        <i style="color:#1c9ae7" class="foot-icon" :class="item.selfFont"></i>
+        <span class="text" style="color:#1c9ae7"  v-text='item.txt' ></span>
       </span>
     </div>
   </div>

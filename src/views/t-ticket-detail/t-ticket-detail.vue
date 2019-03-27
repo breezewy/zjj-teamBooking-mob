@@ -66,7 +66,7 @@
       </div>
       <div class="card">
         <div class="card-content">
-          <div class="card-content-inner">
+          <div class="card-content-inner" style="padding: 5px 15px">
             <div class="list-block">
               <ul style="padding: 10px 0">
                 <li>
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-  import { Toast,Indicator } from 'mint-ui'
+  import { Toast,Indicator,MessageBox } from 'mint-ui'
   import { isInteger } from '@/utils/validation'
   import Search from '@/components/search/search'
   export default {
@@ -219,6 +219,17 @@
               return
             }
           }
+
+         let isMoreThanZero = false
+
+          let arrCountSeat =[]
+          for(const value of arr){
+            if(value.count >0){
+              arrCountSeat.push({value: value.count,name:value.areaName})
+              isMoreThanZero = true
+            }
+          }
+
           if(!this.guideInfo){
             Toast('导游信息不能为空')
             return
@@ -227,7 +238,23 @@
             Toast('客源地不能为空')
             return
           }
+          if(!isMoreThanZero){
+            Toast('席位至少有一个大于0')
+            return
+          }
 
+
+          var htmls = `<div class><p style="line-height: 2">${this.performDate} ${this.ticketDetail.performTime}</p><p style="line-height: 2">导游名称：${this.guide.name}</p>`
+
+          for (var item of arrCountSeat){
+            var str = `<p style="line-height: 2">${item.name}${item.value}人</p>`;
+            htmls += str
+          }
+
+        MessageBox.confirm('',{
+          message: htmls,
+          title: '下单信息',
+        }).then(action => {
           let data ={
             travelId: this.travelInfoId,               //旅行社id
             guideId: this.guide.id,
@@ -242,12 +269,16 @@
           console.log(data)
           Indicator.open({
             text: '加载中...',
-            spinnerType: 'fading-circle'
+            spinnerType: 'snake'
           });
           this.$http.post('/wap/downOrder',data).then(({ data: res }) => {
             Indicator.close();
             if(res.code !== '200'){
-              Toast(res.msg)
+              MessageBox({
+                title: ' ',
+                message: res.msg,
+                closeOnClickModal: false
+              });
               return
             }
             sessionStorage.setItem('SET_DATE',this.performDate)
@@ -255,12 +286,11 @@
             setTimeout(() =>{
               this.$router.push({ path:'/travel-order'})
             },1000)
-
-
-
           }).catch(() => {
-
           })
+        }).catch(err => {});
+
+
         },
 
       /**

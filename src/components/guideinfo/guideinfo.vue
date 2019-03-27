@@ -21,7 +21,7 @@
           <!--</li>-->
           <li class="card">
             <span class="text">证件类型：</span>
-            <span class="info">{{guideInfo.certType=='106001'?'导游证': guideInfo.certType=='106002'? '身份证': uideInfo.certType=='106003'?'学生证':''}}</span>
+            <span class="info">{{guideInfo.certType=='106001'?'导游证': guideInfo.certType=='106002'? '身份证': guideInfo.certType=='106003'?'学生证':''}}</span>
           </li>
           <li class="card">
             <span class="text">证件号：</span>
@@ -112,7 +112,7 @@
         top: 0;
         left: 0;
         padding: 0 15px;
-        color: #fc9153;
+        color: #1c9ae7;
         font-size: 16px
     .wrapper
       height: calc(100% - 90px);

@@ -8,15 +8,16 @@
         <div class="notice clear-fix">
           <h1 class="title">预定须知</h1>
           <ul class="list">
-            <li>1、导游每天限购一笔订单。</li>
-            <li>2、组团、一日游需提前一天预定。</li>
-            <li>3、华东团队，必须用导游证预定。</li>
-            <li>4、不支持跨天改场，如需跨天请撤销当天订单重新选择下单日期下单。</li>
-            <li>5、旅行社抬头及导游信息一旦预定不做更改。</li>
-            <li>6、成人团下午14:00场按晚上场价格结算。</li>
-            <li>7、导游提醒团队游客带齐相关证件。</li>
-            <li>8、下单后，进入“订单”点击明细，查询最晚核团时间，过时订单自动取消。</li>
-            <li>9、特殊团队需先点人后买票。</li>
+            <li v-for="(item,index) in bookingRuleList">{{index+1}}、{{item.content}}</li>
+            <!--<li>1、导游每天限购一笔订单。</li>-->
+            <!--<li>2、组团、一日游需提前一天预定。</li>-->
+            <!--<li>3、华东团队，必须用导游证预定。</li>-->
+            <!--<li>4、不支持跨天改场，如需跨天请撤销当天订单重新选择下单日期下单。</li>-->
+            <!--<li>5、旅行社抬头及导游信息一旦预定不做更改。</li>-->
+            <!--<li>6、成人团下午14:00场按晚上场价格结算。</li>-->
+            <!--<li>7、导游提醒团队游客带齐相关证件。</li>-->
+            <!--<li>8、下单后，进入“订单”点击明细，查询最晚核团时间，过时订单自动取消。</li>-->
+            <!--<li>9、特殊团队需先点人后买票。</li>-->
           </ul>
           <span class="order-btn" @click="order()">立即预定</span>
         </div>
@@ -43,11 +44,13 @@
             <li style="margin-top:20px;font-size: 15px">
               截止时间：{{noConfirmOrderInfo.performDate}} {{noConfirmOrderInfo.checkTime}}:00:00
             </li>
-            <li style="font-size: 15px"> 倒计时：【<span style="color:red">{{lastTime}}</span>】</li>
+            <li style="font-size: 15px"> 倒计时：【<span style="color:red">{{lastTime}}</span>】<span v-if="leftTime/1000>=0">请及时核团</span></li>
           </ul>
           <div class="handle-detail">
             <span class="update btn" @click="viewOrder()">查看订单</span>
-            <span class="nuclei btn" @click="nuclearByNow()">立即核团</span>
+            <span class="nuclei btn" @click="nuclearByNow()" v-if="(noConfirmOrderInfo.billStatus=='01' || noConfirmOrderInfo.billStatus=='02') && leftTime/1000>=0">立即核团</span>
+                  <!--v-if="(noConfirmOrderInfo.billStatus=='01' || noConfirmOrderInfo.billStatus=='02') && leftTime/1000>=0">立即核团</span>-->
+
           </div>
         </div>
       </div>
@@ -56,7 +59,6 @@
 </template>
 
 <script>
-  import {countDown} from "../../utils/format";
   import TabBar from '@/base/tabbar/tabbar'
   import { Toast,MessageBox  } from 'mint-ui'
   export default {
@@ -65,7 +67,7 @@
       TabBar,
     },
     created(){
-      // /wap/noConfirmOrder
+      this.getBookingRule()
       this.getNoConfirmOrder()
     },
     data(){
@@ -77,23 +79,29 @@
         orderId:'',
         lastTime:'',                 //显示的日期
         timestamp2:'',                //核团的日期
-        timer: null                 //定时器
+        timer: null,                 //定时器
+        leftTime:'',
+        bookingRuleList:[]
       }
     },
-    // watch:{
-    //   lastTime(){
-    //
-    //   }
-    // },
     methods:{
+      getBookingRule(){
+        this.$http.get('/wap/bookingRule').then(({ data: res }) => {
+          if(res.code !== '200'){
+            Toast(res.msg)
+            return
+          }
+          this.bookingRuleList = res.data
+        }).catch(() =>{})
+      },
       order(){
-        this.$router.push({path:'/order'})
+        this.$router.push({path:'/fix'})
       },
       getNoConfirmOrder(){
         this.$http.get('/wap/noConfirmOrder').then(({ data: res }) => {
-          console.log(res)
           if(res.code !== '200'){
             Toast(res.msg)
+            return
           }
           let data = res.data
          if(Object.keys(data).length ==0){
@@ -120,18 +128,10 @@
         })
       },
       countTime(){
-          var date = new Date();
+            var date = new Date();
            var now = date.getTime();
-          // let lai = date.setTime(date.getTime() + 30)
-          //  //设置截止时间
-          //  var str="2017/5/17 00:00:00";
-          //  var endDate = new Date(str);
-          //  var end = endDate.getTime()
-           //时间差
-           // var leftTime = this.timestamp2-now;
            var leftTime = this.timestamp2-now;
-           console.log(leftTime)
-
+           this.leftTime = leftTime
            //定义变量 d,h,m,s保存倒计时的时间
            var d,h,m,s;
            if (leftTime/1000>=0) {
@@ -145,15 +145,12 @@
                }else{
                  this.lastTime = `${h}时${m}分${s}秒`
                }
-
               this.timer=setTimeout(this.countTime,1000);
            }else{
              this.lastTime= '核团时间已过期'
              clearTimeout(this.timer)
            }
-
       },
-
 
       /**
        * 查看订单
@@ -166,11 +163,13 @@
        * 立即核团
        */
       nuclearByNow(){
-
-                sessionStorage.setItem('SET_DATE',this.performDate)
-                // this.$router.push({path:'/order'})
-                // this.$router.push({ name: 'order-detail', params: { heId: '111111',id:this.orderId }})
-                this.$router.push({ name: 'order-detail', params: {id:this.orderId }})
+          if(this.leftTime/1000 <= 0){
+            Toast('核团时间已过，无法核团')
+            return
+          }
+          sessionStorage.setItem('SET_DATE',this.performDate)
+          // this.$router.push({ name: 'order-detail', params: { heId: '111111',id:this.orderId }})
+          this.$router.push({ name: 'order-detail', params: {id:this.orderId }})
       }
     },
     beforeDestroy(){
@@ -206,7 +205,7 @@
         top: 0;
         left: 0;
         padding: 0 15px;
-        color: #fc9153;
+        color: #1c9ae7;
         font-size: 16px
     .wrapper
       height: calc(100% - 90px);
@@ -235,31 +234,33 @@
           height: 35px
           line-height 35px
           background: #ffffff
-          border: 1px solid #fc9153;
+          border: 1px solid #1c9ae7;
           text-align :center
           border-radius 4px
           font-size 14px
-          color: #fc9153;
+          color: #1c9ae7;
 
         .handle-detail
-          display: flex
+          /*display: flex*/
           /*margin :10px 20px*/
           margin-left 10px
-          width 200px
+          margin-right 10px;
           font-size: 14px;
           .btn
-            flex: 1
+            display :inline-block
+            margin-right :10px;
+            width 100px
             height :35px;
             line-height :35px
             text-align center
-            color:#fc9153
-
-            border :1px solid #fc9153
-            border-radius: .25rem 0 0 .25rem;
+            color:#1c9ae7
+            border :1px solid #1c9ae7
+            border-radius .25rem
+            /*border-radius: .25rem 0 0 .25rem;*/
           .update
-            border-right :none
+            /*border-right :none*/
           .nuclei
-            border-radius: 0 .25rem .25rem 0;
+            /*border-radius: 0 .25rem .25rem 0;*/
           .bill
             border-radius: .25rem
 

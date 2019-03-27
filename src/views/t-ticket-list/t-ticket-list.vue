@@ -27,18 +27,17 @@
                   <div class="time-slot">
                     <span class="start-time">{{item.performTime? item.performTime.split('-')[0] :'' }}</span>
                     <span class="line"></span>
-                    <span class="total">1小时</span>
+                    <span class="total">{{item.intervalTime}}</span>
                     <span class="line"></span>
                     <span class="end-time">{{item.performTime? item.performTime.split('-')[1] :''}}</span>
-                    <span class="place">杭州</span>
+
                   </div>
                   <div class="info clear-fix">
-                    <span class="name">{{item.performName}}</span>
-                    <span class="seat">贵宾席</span>
+                    <span class="name">{{item.performDate}}</span>
                   </div>
                   <div class="detail clear-fix">
-                    <span class="show-place">一号剧院</span>
-                    <span class="ticket-count">有票</span>
+                    <span class="show-place">{{item.locationName}}</span>
+                    <span class="ticket-count">{{item.performName}}</span>
                   </div>
                 </li>
               </ul>
@@ -61,6 +60,7 @@
 </template>
 
 <script>
+  import { Toast} from 'mint-ui'
   import Scroll from '@/base/scroll/scroll'
   import VTop from '@/base/vtop/vtop'
   import {addDate } from "../../common/js/format";
@@ -124,7 +124,6 @@
 
       this.week =  new Date(this.performDate).getDay()
       this.showSession(this.performDate)
-
     },
     methods:{
       back(){
@@ -149,10 +148,39 @@
       showSession(date){
         this.$http.get(`/wap/performPlan/${date}`).then(({ data: res }) => {
           if(res.code !=='200'){
+            Toast(res.msg)
             return
           }
-          this.performCodeList= res.data
-          // this.$refs.scroll.update()
+          let data= res.data
+          for(const value of data){
+            let performTime = value.performTime
+            if(performTime){
+              let timestamp1 = performTime.split('-')[0]
+              let timestamp2 = performTime.split('-')[1]
+              let formatTime1= this.performDate+' '+timestamp1+':00'
+              let formatTime2= this.performDate+' '+timestamp2+':00'
+              let date1 = new Date(formatTime1);
+              let date2 = new Date(formatTime2);
+              let formatDate1 = date1.getTime()
+              let formatDate2 = date2.getTime()
+              let leftTime = formatDate2-formatDate1;
+              var d,h,m,s;
+              if (leftTime/1000>=0) {
+                d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                h = Math.floor(leftTime / 1000 / 60 / 60 % 24);
+                m = Math.floor(leftTime / 1000 / 60 % 60);
+                s = Math.floor(leftTime / 1000 % 60);
+                if(h && m){
+                  value.intervalTime = `${h}小时${m}分`
+                }else if(h && !m){
+                  value.intervalTime = `${h}小时`
+                }else if(!h && m){
+                  value.intervalTime = `${m}分`
+                }
+              }
+            }
+          }
+          this.performCodeList = data
         }).catch(() => {
         })
       },
@@ -223,7 +251,7 @@
         top: 0;
         left: 0;
         padding: 0 15px;
-        color: #fc9153;
+        color: #1c9ae7;
         font-size: 16px
     .wrapper
       height: calc(100% - 40px);

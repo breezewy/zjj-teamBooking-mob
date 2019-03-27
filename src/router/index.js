@@ -19,7 +19,8 @@ import Order from '@/components/order/order'
 import OrderDetail from '@/components/order-detail/order-detail'
 import My from '@/components/my/my'
 import GuideInfo from '@/components/guideinfo/guideinfo'
-
+import idCardList from '@/components/idCard-list/idCard-list'
+import idCardEnter from '@/components/idCard-enter/idCard-enter'
 
 
 
@@ -78,6 +79,8 @@ export default new Router({
     { path: '/ticket-detail',  name: 'ticket-detail',component: TicketDetail},
     { path: '/base-info',  name: 'base-info',component: BaseInfo},
     {  path: '/test-scroll', name: 'test-scroll', component: TestScroll},
+    {  path: '/idCard-list/:id', name: 'idCard-list', component: idCardList},
+    {  path: '/idCard-enter/:id', name: 'idCard-enter', component: idCardEnter},
 
   //  以下是旅行社的路由
     { path: '/travel-home',  name: 'thome', component: Thome },

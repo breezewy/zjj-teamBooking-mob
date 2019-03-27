@@ -13,18 +13,22 @@
             <span class="item">旅行社：{{orders.travelName }}</span>
             <span class="item">游玩日期：{{orders.performDate}}</span>
             <span class="item">场次：{{orders.performTime}}</span>
-            <span class="item">团队类型：{{orders.teamType}}</span>
-            <span class="item"> 证件类型：导游证 </span>
+            <span class="item">团队类型：{{orders.teamTypeName}}</span>
+            <!--<span class="item"> 证件类型：导游证 </span>-->
             <span class="item">行程类型：{{orders.routingType=='0'? '加点':orders.routingType=='1'? '行程':''}}</span>
-            <span class="item">最晚核团时间：</span>
-            <span class="item">退单原因：</span>
-            <span class="item">原始信息：{{orders.oldData}}</span>
+            <span class="item">最晚核团时间：{{orders.performDate}} {{orders.checkTime}}:00</span>
+            <!--<span class="item">退单原因：</span>-->
+            <span class="item"  @click="$refs.tip.show()" style="color:#1c9ae7">
+              原始信息：{{orders.oldData}}
+            </span>
+            <cube-tip ref="tip" direction="bottom" style="left:30px;right:30px;
+              top:248px;z-index: 10;height:100px;max-height: 100px">{{orders.oldData}}</cube-tip>
           </div>
-          <div class="order-info">
+          <div class="order-info" style="margin-bottom: 80px">
             <h1>订单明细</h1>
             <span class="item scene">场次：{{orders.performTime}}</span>
             <div class="seat-detail" v-for="item in orderDetails">
-              <span class="item">座位区：{{item.areaName}}</span>
+              <span class="item" style="color:red">座位区：{{item.areaName}}</span>
               <span class="item">预定人数：{{item.bookCount}}</span>
               <span class="item">核团人数：{{item.lastCount}}</span>
               <span class="item">排位人数：{{item.arrangeCount}}</span>
@@ -32,13 +36,15 @@
             </div>
 
           </div>
-          <div class="handle-contain">
+          <!--<div class="handle-contain" v-if="orders.billStatus=='04'">-->
+          <div class="handle-contain" >
             <!--<div class="handle-detail" v-if="orders.billStatus=='01'">-->
+            <!--<div class="handle-detail" >-->
+              <!--<span class="bill btn" @click="modify()">核团</span>-->
+              <!--&lt;!&ndash;<span class="nuclei btn" @click="nucleiGroup()">核团</span>&ndash;&gt;-->
+            <!--</div>-->
+            <!--<div class="handle-detail" v-if="orders.billStatus=='04'">-->
             <div class="handle-detail" >
-              <span class="bill btn" @click="modify()">核团</span>
-              <!--<span class="nuclei btn" @click="nucleiGroup()">核团</span>-->
-            </div>
-            <div class="handle-detail" v-if="orders.billStatus=='04'">
               <a class="bill btn" :href="'http://receipt.51dmq.com/receipt/index.htm?bookBillNo='+orders.billNo">开取发票</a>
             </div>
           </div>
@@ -387,7 +393,7 @@
         top: 0;
         left: 0;
         padding: 0 15px;
-        color: #fc9153;
+        color: #1c9ae7;
         font-size: 16px
     .wrapper
       height: calc(100% - 40px);
@@ -395,6 +401,7 @@
       overflow-y: auto;n;
       padding-bottom 50px;
       .order-info
+        position:relative
         font-size :16px;
         padding :10px;
         h1
@@ -419,14 +426,14 @@
           //.item:first-child
           //  /*border-top:1px solid #999*/
       .handle-contain
-        //position: fixed;
-        //width: 100%;
-        //height: 50px;
-        //bottom: 0;
-        //background-color: #fff;
+        position: fixed;
+        width: 100%;
+        height: 64px;
+        bottom: 0;
+        background-color: #fff;
         .handle-detail
           display: flex
-          margin :30px 10px
+          margin :20px 10px
           font-size: 14px;
           .btn
             flex: 1

@@ -49,8 +49,11 @@
                   item.billStatus =='03'? '已审核': item.billStatus =='04'? '已销售': item.billStatus =='05'?'已撤销':''
                   }}</span>
                 <span class="type">订单类型:{{item.bookType =='01'?'预定':item.bookType =='02'?'准预定': item.bookType =='03'?'候补':''}}</span>
-
               </div>
+              <div class="clear-fix">
+                <span class="entering" v-if="item.jump"  style="display: block;float:right" @click.stop="goEnter(item)">去录入</span>
+              </div>
+
             </li>
           </ul>
         </div>
@@ -101,6 +104,12 @@
       this.getDate()
     },
     methods:{
+      /**
+       *  去录入
+       */
+      goEnter(item){
+        this.$router.push({ name: 'idCard-enter', params: { id:  item.id}})
+      },
       // /**
       //  *
       //  * /
@@ -288,5 +297,13 @@
             justify-content:space-between
             height :30px;
             line-height: 30px;
+
+          .entering
+            float: right;
+            border 1px solid #ddd
+            padding:10px 20px
+            display: block;
+            border-radius 5px;
+
 
 </style>

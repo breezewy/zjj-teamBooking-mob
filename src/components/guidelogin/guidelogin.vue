@@ -68,12 +68,12 @@
       return {
         loginStatus:'userPwd',       //登录方式
 
-        username:'17682331278',
-        password:'888888',
+        username:'',
+        password:'',
         pwdType:'password',
         isOpenEye:false,
 
-        mobile:'17682331278',
+        mobile:'',
         captcha:'',                   //验证码
         isOvertime:false,            //是否超出1分钟
         sendTimer:null,              //验证码倒计时计时器
@@ -234,7 +234,7 @@
         width :46px;
         height 46px
         border-radius:50%
-        color:#fc9153
+        color:#1c9ae7
         font-size 46px
     .tab
       display: flex
@@ -318,7 +318,7 @@
           display:block
           height 44px
           line-height 44px
-          background-color: #fc9153
+          background-color: #1c9ae7
           text-align:center
           font-size :16px;
           color:#fff;
