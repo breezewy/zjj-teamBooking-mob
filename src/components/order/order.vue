@@ -7,6 +7,12 @@
           <i class="iconfont icon-cx icon-search"></i>
           <!--<input ref="query"  v-focus v-model="query" class="box"  :placeholder="placeholder"/>-->
           <span class="box">{{performDate}}</span>
+          <span class="week">{{today == performDate? '今天': tomorrow ==performDate ?'明天':
+            performDate ==dayAfterTomorrow ? '后天':week=='0'?'星期日':week=='1'?'星期一':week=='2'?'星期二':
+            week=='3'?'星期三': week=='4'? '星期四':week=='5'?'星期五':week=='6'? '星期六':''
+            }}</span>
+
+
         </div>
         <div class="order-status">
           <div class="item">
@@ -77,11 +83,20 @@
   import { Toast } from 'mint-ui'
   import TabBar from '@/base/tabbar/tabbar'
   import VTop from '@/base/vtop/vtop'
+  import moment from 'moment'
+  import {addDate } from "../../common/js/format";
   const perpage = 1000
   export default {
     name: "order",
     data(){
       return {
+        today:'',
+        tomorrow:'',
+        dayAfterTomorrow:'',  //后天
+        week:'',
+
+
+
         title: '订单列表',
         current:1,                  //第几页
         orderList: [],
@@ -101,6 +116,14 @@
       // }else{
       //   this.getDate()    //根据日期查询订单列表
       // }
+
+      this.today =  moment().format('YYYY-MM-DD')
+      this.tomorrow = addDate(new Date())
+      this.dayAfterTomorrow =  addDate(new Date(),2)
+
+
+
+
       this.getDate()
     },
     methods:{
@@ -127,6 +150,12 @@
             }else{
               this.performDate = this.dataArray[0]
             }
+
+            this.week =  new Date(this.performDate).getDay()              //这里获取星期几
+
+
+
+
             // sessionStorage.setItem('SET_DATE',this.performDate)
             this.formatDateList = this.dataArray.map(item => {
               return { date: item };
@@ -173,6 +202,7 @@
               onClick: function (evl, date, price) {
                 p.calendarShow = false;
                 p.performDate = date;
+                p.week = new Date(date).getDay();
                 sessionStorage.setItem('SET_DATE',p.performDate)
                 p.getOrderList(date);
               },
@@ -233,13 +263,20 @@
           font-size: 14px
           color: #222
         .box
-          flex: 1
+        //  flex: 1
+         // margin: 5px;
+          //padding 5px;
+          //line-height: 18px;
+          //color: #666
+          //font-size: 14px;
           margin: 5px;
           padding 5px;
           line-height: 18px;
           color: #666
           font-size: 14px;
-
+        .week
+          font-size:14px;
+          color: #666
 
       .order-status
         display:flex

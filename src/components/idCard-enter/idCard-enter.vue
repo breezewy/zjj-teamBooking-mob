@@ -35,12 +35,17 @@
             <!--<span class="card_txt">拍照识别证件信息</span>-->
           <!--</div>-->
         <!--</div>-->
+
+        <!--@files-added="filesAdded"-->
         <cube-upload
           ref="upload"
           v-model="files"
           :action="action"
-          @files-added="addedHandler"
+          :simultaneous-uploads="1"
+          :multiple="false"
           @file-success="fileSuccess"
+        :process-file="processFile"
+        @file-submitted="fileSubmitted"
           @file-error="errHandler">
           <div class="clear-fix">
             <cube-upload-file v-for="(file, i) in files" :file="file" :key="i"></cube-upload-file>
@@ -98,8 +103,6 @@
             <i class="iconfont icon-wancheng"></i>
             <span class="on_complete">查看旅客列表</span>
           </div>
-
-
         </div>
       </div>
     </div>
@@ -107,6 +110,8 @@
 
 <script>
   import { Toast,Indicator } from 'mint-ui'
+  import compress from '@/utils/compress'
+  // import
   import {isMobile,IdentityCodeValid,isPassport,HongKongAndMacaoPass,CertificateOfOfficers} from "../../utils/validation";
   export default {
     name: "idCard-enter",
@@ -114,6 +119,7 @@
       return {
         action:{
           target: process.env.API_ROOT+'/wap/upload',
+          prop: 'base64Value'
         },
         files: [],
         order:{
@@ -124,11 +130,16 @@
         },
         fileText:'身份证',             //证件文本
         placeText:'请填写身份证',         //证件文本的placeholder
+        headerUpload:{},
         // mask:false,              //遮罩层
         // getUploadData:{
         //   idCard:'',
         //   name:'',
         // }
+        //测试图片上传
+        imgList:[],
+
+
       }
     },
     computed:{
@@ -148,15 +159,87 @@
           Toast('只有身份证件可进行拍照录入')
         }
       },
+      processFile(file, next) {
+        compress(file, {
+          compress: {
+            width: 200,
+            height: 200,
+            quality: 0.5
+          }
+        }, next)
+      },
+      fileSubmitted(file) {
+        file.base64Value = file.file.base64
+        // console.log(file)
+      },
 
       addedHandler() {
-        Indicator.open({
-          text: '录入中...',
-          spinnerType: 'snake'
-        });
+        // Indicator.open({
+        //   text: '录入中...',
+        //   spinnerType: 'snake'
+        // });
         const file = this.files[0]
         file && this.$refs.upload.removeFile(file)
       },
+      filesAdded(files) {
+        let hasIgnore = false;
+        const limitSize = 1 * 1024;
+        // 最大5M
+        const maxSize = 5 * 1024 * 1024;
+        for (let i = 0; i< files.length; i++) {
+          const file = files[i];
+          // 如果选择的图片大小最大限制（这里为5M）则弹出提示
+          if(file.size > maxSize){
+            file.ignore = true;
+            hasIgnore = true;
+            break;
+          }
+          // 如果选择的图片大小大于1M则进行图片压缩处理（Base64）
+          if(file.size > limitSize){
+            this.compressPic(file);
+          }else{
+            let reads= new FileReader();
+            reads.readAsDataURL(file);
+            let that = this;
+            reads.onload = function(e) {
+              var bdata = this.result;
+              that.imgList.push(bdata)
+            }
+          }
+        }
+        hasIgnore && this.$createToast({
+          type: 'warn',
+          time: 1000,
+          txt: '图片最大支持5M'
+        }).show()
+      },
+      compressPic(file){
+        let reads= new FileReader();
+        reads.readAsDataURL(file)
+        // 注意这里this作用域的问题
+        let that = this;
+        reads.onload = function(e) {
+          var bdata = this.result;
+          // 这里quality的范围是（0-1）
+          var quality = 0.1;
+          var canvas = document.createElement("canvas");
+          var ctx = canvas.getContext("2d");
+          var img = new Image();
+          img.src = bdata;
+          img.onload =function() {
+            var width = img.width;
+            canvas.width = width;
+            canvas.height = width * (img.height / img.width);
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            let data = canvas.toDataURL("image/jpeg",quality);
+            that.imgList.push(data)
+            console.log(that.imgList)
+          }
+        };
+      },
+
+
+
       fileSuccess(file){
         Indicator.close();
         if(file.response.code !== '200'){
@@ -168,7 +251,6 @@
           }).show()
           return
         }
-        console.log(file)
         let data = file.response.data
         this.order.name = data.name
         this.order.cardNo = data.idCard

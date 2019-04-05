@@ -15,7 +15,7 @@
             week=='3'?'星期三': week=='4'? '星期四':week=='5'?'星期五':week=='6'? '星期六':''
             }}</span>
           </div>
-          <div class="scroll-container">
+          <div class="scroll-container" v-if="flag">
             <cube-scroll class="scroll-contain"
                      :options="options"
                      @pulling-down="onPullingDown"
@@ -119,6 +119,10 @@
         routingTypeText:'',
 
         intervalTime:'',
+
+
+
+        flag:false
       }
     },
     created(){
@@ -158,6 +162,7 @@
       showSession(date){
         this.$http.get(`/wap/performPlan/${date}`).then(({ data: res }) => {
           if(res.code !=='200'){
+            this.flag= true
             Toast(res.msg)
             return
           }
@@ -191,7 +196,9 @@
             }
           }
           this.performCodeList = data
+          this.flag= true
         }).catch(() => {
+          this.flag= true
         })
       },
       shijianCK(){
@@ -213,7 +220,6 @@
               p.showSession(date);
               p.week = new Date(date).getDay();
               p.filter.performDate = date
-              console.log('无敌')
               sessionStorage.setItem('filter',JSON.stringify(p.filter))
             },
             optionsdays: data,

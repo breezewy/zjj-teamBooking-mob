@@ -39,7 +39,6 @@
       </div>
     </div>
     <div class="content" v-if="loginStatus==='code'">
-
       <div class="field-content">
         <input class="field-input" v-model="mobile" placeholder="11位手机号" type="text">
         <span @click="clearMobile()" v-show="mobile" class="clear iconfont icon-chahao"></span>

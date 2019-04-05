@@ -151,7 +151,7 @@
   }
 </script>
 
-<style scoped lang="stylus" rel="stylesheet/stylus">
+<style  lang="stylus" rel="stylesheet/stylus">
   /*@import "~common/stylus/variable"*/
   /*@import "~common/stylus/mixin"*/
 
@@ -193,6 +193,10 @@
       .list-content
         max-height: 260px
         overflow: hidden
+        .cube-radio-label{
+          position relative
+          top:2px
+        }
         .item
           display: flex
           align-items: center

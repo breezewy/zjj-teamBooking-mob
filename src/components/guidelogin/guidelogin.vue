@@ -322,7 +322,7 @@
           text-align:center
           font-size :16px;
           color:#fff;
-          border-radius:5px;
+          border-radius:22px;
         .reset
           display:block
           height 44px
