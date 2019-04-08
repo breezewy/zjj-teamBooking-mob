@@ -44,6 +44,7 @@
           :simultaneous-uploads="1"
           :multiple="false"
           @file-success="fileSuccess"
+          @files-added="addedHandler"
         :process-file="processFile"
         @file-submitted="fileSubmitted"
           @file-error="errHandler">
@@ -162,8 +163,8 @@
       processFile(file, next) {
         compress(file, {
           compress: {
-            width: 200,
-            height: 200,
+            width: 1600,
+            height: 1600,
             quality: 0.5
           }
         }, next)
@@ -174,12 +175,12 @@
       },
 
       addedHandler() {
-        // Indicator.open({
-        //   text: '录入中...',
-        //   spinnerType: 'snake'
-        // });
-        const file = this.files[0]
-        file && this.$refs.upload.removeFile(file)
+        Indicator.open({
+          text: '录入中...',
+          spinnerType: 'snake'
+        });
+        // const file = this.files[0]
+        // file && this.$refs.upload.removeFile(file)
       },
       filesAdded(files) {
         let hasIgnore = false;
