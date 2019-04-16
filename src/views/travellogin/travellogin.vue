@@ -67,8 +67,9 @@
       return {
         loginStatus:'userPwd',       //登录方式
 
-        username:'杭州市中国旅行社集团有限公司',
-        password:'888888',
+        // username:'杭州市中国旅行社集团有限公司',
+        username:'',
+        password:'',
         pwdType:'password',
         isOpenEye:false,
 
@@ -121,7 +122,7 @@
       signInByName(){
 
         if(!this.username){
-          Toast('用户名不能为空')
+          Toast('旅行社名称不能为空')
           return
         }
         if(!this.password){

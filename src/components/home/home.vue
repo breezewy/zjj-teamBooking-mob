@@ -100,7 +100,7 @@
       getNoConfirmOrder(){
         this.$http.get('/wap/noConfirmOrder').then(({ data: res }) => {
           if(res.code !== '200'){
-            Toast(res.msg)
+            // Toast(res.msg)
             return
           }
           let data = res.data
@@ -125,6 +125,8 @@
            }
          }
 
+        }).catch(() =>{
+          Toast('服务器异常，请稍后再试')
         })
       },
       countTime(){

@@ -89,8 +89,8 @@
         <a href="javascript:;" class="reverse" @click="reserve()">预定</a>
       </div>
     </div>
-    <search v-if="isSearchShow" :placeholder="placeholdertype" :searchtype='searchtype'
-            @cancelboxmodal="cancelBoxModal" @itemselected="itemSelect"></search>
+    <search v-if="isSearchShow" :placeholder="placeholdertype" :searchTitle="searchTitle" :searchtype='searchtype'
+            @cancelboxmodal="cancelBoxModal" @itemselected="itemSelect" @searchBack="searchBack"></search>
   </div>
 </template>
 
@@ -120,6 +120,9 @@
         //后面添加的
         guideInfo:'',   //导游信息
         touristOrigin:'',
+        copyGuideInfo:'',        //复制的导游字段
+        copyTouristOrigin:'',      //复制的客源地字段
+
         remark:'',
         isSearchShow:false,
         area:{              //客源地
@@ -316,16 +319,30 @@
         })
       },
       focusGuide(){
+        this.copyGuideInfo = this.guideInfo
         this.guideInfo = ''      //清空旅行社名称
         this.placeholdertype = '输入导游名称或者手机号'
         this.searchtype = 'guide'
+        this.searchTitle='搜素导游';
         this.isSearchShow = true;
       },
       focusTourist(){
+        this.copyTouristOrigin = this.touristOrigin
         this.touristOrigin  =''     //清空客源地名称
         this.placeholdertype = '输入客源地'
         this.searchtype = 'origin'
+        this.searchTitle='搜素客源地';
         this.isSearchShow = true;
+      },
+      searchBack(){
+        if(this.copyGuideInfo){
+          this.guideInfo = this.copyGuideInfo
+        }
+        if(this.copyTouristOrigin){
+          this.touristOrigin = this.copyTouristOrigin
+        }
+
+        this.isSearchShow = false
       },
       /**
        * 点击搜索框的取消按钮

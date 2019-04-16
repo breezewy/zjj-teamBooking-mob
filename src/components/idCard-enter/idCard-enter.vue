@@ -112,7 +112,10 @@
 <script>
   import { Toast,Indicator } from 'mint-ui'
   import compress from '@/utils/compress'
+  import Cookies from 'js-cookie'
+  import router from '@/router'
   // import
+  import { clearLoginInfo } from '@/utils'
   import {isMobile,IdentityCodeValid,isPassport,HongKongAndMacaoPass,CertificateOfOfficers} from "../../utils/validation";
   export default {
     name: "idCard-enter",
@@ -120,7 +123,10 @@
       return {
         action:{
           target: process.env.API_ROOT+'/wap/upload',
-          prop: 'base64Value'
+          prop: 'base64Value',
+          headers:{
+            token:Cookies.get('token') || ''
+          }
         },
         files: [],
         order:{
@@ -176,7 +182,7 @@
 
       addedHandler() {
         Indicator.open({
-          text: '录入中...',
+          text: '解析中...',
           spinnerType: 'snake'
         });
         // const file = this.files[0]
@@ -242,8 +248,15 @@
 
 
       fileSuccess(file){
+
         Indicator.close();
         if(file.response.code !== '200'){
+          if(file.response.code=='401'){
+            clearLoginInfo()
+            router.replace({ path: '/' })
+            Toast(file.response.msg)
+            return
+          }
           this.order.name = ''
           this.order.cardNo = ''
           this.$createToast({
@@ -267,6 +280,7 @@
           time: 1000
         }).show()
       },
+
       /**
        * 类型转换
        */

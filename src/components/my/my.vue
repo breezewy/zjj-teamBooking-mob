@@ -11,7 +11,7 @@
             <span class="item">积分明细</span>
             <span class="icon iconfont icon-arrow-right"></span>
           </li>
-          <li class="card">
+          <li class="card" @click="updatePassword()">
             <span class="item">修改密码</span>
             <span class="icon iconfont icon-arrow-right"></span>
           </li>
@@ -52,6 +52,12 @@
       },
       //积分明细
       scoreDetail(){
+        this.$createToast({
+          txt: '暂未开放',
+          type: 'txt'
+        }).show()
+      },
+      updatePassword(){
         this.$createToast({
           txt: '暂未开放',
           type: 'txt'

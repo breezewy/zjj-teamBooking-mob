@@ -7,7 +7,8 @@
     <div class="tab">
       <div class="tab-item" @click="selectMenu('userPwd')" :class="{active:loginStatus === 'userPwd'}">
             <span class="tab-link">
-              账号密码登录
+              <!--账号密码登录-->
+              身份证登录
               <span class="line"></span>
             </span>
       </div>
@@ -22,7 +23,8 @@
       <div>
 
         <div class="field-content">
-          <input class="field-input" v-model="username" placeholder="用户名" type="text">
+          <!--<input class="field-input" v-model="username" placeholder="用户名" type="text">-->
+          <input class="field-input" v-model="username" placeholder="身份证" type="text">
           <span @click="clear()" v-show="username" class="clear iconfont icon-chahao"></span>
         </div>
         <div class="field-content">
@@ -133,7 +135,8 @@
           username: this.username,
           password: this.password,
           userType: 'guide',
-          loginType:'username'
+          // loginType:'username'
+          loginType:'idCard'
         };
         this.$http.post('/auth/login', data).then(({ data: res }) => {
           if (res.code !== '200') {
@@ -148,7 +151,6 @@
        *  发送验证码
        */
       sendCode(){
-
         if(!this.mobile){
           Toast('请填写手机号')
           return

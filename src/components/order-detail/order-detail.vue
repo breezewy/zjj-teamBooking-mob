@@ -22,7 +22,7 @@
               原始信息：{{orders.oldData}}
             </span>
             <cube-tip ref="tip" direction="bottom" style="left:30px;right:30px;
-              top:248px;z-index: 10;height:100px;max-height: 100px">{{orders.oldData}}</cube-tip>
+              top:248px;z-index: 10;max-height: none">{{orders.oldData}}</cube-tip>
 
           </div>
           <div class="order-info" style="margin-bottom: 80px;">
@@ -41,7 +41,8 @@
           <!--<div class="handle-contain" >-->
             <!--<div class="handle-detail" v-if="orders.billStatus=='01'">-->
             <div class="handle-detail" >
-              <span class="bill btn" @click="modify()">去核团</span>
+              <span  class="bill btn" v-show="leftTime/1000>=0" @click="modify()">去核团</span>
+              <span class="bill btn" @click="cancelOrder()">取消订单</span>
               <!--<span class="nuclei btn" @click="nucleiGroup()">核团</span>-->
             </div>
 
@@ -99,6 +100,7 @@
 
 <script>
   import { Toast,MessageBox  } from 'mint-ui';
+  import { isInteger } from '@/utils/validation'
   export default {
     name: "order-detail",
     data(){
@@ -111,7 +113,12 @@
         // cloneOrderDetails:[],     //克隆的订单详情数据
         copyInGetDetailInfo:[],           //克隆的座位详情数据
         performCode:'00017945',
-        performCodeSelect:[]            //场次下拉框数据
+        performCodeSelect:[],            //场次下拉框数据
+        leftTime:'',               //剩余核团时间
+        performDate:'',
+        checkTime:'',          //核团时间
+        timestamp2:'',
+
       }
     },
     created(){
@@ -124,9 +131,86 @@
         this.getOrderDetailInfo()
       })
     },
+    // watch:{
+    //   leftTime(){
+    //       let formatCheckTime = this.checkTime+':00:00'
+    //       let totalCheckTime = this.performDate+' '+formatCheckTime
+    //       let date = new Date(totalCheckTime);
+    //       this.timestamp2 = date.getTime()
+    //       var now = new Date().getTime();
+    //       let count = this.timestamp2-now;
+    //       console.log(count)
+    //       this.leftTime = count
+    //       // return count
+    //
+    //   }
+    // },
     methods:{
       back(){
         this.$router.go(-1)
+      },
+      /***
+       *      取消订单
+       */
+      cancelOrder(){
+        let id = this.$route.params.id
+        MessageBox({
+          $type:'prompt',
+          title:'请输入取消订单原因',
+          message:' ',
+          closeOnClickModal:false,   //点击model背景层不关闭MessageBox
+          showCancelButton:true,   //显示取消按钮
+          showInput:true,
+        }).then(({ value, action }) => {
+          /* value 为填写的值，进行下一步操作*/
+          // if(action =='confirm' && value =='888888'){
+          if(action =='confirm'){
+            this.$http.put(`/wap/cancel`,{
+                cancelReason:value,
+                id:id
+            }).then(({ data: res }) => {
+              console.log(res)
+              if(res.code!=='200'){
+                // this.getDataList()
+                Toast(res.msg);
+                return
+              }
+
+              Toast('取消订单成功')
+              setTimeout(() =>{
+                this.$router.push('/order')
+              },500)
+            }).catch(()=>{
+              Toast('服务器异常，请稍后再试')
+            })
+          }
+        });
+
+
+
+
+        // MessageBox.confirm('确定取消订单吗?').then(action => {
+          // if(action ==='confirm'){
+          //   console.log('afdas')
+            // let data= {
+            //   orderId: this.orders.id
+            // };
+            // this.$http.put(`/wap/confirmOrder`,data
+            // ).then(({ data: res }) => {
+            //   if(res.code !=='200'){
+            //     MessageBox.alert(res.msg)
+            //     return
+            //   }
+            //   Toast('核团成功')
+            //   setTimeout(() =>{
+            //     this.$router.push({path:'/order'})
+            //   },700)
+            //
+            //
+            // }).catch(() => {
+            // })
+          // }
+        // });
       },
       /**
        *  获取团队类型select
@@ -164,7 +248,24 @@
             }
           }
           console.log(this.orders)
-          this.orderDetails = res.data.orderDetails
+
+          let orderDetails = res.data.orderDetails
+          for(const value of orderDetails){
+            value.lastCount = 0
+          }
+
+          this.orderDetails = orderDetails
+          this.checkTime = this.orders.checkTime
+          this.performDate = this.orders.performDate
+
+          let formatCheckTime = this.checkTime+':00:00'
+          let totalCheckTime = this.performDate+' '+formatCheckTime
+
+          let date = new Date(totalCheckTime);
+          this.timestamp2 = date.getTime()
+          var now = new Date().getTime();
+          this.leftTime = this.timestamp2-now;
+
 
         })
       },
@@ -173,6 +274,18 @@
        * 订单详情中的修改
        */
       modify(){
+        let formatCheckTime = this.checkTime+':00:00'
+        let totalCheckTime = this.performDate+' '+formatCheckTime
+        let date = new Date(totalCheckTime);
+        this.timestamp2 = date.getTime()
+        var now = new Date().getTime();
+        let count = this.timestamp2-now;
+        this.leftTime = count
+        console.log(this.leftTime)
+        if(this.leftTime/1000<=0){
+          Toast('已超过核团时间')
+          return
+        }
         if(this.orders.performDate){
           this.performCode = this.orders.performCode
           this.showSeesion(this.orders.performDate)
@@ -246,6 +359,25 @@
         }
 
 
+        for(const value of formatArr){
+          if(!isInteger(value.count)){
+            Toast('席位不能为空且都为整数')
+            return
+          }
+        }
+        let isMoreThanZero = false
+
+        for(const value of formatArr){
+          if(value.count >0){
+            isMoreThanZero = true
+          }
+        }
+
+        if(!isMoreThanZero){
+          Toast('席位至少有一个大于0')
+          return
+        }
+
         let htmls ='请先确认人数，如有变动请先修改以上信息再进行核团，核团后将不可再次修改，是否确定？'
         MessageBox.confirm('',{
           message: htmls,
@@ -261,7 +393,7 @@
             ).then(({ data: res }) => {
               if(res.code !=='200'){
                 MessageBox({
-                  title: ' ',
+                  title: '提示',
                   message: res.msg,
                   closeOnClickModal: false
                 });
@@ -383,7 +515,8 @@
         text-align center
         border:1px solid #ddd;
         &.order-btn
-          background-color :#4cd964
+          /*background-color :#4cd964*/
+          background-color :#1c9ae7
   .popup-show
     bottom:0
 
@@ -470,6 +603,8 @@
             border-radius: 0 .25rem .25rem 0;
           .bill
             border-radius: .25rem
+            margin: 0 10px;
+            box-sizing: border-box;
 </style>
 
 <style  lang="stylus" rel="stylesheet/stylus">

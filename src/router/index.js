@@ -44,6 +44,16 @@ import TOrderDetail from '@/views/t-order-detail/t-order-detail'
 import TravelInfo from '@/views/travelInfo/travelInfo'
 
 
+import  GuideLoginCopy from '@/components/guidelogincopy'
+import  ObserveCopy from '@/components/observe-copy'
+import ObserveCopyMint from '@/components/observe-copy-mint'
+import FixCopy from '@/components/fix-copy'
+import HomeCopy from '@/components/home-copy'
+import MyCopy from '@/components/my-copy'
+
+
+
+
 
 
 
@@ -61,6 +71,7 @@ export default new Router({
     { path: '/', name: 'lead',component: Lead },
     { path: '/login', name: 'login',component: Login },
     { path: '/guide/login', name: 'guidelogin',component: GuideLogin },
+
     { path: '/travel/login', name: 'travellogin',component: TravelLogin },
 
 
@@ -91,6 +102,18 @@ export default new Router({
     { path: '/travel-ticket-list',  name: 't-ticket-list',component: TTicketList},
     { path: '/travel-ticket-detail',  name: 't-ticket-detail',component: TTicketDetail},
     { path: '/travel-order-detail/:id',  name: 't-order-detail',component: TOrderDetail},
-    { path: '/travelInfo',  name: 'travelInfo',component: TravelInfo}
+    { path: '/travelInfo',  name: 'travelInfo',component: TravelInfo},
+
+
+
+    { path: '/guide/logincopy', name: 'guidelogincopy',component: GuideLoginCopy },
+    { path: '/observe/copy', name: 'observe-copy',component: ObserveCopy },
+    { path: '/observe/copy', name: 'observe-copy',component: ObserveCopy },
+    { path: '/observe/copy/mint', name: 'observe-copy-mint',component: ObserveCopyMint },
+    { path: '/fix/copy', name: 'fix-copy',component: FixCopy },
+    { path: '/home/copy', name: 'home-copy',component: HomeCopy },
+    { path: '/my/copy', name: 'my-copy',component: MyCopy },
+
+
   ]
 })

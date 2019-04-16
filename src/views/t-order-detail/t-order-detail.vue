@@ -22,7 +22,7 @@
               原始信息：{{orders.oldData}}
             </span>
             <cube-tip ref="tip" direction="bottom" style="left:30px;right:30px;
-              top:248px;z-index: 10;height:100px;max-height: 100px">{{orders.oldData}}</cube-tip>
+              top:248px;z-index: 10;max-height:none">{{orders.oldData}}</cube-tip>
           </div>
           <div class="order-info" style="margin-bottom: 80px">
             <h1>订单明细</h1>
@@ -37,14 +37,14 @@
 
           </div>
           <!--<div class="handle-contain" v-if="orders.billStatus=='04'">-->
-          <div class="handle-contain" >
+          <div class="handle-contain" v-if="orders.billStatus=='04'">
             <!--<div class="handle-detail" v-if="orders.billStatus=='01'">-->
             <!--<div class="handle-detail" >-->
               <!--<span class="bill btn" @click="modify()">核团</span>-->
               <!--&lt;!&ndash;<span class="nuclei btn" @click="nucleiGroup()">核团</span>&ndash;&gt;-->
             <!--</div>-->
             <!--<div class="handle-detail" v-if="orders.billStatus=='04'">-->
-            <div class="handle-detail" >
+            <div class="handle-detail"   >
               <a class="bill btn" :href="'http://receipt.51dmq.com/receipt/index.htm?bookBillNo='+orders.billNo">开取发票</a>
             </div>
           </div>
