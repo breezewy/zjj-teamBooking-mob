@@ -124,9 +124,9 @@
         action:{
           target: process.env.API_ROOT+'/wap/upload',
           prop: 'base64Value',
-          headers:{
-            token:Cookies.get('token') || ''
-          }
+          // headers:{
+          //   token:Cookies.get('token') || ''
+          // }
         },
         files: [],
         order:{

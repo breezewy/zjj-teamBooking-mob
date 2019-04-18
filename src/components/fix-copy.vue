@@ -15,12 +15,11 @@
             <span class="day">{{performDate==today ? '今天': performDate== tomorrow?'明天': performDate== dayAfterTomorrow? '后天':''}}</span>
             <span class="week">星期{{week=='1'?'一':week=='2'?'二': week=='3'?'三': week=='4'?'四': week=='5'? '五': week=='6'?'六':week=='0'?'日':''}}</span>
           </div>
-          <!--<div class="team-type" @click="_showTeamTypeList">-->
-            <!--<span class="team">团队类型</span>-->
-            <!--&lt;!&ndash;<span class="icon iconfont icon-arrow-right"></span>&ndash;&gt;-->
-            <!--<span class="icon">{{teamTypeText}}</span>-->
-
-          <!--</div>-->
+          <div class="team-type" @click="_showTeamTypeList">
+            <span class="team">团队类型</span>
+            <!--<span class="icon iconfont icon-arrow-right"></span>-->
+            <span class="icon">{{teamTypeText}}</span>
+          </div>
           <div class="stroke-type clear-fix">
             <span class="stroke">行程类型</span>
             <!--<span class="icon iconfont icon-arrow-right"></span>-->
@@ -36,19 +35,18 @@
         </div>
 
 
-        <div class="team-contain">
-          <h1 class="title">
-            团队类型
-            <!--<span class="text">团队类型</span>-->
-            <!--<span class="clear" @click="showConfirm"><i class="icon-clear"></i></span>-->
-          </h1>
-          <cube-radio-group v-model="selected" :options="teamTypeSelect" />
-        </div>
+        <!--<div class="team-contain">-->
+          <!--<h1 class="title">-->
+            <!--团队类型-->
+            <!--&lt;!&ndash;<span class="text">团队类型</span>&ndash;&gt;-->
+            <!--&lt;!&ndash;<span class="clear" @click="showConfirm"><i class="icon-clear"></i></span>&ndash;&gt;-->
+          <!--</h1>-->
+          <!--<cube-radio-group v-model="selected" :options="teamTypeSelect" />-->
+        <!--</div>-->
         <div class="btn-search" @click="searchTicket()">
           <span class="go-search">搜索行程</span>
         </div>
         <playlist :teamTypeSelect="teamTypeSelect" @item="itemSelected" ref="playlist"></playlist>
-
         <tab-bar :selected="selectedTabBar" ></tab-bar>
       </div>
     </div>

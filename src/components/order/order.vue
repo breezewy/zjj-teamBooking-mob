@@ -3,16 +3,18 @@
     <div class="order-container">
       <v-top :title="title"></v-top>
       <div class="wrapper">
-        <div class="search-box-wrapper" @click="shijianCK()">
+        <!--<div class="search-box-wrapper" @click="shijianCK()">-->
+          <!--<i class="iconfont icon-cx icon-search"></i>-->
+          <!--&lt;!&ndash;<input ref="query"  v-focus v-model="query" class="box"  :placeholder="placeholder"/>&ndash;&gt;-->
+          <!--<span class="box">{{performDate}}</span>-->
+          <!--<span class="week">{{today == performDate? '今天': tomorrow ==performDate ?'明天':-->
+            <!--performDate ==dayAfterTomorrow ? '后天':week=='0'?'星期日':week=='1'?'星期一':week=='2'?'星期二':-->
+            <!--week=='3'?'星期三': week=='4'? '星期四':week=='5'?'星期五':week=='6'? '星期六':''-->
+            <!--}}</span>-->
+        <!--</div>-->
+        <div class="order-date">
           <i class="iconfont icon-cx icon-search"></i>
-          <!--<input ref="query"  v-focus v-model="query" class="box"  :placeholder="placeholder"/>-->
-          <span class="box">{{performDate}}</span>
-          <span class="week">{{today == performDate? '今天': tomorrow ==performDate ?'明天':
-            performDate ==dayAfterTomorrow ? '后天':week=='0'?'星期日':week=='1'?'星期一':week=='2'?'星期二':
-            week=='3'?'星期三': week=='4'? '星期四':week=='5'?'星期五':week=='6'? '星期六':''
-            }}</span>
-
-
+          <input id="my-input" class="my-input-date" type="text" placeholder="游玩日期" />
         </div>
         <div class="order-status">
           <div class="item">
@@ -67,14 +69,14 @@
       </div>
       <tab-bar :selected="selectedTabBar"></tab-bar>
     </div>
-    <div id="calendar-box" class="calendar-box" :class="{ 'calendar-show': calendarShow }">
-      <div class="calendar-handle background-base">
-        <a href="javascript:;" class="calendar-colse" @click="calendarColse">
-          <i class="iconfont icon-chahao"></i>
-        </a>
-      </div>
-      <div id="calendar"></div>
-    </div>
+    <!--<div id="calendar-box" class="calendar-box" :class="{ 'calendar-show': calendarShow }">-->
+      <!--<div class="calendar-handle background-base">-->
+        <!--<a href="javascript:;" class="calendar-colse" @click="calendarColse">-->
+          <!--<i class="iconfont icon-chahao"></i>-->
+        <!--</a>-->
+      <!--</div>-->
+      <!--<div id="calendar"></div>-->
+    <!--</div>-->
   </div>
 
 </template>
@@ -94,9 +96,6 @@
         tomorrow:'',
         dayAfterTomorrow:'',  //后天
         week:'',
-
-
-
         title: '订单列表',
         current:1,                  //第几页
         orderList: [],
@@ -109,22 +108,35 @@
 
       }
     },
-    created(){
-      // this.select_date =  sessionStorage.getItem('SET_DATE')
-      // if(this.select_date){
-      //   this.getOrderList(this.select_date)
-      // }else{
-      //   this.getDate()    //根据日期查询订单列表
-      // }
+    mounted(){
+      let p =this;
+      this.$nextTick(() =>{
+        // $("#my-input").calendar({
+        //   value: ['2019-04-17']
+        // });
 
+
+        $("#my-input").calendar({
+          maxDate:'2019-04-20',
+          onChange(){
+            p.getOrderList()
+          }
+        });
+        // $("#my-input").calendar("setValue", ["2019-04-17"]);  //设置日期
+      })
+    },
+    created(){
+      this.select_date =  sessionStorage.getItem('SET_DATE')
+      if(this.select_date){
+        $('#my-input').val(this.select_date);
+        this.getOrderList(this.select_date)
+      }else{
+        this.getDate()    //根据日期查询订单列表
+      }
       this.today =  moment().format('YYYY-MM-DD')
       this.tomorrow = addDate(new Date())
       this.dayAfterTomorrow =  addDate(new Date(),2)
-
-
-
-
-      this.getDate()
+      // this.getDate()
     },
     methods:{
       /**
@@ -136,6 +148,39 @@
       // /**
       //  *
       //  * /
+      // getDate(){
+      //   this.$http.get(`/wap/maxDay`).then(({ data: res }) => {
+      //     if(res.code !== '200'){
+      //       Toast(res.msg)
+      //       return
+      //     }
+      //     this.dataArray = res.data
+      //     if(this.dataArray.length){
+      //       this.select_date =  sessionStorage.getItem('SET_DATE')
+      //       if(this.select_date){
+      //         this.performDate = this.select_date
+      //       }else{
+      //         this.performDate = this.dataArray[0]
+      //       }
+      //
+      //       this.week =  new Date(this.performDate).getDay()              //这里获取星期几
+      //
+      //
+      //
+      //
+      //       // sessionStorage.setItem('SET_DATE',this.performDate)
+      //       this.formatDateList = this.dataArray.map(item => {
+      //         return { date: item };
+      //       })
+      //       this.getOrderList(this.performDate)
+      //     }else{
+      //       this.performDate = '暂无游玩日期'
+      //     }
+      //
+      //   }).catch((err)=>{
+      //
+      //   })
+      // },
       getDate(){
         this.$http.get(`/wap/maxDay`).then(({ data: res }) => {
           if(res.code !== '200'){
@@ -278,6 +323,20 @@
           font-size:14px;
           color: #666
 
+      .order-date
+        position relative
+        margin: 10px;
+        font-size 14px;
+        .my-input-date
+          width 100%
+          height 32px;
+          border-radius 5px;
+          padding-left 40px;
+          box-sizing border-box
+        .icon-search
+          position absolute
+          top:9px;
+          left:12px;
       .order-status
         display:flex
         margin 10px 10px;

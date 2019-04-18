@@ -1,11 +1,15 @@
 <template>
     <div class="my-copy-container">
-      <header class="header">
-        <h1>我的</h1>
-        <!--<i @click="back" class="cubeic-back"></i>-->
-      </header>
+      <!--<header class="header">-->
+        <!--<h1>我的</h1>-->
+        <!--&lt;!&ndash;<i @click="back" class="cubeic-back"></i>&ndash;&gt;-->
+      <!--</header>-->
       <div class="wrapper">
-        <div class="bg-main"></div>
+        <!--<div class="bg-main"></div>-->
+        <div class="bg-main">
+          <img src="./../common/image/bg-my.png" class="bg-my-img" alt="">
+        </div>
+
         <div class="info">
           <div class="phone item clear-fix">
             <span class="text">手机号</span>
@@ -23,6 +27,11 @@
             <span class="text">证件号</span>
             <span class="value">341203199303233419</span>
           </div>
+          <img src="./../common/image/111.png" class="notice_float_copy" alt="">
+        </div>
+        <div class="handle">
+          <span class="handle-item">修改密码</span>
+          <span class="handle-item">退出登录</span>
         </div>
       </div>
     </div>
@@ -68,28 +77,60 @@
       overflow-x: hidden
       overflow-y: auto
       .bg-main
+        position absolute
+        left:0;
+        top:0;
         width: 100%;
-        height 100px;
-        background-color #1c9ae7
+        height 7.8rem;
         z-index :1;
+        .bg-my-img
+          width 100%
+          height 7.8rem;
       .info
-        margin-top -50px;
-        margin-left: auto;
-        margin-right: auto;
-        padding:10px
-        width 85%
-        height 400px
+        position absolute;
+        top:3.8rem
+        left:0;
+        margin :0 .4rem
+        padding:.8rem .9rem .425rem .9rem;
+        width:calc(100% - .8rem)
+        /*height 400px*/
         background-color #fff;
-        font-size 16px;
-        color:#989898
+        font-size .75rem;
+        box-sizing border-box
+        border-radius :.5rem
         z-index:2
+        color:#9b9b9b
         .item
-          font-size 18px;
-          line-height 40px;
+          line-height 1.8rem;
           .text
             float left
           .value
             float right
+        .notice_float_copy
+          width calc(100%+1.2rem)
+          height: 2rem;
+          position absolute
+          bottom:-1.5rem;
+          left:-.6rem;
+      .handle
+        position absolute
+        top:14rem;
+        left:0;
+        width 100%
+        .handle-item
+          margin 2rem auto
+          display block
+          width 10rem
+          height 2rem;
+          line-height 2.1rem;
+          text-align center
+          font-weight bold
+          border:1px solid #189ff0;
+          color:#189ff0
+          font-size:.75rem
+          border-radius 20px;
+
+
 
 
 
