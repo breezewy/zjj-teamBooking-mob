@@ -1,5 +1,6 @@
 ;(function($){
-  $.fn.calendar = function (method) {
+  // $.fn.calendar = function (method) {
+  $.fn.calendarSelf = function (method) {
     // 如果第一个参数是字符串, 就查找是否存在该方法, 找到就调用; 如果是object对象, 就调用init方法;.
     if (methods[method]) {
       // 如果存在该方法就调用该方法
@@ -24,7 +25,8 @@
     init : function (_options) {
       return this.each(function () {
         var $this = $(this);
-        var opts = $.extend({}, $.fn.calendar.defaults, _options);
+        // var opts = $.extend({}, $.fn.calendar.defaults, _options);
+        var opts = $.extend({}, $.fn.calendarSelf.defaults, _options);
         var multiselectflag= 0,oldprice="";
         // var sd=opts.selecteday.split("-");
         //     myyear = sd[0],
@@ -430,7 +432,7 @@
     }
   };
   // 默认参数
-  $.fn.calendar.defaults = {
+  $.fn.calendarSelf.defaults = {
     width: "auto",
     selecteday:mydate.getFullYear()+"-"+(mydate.getMonth()+1)+"-"+mydate.getDate(),
     stratday:mydate.getFullYear()+"-"+(mydate.getMonth()+1)+"-"+mydate.getDate(),

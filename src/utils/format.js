@@ -1,3 +1,17 @@
+export function formatDate(time) {
+  let date=new Date(time);
+  let year=date.getFullYear();
+  let month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+  let day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+  // 拼接
+  return year+"-"+month+"-"+day
+}
+
+
+
+
+
+
 //带天数的倒计时
 
 export function countDown(times){

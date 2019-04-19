@@ -76,12 +76,8 @@
         formatDateList:[],
         performDate: '',
         filter:{},
-
-
-
         routingType:'',                //行程类型
         routingTypeSelect:[{ value: 1, label: '行程' },{ value: 0, label: '加点' }],          //行程类型下拉框
-
         teamType:'',
         teamTypeText:'单选',
         teamTypeSelect:[]
@@ -180,7 +176,8 @@
             optionsdays: data,
             selecteday: p.performDate,
           };
-          $("#calendar").calendar(options);
+          // $("#calendar").calendar(options);
+          $("#calendar").calendarSelf(options);
 
         }).catch(() => {
         })

@@ -11,35 +11,91 @@
         </div>
 
         <div class="info">
-          <div class="phone item clear-fix">
-            <span class="text">手机号</span>
-            <span class="value">17682331278</span>
-          </div>
           <div class="name item clear-fix">
             <span class="text">姓名</span>
-            <span class="value">刘玉军</span>
+            <span class="value">{{guideInfo.name}}</span>
           </div>
+          <div class="phone item clear-fix">
+            <span class="text">手机号</span>
+            <span class="value">{{guideInfo.mobile}}</span>
+          </div>
+
           <div class="type item clear-fix">
             <span class="text">证件类型</span>
-            <span class="value">身份证</span>
+            <span class="value">{{guideInfo.certType=='106001'?'导游证': guideInfo.certType=='106002'? '身份证': guideInfo.certType=='106003'?'学生证':''}}</span>
           </div>
           <div class="cerNo item clear-fix">
             <span class="text">证件号</span>
-            <span class="value">341203199303233419</span>
+            <span class="value">{{guideInfo.certNo}}</span>
           </div>
           <img src="./../common/image/111.png" class="notice_float_copy" alt="">
         </div>
         <div class="handle">
           <span class="handle-item">修改密码</span>
-          <span class="handle-item">退出登录</span>
+          <span class="handle-item" @click="loginOut()">退出登录</span>
         </div>
       </div>
     </div>
 </template>
 
 <script>
+  import {MessageBox} from 'mint-ui'
+  import {clearLoginInfo} from "../utils";
   export default {
-    name: "my-copy"
+    name: "my-copy",
+    data(){
+      return {
+        guideInfo:{}
+      }
+    },
+    created(){
+      this.getUseInfo()
+    },
+    methods:{
+      // scoreDetail(){
+      //   this.$createToast({
+      //     txt: '暂未开放',
+      //     type: 'txt'
+      //   }).show()
+      // },
+      getUseInfo(){
+        this.$http.get(`/wap/guide/info`).then(({ data: res }) => {
+          if(res.code !== '200'){
+            this.$createToast({
+              txt: res.msg,
+              type: 'txt'
+            }).show()
+            return
+          }
+
+          this.guideInfo = res.data
+          console.log(this.guideInfo)
+
+        })
+      },
+      loginOut(){
+        MessageBox({
+          title: '提示',
+          message: '确定退出登录?',
+          showCancelButton: true
+        }).then(action => {
+          console.log(action)
+          if(action =='confirm'){
+            this.$http.post('/auth/logout').then(({ data: res }) => {
+              if (res.code !== '200') {
+                this.$createToast({
+                  txt: res.msg,
+                  type: 'txt'
+                }).show()
+              }
+              clearLoginInfo()
+              this.$router.replace({ path: '/' })
+            }).catch(() => {})
+          }
+        })
+
+      }
+    }
   };
 </script>
 

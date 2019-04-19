@@ -12,14 +12,11 @@
             <!--<p class="date border-bottom-1px">{{performDate}}</p>-->
             <p class="date">{{performDate}}</p>
             <!--<span class="day">今天</span>-->
-            <span class="day">{{performDate==today ? '今天': performDate== tomorrow?'明天': performDate== dayAfterTomorrow? '后天':''}}</span>
+
             <span class="week">星期{{week=='1'?'一':week=='2'?'二': week=='3'?'三': week=='4'?'四': week=='5'? '五': week=='6'?'六':week=='0'?'日':''}}</span>
+            <span class="day">{{performDate==today ? '今天': performDate== tomorrow?'明天': performDate== dayAfterTomorrow? '后天':''}}</span>
           </div>
-          <div class="team-type" @click="_showTeamTypeList">
-            <span class="team">团队类型</span>
-            <!--<span class="icon iconfont icon-arrow-right"></span>-->
-            <span class="icon">{{teamTypeText}}</span>
-          </div>
+
           <div class="stroke-type clear-fix">
             <span class="stroke">行程类型</span>
             <!--<span class="icon iconfont icon-arrow-right"></span>-->
@@ -27,7 +24,12 @@
             <span class="radio">
                 <cube-radio-group v-model.number="routingType" :options="routingTypeSelect" :horizontal="true" />
               </span>
-
+          </div>
+          <div class="team-type" @click="_showTeamTypeList">
+            <span class="team">团队类型</span>
+            <!--<span class="icon iconfont icon-arrow-right"></span>-->
+            <span class="icon">{{teamTypeText}}</span>
+            <!--<span class="iconfs iconfont icon-arrow-right" ></span>-->
           </div>
           <!--<div class="search-btn" @click="searchTicket()">-->
             <!--搜索-->
@@ -81,7 +83,6 @@
         week:'',             // 星期几
         selectedTabBar: 'fix',
 
-
         hasDate: true,
         calendarShow: false,
         formatDateList:[],
@@ -94,7 +95,7 @@
         routingTypeSelect:[{ value: 1, label: '行程' },{ value: 0, label: '加点' }],          //行程类型下拉框
 
         teamType:'',
-        teamTypeText:'单选',
+        teamTypeText:'单选 >',
         teamTypeSelect:[]
       }
     },
@@ -119,12 +120,12 @@
        *  搜索票
        */
       searchTicket(){
-        if(!this.teamType){
-          Toast('请选择团队')
-          return
-        }
         if(this.routingType===''){
           Toast('请选择行程')
+          return
+        }
+        if(!this.teamType){
+          Toast('请选择团队')
           return
         }
         let filter = {
@@ -191,6 +192,7 @@
             optionsdays: data,
             selecteday: p.performDate,
           };
+          // $("#calendar").calendar(options);
           $("#calendar").calendar(options);
 
         }).catch(() => {
@@ -259,22 +261,24 @@
       overflow-x: hidden
       overflow-y: auto
       .start-info
-        margin :30px 15px 10px 15px;
-        padding :10px 15px
+        margin :.85rem .6rem .85rem .6rem;
+        padding :.725rem .7rem
         background-color:#fff
         .name
-          margin-top:10px;
-          margin-bottom :10px;
+          /*margin-top:10px;*/
+          /*margin-bottom :10px;*/
           padding-bottom 5px;
-          font-size 20px
-          font-weight 500;
+          font-size .875rem
+          font-weight bold
+          /*font-weight 500;*/
           color:#333
           letter-spacing :1px
-          border-bottom 1px solid #ddd;
+          border-bottom 1px solid #efefef;
           /*text-align left*/
-          height 44px
-          line-height :44px;
+          height 1.75rem
+          line-height :1.75rem;
         .date-content
+          margin-top .475rem;
           height :44px;
           line-height :44px
           .date
@@ -282,40 +286,62 @@
             display: inline-block
             color: #656565
           .day
+            float right
             margin-left :30px
-            font-size 18px
+            font-size 15px
             color: #656565
-            font-weight:500
+            font-weight:bold
           .week
-            margin-left :10px
-            font-size 18px
+            float:right
+            margin-left :25px
+            font-size 15px
             color: #656565
-            font-weight:500
+            font-weight:bold
         .team-type
+          position relative
           display flex
           justify-content space-between
           height: 40px;
           line-height :40px;
           .team
-            font-size :16px;
+            font-size :15px;
+            color: #656565
+            font-weight:bold
           .icon
-            font-size :16px;
-            color: #409eff
+            /*font-size :16px;*/
+            /*color: #8a8989*/
+            font-size 15px;
+            color:#656565
+          .iconfs
+            position absolute
+            top:0;
+            right:0;
         .stroke-type
-          font-size :18px;
+          font-size :15px;
           color:#666666
           .stroke
             float: left
             position relative
             top:12px;
+            font-weight bold
           .radio
             display: block
             float: right
             font-size 16px
             .border-right-1px::after
               border-right none
+            .cube-radio-group[data-horz="true"]
+              padding :0
+              .cube-radio
+                padding-left:10px
+                padding-right 0;
+                .cube-radio-label
+                  color:#656565
+                  font-weight bold
+                  font-size 15px;
             .cube-radio-group[data-horz="true"]::after
               border:none
+
 
         .search-btn
           margin 10px 0
@@ -344,15 +370,20 @@
             font-weight bold
             color:#666
       .btn-search
-        margin 50px 0 70px 0;
+        margin 31px .6rem 70px .6rem;
         .go-search
          display block
          width :100%;
          margin 0 auto
-         height 60px;
-         line-height 60px;
+         height:2.575rem
+         line-height 2.575rem
+         border-radius 15px;
          text-align center
          color:#fff;
-         background-color #199def
+         background: -webkit-linear-gradient(left, #199aeb , #1682c2); /* Safari 5.1 - 6.0 */
+         background: -o-linear-gradient(right, #199aeb, #1682c2); /* Opera 11.1 - 12.0 */
+         background: -moz-linear-gradient(right, #199aeb, #1682c2); /* Firefox 3.6 - 15 */
+         background: linear-gradient(to right, #199aeb , #1682c2); /* 标准的语法 */
+         /*background-color #199def*/
 
 </style>

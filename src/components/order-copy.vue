@@ -4,13 +4,13 @@
       <v-top :title="title"></v-top>
       <div class="wrapper">
         <!--<div class="search-box-wrapper" @click="shijianCK()">-->
-          <!--<i class="iconfont icon-cx icon-search"></i>-->
-          <!--&lt;!&ndash;<input ref="query"  v-focus v-model="query" class="box"  :placeholder="placeholder"/>&ndash;&gt;-->
-          <!--<span class="box">{{performDate}}</span>-->
-          <!--<span class="week">{{today == performDate? '今天': tomorrow ==performDate ?'明天':-->
-            <!--performDate ==dayAfterTomorrow ? '后天':week=='0'?'星期日':week=='1'?'星期一':week=='2'?'星期二':-->
-            <!--week=='3'?'星期三': week=='4'? '星期四':week=='5'?'星期五':week=='6'? '星期六':''-->
-            <!--}}</span>-->
+        <!--<i class="iconfont icon-cx icon-search"></i>-->
+        <!--&lt;!&ndash;<input ref="query"  v-focus v-model="query" class="box"  :placeholder="placeholder"/>&ndash;&gt;-->
+        <!--<span class="box">{{performDate}}</span>-->
+        <!--<span class="week">{{today == performDate? '今天': tomorrow ==performDate ?'明天':-->
+        <!--performDate ==dayAfterTomorrow ? '后天':week=='0'?'星期日':week=='1'?'星期一':week=='2'?'星期二':-->
+        <!--week=='3'?'星期三': week=='4'? '星期四':week=='5'?'星期五':week=='6'? '星期六':''-->
+        <!--}}</span>-->
         <!--</div>-->
         <div class="order-date">
           <i class="iconfont icon-cx icon-search"></i>
@@ -58,8 +58,18 @@
                   }}</span>
                 <span class="type">订单类型:{{item.bookType =='01'?'预定':item.bookType =='02'?'准预定': item.bookType =='03'?'候补':''}}</span>
               </div>
-              <div class="clear-fix">
-                <span class="entering" v-if="item.jump"  style="display: block;float:right" @click.stop="goEnter(item)">去录入</span>
+              <!--<div class="clear-fix">-->
+                <!--<span class="entering" v-if="item.jump"  style="display: block;float:right" @click.stop="goEnter(item)">去录入</span>-->
+              <!--</div>-->
+              <div class="clear-fix handle">
+
+                <!--<span class="idCard-list handle-item">-->
+                <span class="handle-item-left handle-item">
+                  <span class="idCard-list">游客列表</span>
+                </span>
+                <span class="handle-item-right handle-item">
+                   <span class="entering">去录入</span>
+                </span>
               </div>
 
             </li>
@@ -70,12 +80,12 @@
       <tab-bar :selected="selectedTabBar"></tab-bar>
     </div>
     <!--<div id="calendar-box" class="calendar-box" :class="{ 'calendar-show': calendarShow }">-->
-      <!--<div class="calendar-handle background-base">-->
-        <!--<a href="javascript:;" class="calendar-colse" @click="calendarColse">-->
-          <!--<i class="iconfont icon-chahao"></i>-->
-        <!--</a>-->
-      <!--</div>-->
-      <!--<div id="calendar"></div>-->
+    <!--<div class="calendar-handle background-base">-->
+    <!--<a href="javascript:;" class="calendar-colse" @click="calendarColse">-->
+    <!--<i class="iconfont icon-chahao"></i>-->
+    <!--</a>-->
+    <!--</div>-->
+    <!--<div id="calendar"></div>-->
     <!--</div>-->
   </div>
 
@@ -86,7 +96,7 @@
   import TabBar from '@/base/tabbar/tabbar'
   import VTop from '@/base/vtop/vtop'
   import moment from 'moment'
-  import {addDate } from "../../common/js/format";
+  import {addDate } from "../common/js/format";
   const perpage = 1000
   export default {
     name: "order",
@@ -254,7 +264,7 @@
         this.$http.post(`/wap/listOrders`,data).then(({ data: res }) => {
           console.log(res)
           if(res.code !== '200'){
-              Toast(res.msg)
+            Toast(res.msg)
           }
           this.orderList = res.data.records
         }).catch((err) =>{
@@ -299,6 +309,15 @@
        */
       goOrderDetail(id){
         this.$router.push({ path:`/order-detail/${id}`})
+
+
+
+        // .entering
+//  float: right;
+//border 1px solid #ddd
+//padding:10px 20px
+//display: block;
+//border-radius 5px;
       },
     },
     components:{
@@ -336,8 +355,8 @@
           font-size: 14px
           color: #222
         .box
-        //  flex: 1
-         // margin: 5px;
+          //  flex: 1
+          // margin: 5px;
           //padding 5px;
           //line-height: 18px;
           //color: #666
@@ -357,7 +376,7 @@
         font-size 14px;
         .my-input-date
           width 100%
-          height 32px;
+          height 35px;
           border-radius 5px;
           padding-left 40px;
           box-sizing border-box
@@ -367,15 +386,17 @@
           left:12px;
       .order-status
         display:flex
-        margin 10px 10px;
-        padding 10px 5px;
-        background-color :#fff;
-        border: 1px solid #ddd;
+        margin: 0 .6rem;
+        /*padding 10px 5px;*/
+        padding 15px 0px;
+        /*background-color :#fff;*/
+        /*border: 1px solid #ddd;*/
         border-radius :4px;
         .item
           flex:1
           text-align center
           font-size :14px
+          line-height:30px;
           .color-block
             display:inline-block
             width :15px;
@@ -389,45 +410,68 @@
           .color-cancel
             background-color:#C6C3C6
           .text
-            display block
+            /*display block*/
+            display:inline-block
+            position relative;
+            top:-3px;
             color:#666
       .order-list
-        font-size :16px
-        color:#666
+        margin 0 .6rem
+        font-size :.65rem
+        color:#3d3d3b
         .color-blue
           background-color:#A5CBF7
         .color-green
-          background-color:#84F329
+          /*background-color:#84F329*/
+          background-color:#a9ffb4
         .color-red
           background-color:#FF00FF
         .color-cancel
           background-color:#C6C3C6
         .order-item
-          padding :10px 15px;
+          padding:.5rem .7rem
+          /*padding :10px 15px;*/
+          border-radius 5px;
           margin-bottom: 10px
           .show-info
-             display :flex
-             justify-content:space-between
-             height :30px;
-             line-height 30px
+            display :flex
+            justify-content:space-between
+            height :30px;
+            line-height 30px
           .name
-             height :30px;
-             line-height: 30px;
-             overflow: hidden;
-             text-overflow:ellipsis;
-             white-space: nowrap;
+            height :30px;
+            line-height: 30px;
+            overflow: hidden;
+            text-overflow:ellipsis;
+            white-space: nowrap;
           .order
             display :flex
             justify-content:space-between
             height :30px;
             line-height: 30px;
+          .handle
+            display:flex
+            margin-top 4px;
+            .handle-item
+              flex:1
 
-          .entering
-            float: right;
-            border 1px solid #ddd
-            padding:10px 20px
-            display: block;
-            border-radius 5px;
+              height 1.325rem;
+              line-height 1.325rem;
+              /*background-color:#1d99e3*/
+              background linear-gradient(90deg, #2090d2, #1f98e1 50%, #2090d2);
+
+              color:#fff;
+              border-radius:.65rem;
+              text-align center
+            .handle-item-left
+              margin-right:4px;
+            .handle-item-right
+              margin-left:4px;
+
+
+
+
 
 
 </style>
+

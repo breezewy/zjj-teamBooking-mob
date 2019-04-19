@@ -11,10 +11,11 @@
         <div class="notice">
           <h1 class="title">预定须知</h1>
           <ul class="list">
-            <li class="item">1.每位导游每日限购一笔订单</li>
+            <!--<li class="item">1.每位导游每日限购一笔订单</li>-->
+            <li class="item" v-for="(item,index) in bookingRuleList">{{index+1}}、{{item.content}}</li>
           </ul>
           <div class="handle">
-            <span class="btn">立即预定</span>
+            <span class="btn" @click="order()">立即预定</span>
           </div>
           <img src="./../common/image/notice_float_copy.png" class="notice-float" alt="">
           <img src="./../common/image/notice_bottom_copy.png" class="notice-bottom" alt="">
@@ -23,19 +24,20 @@
           <h1 class="title">开票规则</h1>
           <ul class="list">
             <li class="item">
-              1.通过首页开票按钮进入页面输入开票订单号进行开票
+              请凭入园单红联，出票当月到票房开具发票，隔月不予补开。
+              <!--1.通过首页开票按钮进入页面输入开票订单号进行开票-->
             </li>
-            <li class="item">
-              2.进入订单列表根据游玩日期查询订单信息，点击开发票按钮进行开票
-            </li>
+            <!--<li class="item">-->
+              <!--2.进入订单列表根据游玩日期查询订单信息，点击开发票按钮进行开票-->
+            <!--</li>-->
           </ul>
-          <div class="handle">
-            <span class="btn">立即开票</span>
-          </div>
+          <!--<div class="handle">-->
+            <!--<span class="btn">立即开票</span>-->
+          <!--</div>-->
           <img src="./../common/image/rule_float_copy.png" class="rule-float" alt="">
           <img src="./../common/image/rule_bottom_copy.png" class="rule-bottom" alt="">
         </div>
-        <div class="today">
+        <div class="today" v-if="isTodayOrderShow">
           <h1 class="title">当日订单</h1>
           <!--<ul class="list">-->
             <!--<li class="item">-->
@@ -48,33 +50,40 @@
           <div class="info">
             <div class="item">
               <span class="text">编号：</span>
-              <span class="value">13444589624</span>
+              <span class="value">{{noConfirmOrderInfo.billNo}}</span>
             </div>
             <div class="item">
               <span class="text">订单状态：</span>
-              <span class="value">未审核</span>
+              <span class="value">{{noConfirmOrderInfo.billStatus =='01'? '未审核': noConfirmOrderInfo.billStatus =='02'? '准预定':
+              noConfirmOrderInfo.billStatus =='03'? '已审核': noConfirmOrderInfo.billStatus =='04'? '已销售':
+              noConfirmOrderInfo.billStatus =='05'?'已撤销':''
+              }}</span>
             </div>
             <div class="item">
-              <span class="text" style="margin-right: 3px;">2019-04-15</span>
-              <span class="value">15:00-16:00</span>
+              <span class="text">订单类型：</span>
+              <span class="value">{{noConfirmOrderInfo.billType=='01'?'现场售票': noConfirmOrderInfo.billType=='02'? '预定':'' }}</span>
             </div>
             <div class="item">
-              <span class="text">湖南万达国际旅行社</span>
-
+              <span class="text">{{noConfirmOrderInfo.travelName}}</span>
             </div>
             <div class="item">
-              <span class="text">倒计时：</span>
-              <span class="value">[ <span style="color:#e40000">2时3分12秒</span> ]</span>
-              <span class="value" style="margin-left: 5px;">请及时核团</span>
+              <span class="text" style="margin-right: 3px;">{{noConfirmOrderInfo.performDate}}</span>
+              <span class="value" style="margin-right: 3px;">{{noConfirmOrderInfo.performTime}}</span>
             </div>
             <div class="item">
               <span class="text">截止时间：</span>
-              <span class="value">2019-04-15</span>
-              <span class="value">12:00</span>
+              <span class="value">{{noConfirmOrderInfo.performDate}}</span>
+              <span class="value">{{noConfirmOrderInfo.checkTime}}:00:00</span>
             </div>
+            <div class="item">
+              <span class="text">倒计时：</span>
+              <span class="value">[ <span style="color:#e40000">{{lastTime}}</span> ]</span>
+              <span class="value" v-if="leftTime>=0" style="margin-left: 5px;">请及时核团</span>
+            </div>
+
           </div>
           <div class="handle">
-            <span class="btn">立即核团</span>
+            <span class="btn" v-if="(noConfirmOrderInfo.billStatus=='01' || noConfirmOrderInfo.billStatus=='02') && leftTime/1000>=0">去核团</span>
           </div>
           <img src="./../common/image/today_float_copy.png" class="today-float" alt="">
           <img src="./../common/image/today_bottom_copy.png" class="today-bottom" alt="">
@@ -84,8 +93,116 @@
 </template>
 
 <script>
+  import { Toast,MessageBox  } from 'mint-ui'
   export default {
-    name: "home-copy"
+    name: "home-copy",
+    data(){
+      return {
+        selectedTabBar:'home',
+        noConfirmOrderInfo:{},
+        isTodayOrderShow:false,
+        performDate:'',             //游玩的日期
+        orderId:'',
+        lastTime:'',                 //显示的日期
+        timestamp2:'',                //核团的日期
+        timer: null,                 //定时器
+        leftTime:'',
+        bookingRuleList:[]
+      }
+    },
+    created(){
+      this.getBookingRule()
+      this.getNoConfirmOrder()
+    },
+    methods:{
+      getBookingRule(){
+        this.$http.get('/wap/bookingRule').then(({ data: res }) => {
+          if(res.code !== '200'){
+            Toast(res.msg)
+            return
+          }
+          this.bookingRuleList = res.data
+        }).catch(() =>{})
+      },
+      getNoConfirmOrder(){
+        this.$http.get('/wap/noConfirmOrder').then(({ data: res }) => {
+          if(res.code !== '200'){
+            // Toast(res.msg)
+            return
+          }
+          let data = res.data
+          if(Object.keys(data).length ==0){
+            this.isTodayOrderShow = false
+          }else{
+            this.isTodayOrderShow = true
+            this.noConfirmOrderInfo = data
+            this.performDate = this.noConfirmOrderInfo.performDate
+            this.orderId = this.noConfirmOrderInfo.id
+            let playDate = this.performDate
+            let checkTime = this.noConfirmOrderInfo.checkTime
+            let formatCheckTime = checkTime+':00:00'
+            let totalCheckTime = playDate+' '+formatCheckTime
+
+            if(this.noConfirmOrderInfo.billStatus=='01' || this.noConfirmOrderInfo.billStatus=='02'){
+              let date = new Date(totalCheckTime);
+              this.timestamp2 = date.getTime()
+              this.countTime()
+            }else{
+              this.lastTime = '核团时间已过期'
+            }
+          }
+
+        }).catch(() =>{
+          Toast('服务器异常，请稍后再试')
+        })
+      },
+      countTime(){
+        var date = new Date();
+        var now = date.getTime();
+        var leftTime = this.timestamp2-now;
+        this.leftTime = leftTime
+        //定义变量 d,h,m,s保存倒计时的时间
+        var d,h,m,s;
+        if (leftTime/1000>=0) {
+          // console.log(leftTime)
+          d = Math.floor(leftTime/1000/60/60/24);
+          h = Math.floor(leftTime/1000/60/60%24);
+          m = Math.floor(leftTime/1000/60%60);
+          s = Math.floor(leftTime/1000%60);
+          if(d){
+            this.lastTime = `${d}天${h}时${m}分${s}秒`
+          }else{
+            this.lastTime = `${h}时${m}分${s}秒`
+          }
+          this.timer=setTimeout(this.countTime,1000);
+        }else{
+          this.lastTime= '核团时间已过期'
+          clearTimeout(this.timer)
+        }
+      },
+      /**
+       * 查看订单
+       */
+      viewOrder(){
+        sessionStorage.setItem('SET_DATE',this.performDate)
+        this.$router.push({ path:'/order'})
+      },
+      /**
+       * 立即核团
+       */
+      nuclearByNow(){
+        if(this.leftTime/1000 <= 0){
+          Toast('核团时间已过，无法核团')
+          return
+        }
+        sessionStorage.setItem('SET_DATE',this.performDate)
+        // this.$router.push({ name: 'order-detail', params: { heId: '111111',id:this.orderId }})
+        this.$router.push({ name: 'order-detail', params: {id:this.orderId }})
+      },
+      order(){
+        this.$router.push({path:'/fix'})
+      },
+    }
   };
 </script>
 
@@ -118,8 +235,8 @@
         color: #1c9ae7;
         font-size: 16px
     .wrapper
-      //height: calc(100% - 40px)
-      height: calc(100%)
+      height: calc(100% - 50px)
+      //height: calc(100%)
       overflow-x: hidden
       overflow-y: auto
       .notice
@@ -138,18 +255,19 @@
           font-size:.75rem;
           /*border-bottom 1px solid #ddd;*/
         .list
-          margin-right: 1.6rem;
-          font-size:15px;
-          color:#4e4e4e
+          /*margin-right: 1.6rem;*/
+          font-size:.6rem;
+          /*color:#4e4e4e*/
+          color:#2c3e50
           .item
             line-height 2;
             span
               display :inline-block
         .handle
-          margin: 15px 0
+          /*margin: 15px 0*/
           .btn
             display block
-            margin 25px auto 15px auto
+            margin 20px auto 10px auto
             width 200px;
             height 40px;
             line-height 40px;
@@ -178,7 +296,7 @@
         /*margin: 1.25rem .4rem 1.25rem .4rem;*/
         margin: .65rem .4rem .65rem .4rem;
         background-color #fff;
-        padding :.875rem  .85rem .875rem .85rem;
+        padding :.875rem  .85rem 1.575rem .85rem;
         border-radius 8px;
         box-shadow: 0 1px 6px #ddd;
         .title
@@ -189,9 +307,10 @@
           font-weight bold
           font-size:.75rem;
         .list
-          margin-right: 1.6rem;
-          font-size:15px;
-          color:#4e4e4e
+          /*margin-right: 1.6rem;*/
+          font-size:.6rem;
+          /*color:#4e4e4e*/
+          color:#2c3e50
           .item
             line-height: 2
         .handle
@@ -245,13 +364,13 @@
         /*border-bottom 1px solid #ddd;*/
         .info
           color:#4e4e4e
-          font-size 16px;
+          font-size .65rem;
           .item
             line-height 2
 
         .list
           margin-right: 2rem;
-          font-size:15px;
+          font-size:.6rem;
           color:#4e4e4e
           .item
             line-height 2;

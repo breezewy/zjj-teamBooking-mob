@@ -50,6 +50,7 @@ import ObserveCopyMint from '@/components/observe-copy-mint'
 import FixCopy from '@/components/fix-copy'
 import HomeCopy from '@/components/home-copy'
 import MyCopy from '@/components/my-copy'
+import OrderCopy from '@/components/order-copy'
 
 
 
@@ -113,6 +114,7 @@ export default new Router({
     { path: '/fix/copy', name: 'fix-copy',component: FixCopy },
     { path: '/home/copy', name: 'home-copy',component: HomeCopy },
     { path: '/my/copy', name: 'my-copy',component: MyCopy },
+    { path: '/order/copy', name: 'order-copy',component: OrderCopy },
 
 
   ]
