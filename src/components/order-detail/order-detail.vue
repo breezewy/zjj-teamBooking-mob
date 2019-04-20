@@ -41,17 +41,17 @@
           <!--<div class="handle-contain" >-->
             <!--<div class="handle-detail" v-if="orders.billStatus=='01'">-->
             <div class="handle-detail" >
-              <span  class="bill btn" v-show="leftTime/1000>=0" @click="modify()">去核团</span>
+              <span  class="bill btn" v-show="orders.check" @click="modify()">去核团</span>
               <span class="bill btn" @click="cancelOrder()">取消订单</span>
               <!--<span class="nuclei btn" @click="nucleiGroup()">核团</span>-->
             </div>
 
           </div>
-          <div class="handle-contain"  v-if="orders.billStatus=='04'">
-            <div class="handle-detail">
-              <a class="bill btn" :href="'http://receipt.51dmq.com/receipt/index.htm?bookBillNo='+orders.billNo">开取发票</a>
-            </div>
-          </div>
+          <!--<div class="handle-contain"  v-if="orders.billStatus=='04'">-->
+            <!--<div class="handle-detail">-->
+              <!--<a class="bill btn" :href="'http://receipt.51dmq.com/receipt/index.htm?bookBillNo='+orders.billNo">开取发票</a>-->
+            <!--</div>-->
+          <!--</div>-->
 
         </div>
           <div class="popup" :class="{ 'popup-show': popupShow }">

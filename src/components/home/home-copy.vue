@@ -302,7 +302,7 @@
       .rule
         position relative
         /*margin: 1.25rem .4rem 1.25rem .4rem;*/
-        margin: .65rem .4rem .65rem .4rem;
+        margin: .65rem .4rem 2.65rem .4rem;
         background-color #fff;
         padding :.875rem  .85rem 1.575rem .85rem;
         border-radius 8px;

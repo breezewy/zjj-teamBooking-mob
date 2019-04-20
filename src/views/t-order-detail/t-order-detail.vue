@@ -37,17 +37,17 @@
 
           </div>
           <!--<div class="handle-contain" v-if="orders.billStatus=='04'">-->
-          <div class="handle-contain" v-if="orders.billStatus=='04'">
-            <!--<div class="handle-detail" v-if="orders.billStatus=='01'">-->
-            <!--<div class="handle-detail" >-->
-              <!--<span class="bill btn" @click="modify()">核团</span>-->
-              <!--&lt;!&ndash;<span class="nuclei btn" @click="nucleiGroup()">核团</span>&ndash;&gt;-->
+          <!--<div class="handle-contain" v-if="orders.billStatus=='04'">-->
+            <!--&lt;!&ndash;<div class="handle-detail" v-if="orders.billStatus=='01'">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="handle-detail" >&ndash;&gt;-->
+              <!--&lt;!&ndash;<span class="bill btn" @click="modify()">核团</span>&ndash;&gt;-->
+              <!--&lt;!&ndash;&lt;!&ndash;<span class="nuclei btn" @click="nucleiGroup()">核团</span>&ndash;&gt;&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="handle-detail" v-if="orders.billStatus=='04'">&ndash;&gt;-->
+            <!--<div class="handle-detail"   >-->
+              <!--<a class="bill btn" :href="'http://receipt.51dmq.com/receipt/index.htm?bookBillNo='+orders.billNo">开取发票</a>-->
             <!--</div>-->
-            <!--<div class="handle-detail" v-if="orders.billStatus=='04'">-->
-            <div class="handle-detail"   >
-              <a class="bill btn" :href="'http://receipt.51dmq.com/receipt/index.htm?bookBillNo='+orders.billNo">开取发票</a>
-            </div>
-          </div>
+          <!--</div>-->
 
         </div>
           <div class="popup" :class="{ 'popup-show': popupShow }">
