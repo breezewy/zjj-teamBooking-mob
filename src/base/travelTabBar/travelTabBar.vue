@@ -31,27 +31,27 @@
         tabbarDes:[
           {
             txt:'首页',
-            page:'travel-home',
+            page:'travel/home',
             selfFont:'iconfont icon-home',
           },
           {
             txt:'预定',
-            page:'travel-observe',
+            page:'travel/observe',
             selfFont:'iconfont icon-yudingzhongxin1'
           },
           {
             txt:'积分',
-            page:'travel-score',
+            page:'travel/score',
             selfFont:'iconfont icon-jifen1'
           },
           {
             txt:'订单',
-            page:'travel-order',
+            page:'travel/order',
             selfFont:'iconfont icon-icon'
           },
           {
             txt:'我的',
-            page:'travel-my',
+            page:'travel/my',
             selfFont:'iconfont icon-wode1',
           },
         ]
@@ -78,9 +78,10 @@
         top:6px;
         font-size :18px;
         padding-bottom 3px;
-        color:#000
+        color:#656565
       .text
         font-size 14px
         display block
         margin-top 8px
+        color:#656565
 </style>

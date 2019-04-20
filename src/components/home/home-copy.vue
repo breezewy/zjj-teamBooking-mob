@@ -17,8 +17,8 @@
           <div class="handle">
             <span class="btn" @click="order()">立即预定</span>
           </div>
-          <img src="./../common/image/notice_float_copy.png" class="notice-float" alt="">
-          <img src="./../common/image/notice_bottom_copy.png" class="notice-bottom" alt="">
+          <img src="./../../common/image/notice_float_copy.png" class="notice-float" alt="">
+          <img src="./../../common/image/notice_bottom_copy.png" class="notice-bottom" alt="">
         </div>
         <div class="rule">
           <h1 class="title">开票规则</h1>
@@ -34,8 +34,8 @@
           <!--<div class="handle">-->
             <!--<span class="btn">立即开票</span>-->
           <!--</div>-->
-          <img src="./../common/image/rule_float_copy.png" class="rule-float" alt="">
-          <img src="./../common/image/rule_bottom_copy.png" class="rule-bottom" alt="">
+          <img src="./../../common/image/rule_float_copy.png" class="rule-float" alt="">
+          <img src="./../../common/image/rule_bottom_copy.png" class="rule-bottom" alt="">
         </div>
         <div class="today" v-if="isTodayOrderShow">
           <h1 class="title">当日订单</h1>
@@ -84,21 +84,27 @@
           </div>
           <div class="handle">
             <span class="btn" v-if="(noConfirmOrderInfo.billStatus=='01' || noConfirmOrderInfo.billStatus=='02') && leftTime/1000>=0">去核团</span>
+            <!--<span class="btn" >去核团</span>-->
           </div>
-          <img src="./../common/image/today_float_copy.png" class="today-float" alt="">
-          <img src="./../common/image/today_bottom_copy.png" class="today-bottom" alt="">
+          <img src="./../../common/image/today_float_copy.png" class="today-float" alt="">
+          <img src="./../../common/image/today_bottom_copy.png" class="today-bottom" alt="">
         </div>
       </div>
+      <tab-bar :selected="selectedTabBar"></tab-bar>
     </div>
 </template>
 
 <script>
+  import TabBar from '@/base/tabbar/tabbar'
   import { Toast,MessageBox  } from 'mint-ui'
   export default {
     name: "home-copy",
+    components:{
+      TabBar,
+    },
     data(){
       return {
-        selectedTabBar:'home',
+        selectedTabBar:'home/copy',
         noConfirmOrderInfo:{},
         isTodayOrderShow:false,
         performDate:'',             //游玩的日期
@@ -185,7 +191,7 @@
        */
       viewOrder(){
         sessionStorage.setItem('SET_DATE',this.performDate)
-        this.$router.push({ path:'/order'})
+        this.$router.push({ path:'/order/copy'})
       },
       /**
        * 立即核团
@@ -200,7 +206,7 @@
         this.$router.push({ name: 'order-detail', params: {id:this.orderId }})
       },
       order(){
-        this.$router.push({path:'/fix'})
+        this.$router.push({path:'/fix/copy'})
       },
     }
   };
@@ -256,9 +262,10 @@
           /*border-bottom 1px solid #ddd;*/
         .list
           /*margin-right: 1.6rem;*/
-          font-size:.6rem;
+          /*font-size:.7rem;*/
+          font-size:.65rem;
           /*color:#4e4e4e*/
-          color:#2c3e50
+          color:#656565
           .item
             line-height 2;
             span
@@ -273,8 +280,9 @@
             line-height 40px;
             border-radius 20px
             text-align center
-            background linear-gradient(90deg, #67b7e8, #1a9ef0 50%, #67b7e8);
-            background:-webkit-linear-gradient(90deg, #67b7e8, #1a9ef0 50%, #67b7e8)
+            background-color #1a9ef0
+            //background linear-gradient(90deg, #67b7e8, #1a9ef0 50%, #67b7e8);
+            //background:-webkit-linear-gradient(90deg, #67b7e8, #1a9ef0 50%, #67b7e8)
             //background:linear-gradient(top, #1b99e5 0%,#1a9ef0 100%)
             color: #ffffff
             font-size 16px;
@@ -308,9 +316,9 @@
           font-size:.75rem;
         .list
           /*margin-right: 1.6rem;*/
-          font-size:.6rem;
+          font-size:.65rem;
           /*color:#4e4e4e*/
-          color:#2c3e50
+          color:#656565
           .item
             line-height: 2
         .handle
@@ -350,7 +358,7 @@
       .today
         position relative
         /*margin: 1.25rem .4rem 1.25rem .4rem;*/
-        margin: .65rem .4rem .65rem .4rem;
+        margin: .65rem .4rem 2.65rem .4rem;
         background-color #fff;
         padding :.875rem  .85rem .875rem .85rem;
         border-radius 8px;
@@ -370,7 +378,7 @@
 
         .list
           margin-right: 2rem;
-          font-size:.6rem;
+          font-size:.7rem;
           color:#4e4e4e
           .item
             line-height 2;

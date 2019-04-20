@@ -225,7 +225,7 @@
             optionsdays: data,
             selecteday: p.performDate,
           };
-          $("#calendar").calendar(options);
+          $("#calendar").calendarSelf(options);
 
         }).catch(() => {
         })
@@ -278,7 +278,7 @@
         margin: 10px 10px;
         align-items: center
         box-sizing: border-box
-        padding: 10px
+        padding: 17px 10px
         height: 32px;
         background-color: #fff
         border-radius: 8px;

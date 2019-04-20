@@ -75,7 +75,7 @@
 <script>
   import { Toast } from  'mint-ui'
   import Cookies from 'js-cookie'
-  import {IdentityCodeValid, isMobile} from "../utils/validation";
+  import {IdentityCodeValid, isMobile} from "../../utils/validation";
   export default {
     name: "guidelogincopy",
     data(){
@@ -124,7 +124,8 @@
             return
           }
           Cookies.set('token', res.data.token)
-          this.$router.replace({ path: '/home' })
+          sessionStorage.setItem('loginType','guide')
+          this.$router.replace({ path: '/home/copy' })
         }).catch(() => {
           Toast('服务器异常，请稍后再试')
         })
@@ -154,7 +155,8 @@
             return
           }
           Cookies.set('token', res.data.token)
-          this.$router.replace({ path: '/home' })
+          sessionStorage.setItem('loginType','guide')
+          this.$router.replace({ path: '/home/copy' })
         }).catch(() => {
           Toast('服务器异常，请稍后再试')
         })
@@ -206,7 +208,7 @@
     position: absolute;
     top: 0;
     left:0;
-    background:url("./../common/image/login.jpg") no-repeat #000;
+    background:url("./../../common/image/login.jpg") no-repeat #000;
     background-size: 100% auto;
     //background-color :rgba(0,0,0,.3)
     .type
@@ -267,9 +269,11 @@
             font-size .6rem;
         .entry
           margin :3px 5px 20px 5px;
-          padding :5px 0;
+          /*padding :5px 0;*/
+          padding: 8px 0;
+          font-size: 0.65rem;
           /*font-size 16px;*/
-          font-size .75rem;
+          /*font-size .75rem;*/
           border-bottom: 1px solid #ddd
           .entry_input
             width: 100%;
@@ -278,8 +282,10 @@
         .message
           position relative
           margin: 3px 5px 20px 5px;
-          padding: 5px 0;
-          font-size .75rem;
+          /*padding: 5px 0;*/
+          /*font-size .75rem;*/
+          font-size: 0.65rem;
+          padding: 8px 0;
           border-bottom: 1px solid #ddd;
           .capture_input
             outline none;

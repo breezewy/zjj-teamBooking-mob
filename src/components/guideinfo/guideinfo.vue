@@ -66,7 +66,6 @@
 
           this.guideInfo = res.data
           console.log(this.guideInfo)
-
         })
       },
       back(){

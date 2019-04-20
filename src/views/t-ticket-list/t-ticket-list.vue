@@ -209,7 +209,7 @@
             optionsdays: data,
             selecteday: p.performDate,
           };
-          $("#calendar").calendar(options);
+          $("#calendar").calendarSelf(options);
 
         }).catch(() => {
         })

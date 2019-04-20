@@ -308,7 +308,7 @@
               sessionStorage.setItem('SET_DATE',this.performDate)
               Toast('下单成功')
               setTimeout(() =>{
-                this.$router.push({ path:'/order'})
+                this.$router.push({ path:'/order/copy'})
               },1000)
             }).catch(() => {
 

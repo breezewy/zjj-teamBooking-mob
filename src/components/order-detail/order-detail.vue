@@ -178,7 +178,7 @@
 
               Toast('取消订单成功')
               setTimeout(() =>{
-                this.$router.push('/order')
+                this.$router.push('/order/copy')
               },500)
             }).catch(()=>{
               Toast('服务器异常，请稍后再试')
@@ -251,7 +251,10 @@
 
           let orderDetails = res.data.orderDetails
           for(const value of orderDetails){
-            value.lastCount = 0
+            if(!value.lastCount){
+              value.lastCount = 0
+            }
+
           }
 
           this.orderDetails = orderDetails
@@ -318,32 +321,32 @@
         },0)
 
       },
-      nucleiGroup(){
-        MessageBox.confirm('确定执行核团操作?').then(action => {
-          if(action ==='confirm'){
-            let data= {
-              orderId: this.orders.id
-            };
-            this.$http.put(`/wap/confirmOrder`,data
-              ).then(({ data: res }) => {
-              if(res.code !=='200'){
-                MessageBox.alert(res.msg)
-                return
-              }
-              Toast('核团成功')
-              setTimeout(() =>{
-                this.$router.push({path:'/order'})
-              },700)
-
-
-            }).catch(() => {
-            })
-          }
-        });
-
-
-
-      },
+      // nucleiGroup(){
+      //   MessageBox.confirm('确定执行核团操作?').then(action => {
+      //     if(action ==='confirm'){
+      //       let data= {
+      //         orderId: this.orders.id
+      //       };
+      //       this.$http.put(`/wap/confirmOrder`,data
+      //         ).then(({ data: res }) => {
+      //         if(res.code !=='200'){
+      //           MessageBox.alert(res.msg)
+      //           return
+      //         }
+      //         Toast('核团成功')
+      //         setTimeout(() =>{
+      //           this.$router.push({path:'/order/copy'})
+      //         },700)
+      //
+      //
+      //       }).catch(() => {
+      //       })
+      //     }
+      //   });
+      //
+      //
+      //
+      // },
       //获取弹出框的
       cancel(){
           this.popupShow = false
@@ -401,7 +404,7 @@
               }
               Toast('核团成功')
               setTimeout(() =>{
-                this.$router.push({path:'/order'})
+                this.$router.push({path:'/order/copy'})
               },700)
             }).catch(() => {
             })

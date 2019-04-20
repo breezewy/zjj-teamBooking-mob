@@ -1,16 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
+//测试页面
 import HelloWorld from '@/components/HelloWorld'
-
-import Lead from '@/components/lead/lead'
-
-import Login from '@/components/login/login'
-
-import GuideLogin from '@/components/guidelogin/guidelogin'
-import TravelLogin from '@/views/travellogin/travellogin'
-
+// import Login from '@/components/login/login'
 import Upload from '@/components/upload'
 import Test from '@/components/test'
+
+//首页
+import Lead from '@/components/lead/lead'
+
+//导游页面
+import GuideLogin from '@/components/guidelogin/guidelogin'
 import Home from '@/components/home/home'
 import Search from '@/components/search/search'
 import Observe from '@/components/observe/observe'
@@ -21,18 +22,24 @@ import My from '@/components/my/my'
 import GuideInfo from '@/components/guideinfo/guideinfo'
 import idCardList from '@/components/idCard-list/idCard-list'
 import idCardEnter from '@/components/idCard-enter/idCard-enter'
-
-
-
-
 import Fix from '@/components/fix/start'
 import TicketList from '@/components/ticket-list/ticket-list'
 import TicketDetail from '@/components/ticket-detail/ticket-detail'
 import  TestScroll from '@/components/test-scroll/test-scroll'
 import BaseInfo from '@/components/base-info/base-info'
 
+//以下是导游copy的数据
+import  GuideLoginCopy from '@/components/guidelogin/guidelogincopy'
+import  HomeCopy from '@/components/home/home-copy'
+import FixCopy from '@/components/fix/fixcopy'
+import OrderCopy from '@/components/order/order-copy'
+import MyCopy from '@/components/my/my-copy'
+
+
+
 
 //以下是旅行社的路由
+import TravelLogin from '@/views/travellogin/travellogin'
 import Thome from '@/views/thome/thome'
 import Tobserve from '@/views/tobserve/tobserve'
 import Tscore from '@/views/tscore/tscore'
@@ -44,13 +51,24 @@ import TOrderDetail from '@/views/t-order-detail/t-order-detail'
 import TravelInfo from '@/views/travelInfo/travelInfo'
 
 
-import  GuideLoginCopy from '@/components/guidelogincopy'
-import  ObserveCopy from '@/components/observe-copy'
+//以下是旅行社copy的数据
+import TravelLoginCopy from '@/views/travellogin/travellogincopy'
+import TravelHome from '@/views/thome/travelhome'
+import TravelObserve from '@/views/tobserve/travelobserve'
+import TravelScore from '@/views/tscore/travelscore'
+import TravelOrder from '@/views/torder/travelorder'
+import TravelMy from '@/views/tmy/travelmy'
+
+
+
+
+
+
+//以下是新增的页面待处理
+//import  ObserveCopy from '@/components/observe-copy'
 import ObserveCopyMint from '@/components/observe-copy-mint'
-import FixCopy from '@/components/fix-copy'
-import HomeCopy from '@/components/home-copy'
-import MyCopy from '@/components/my-copy'
-import OrderCopy from '@/components/order-copy'
+
+
 
 
 
@@ -69,15 +87,16 @@ Vue.use(Router)
 export default new Router({
   mode:'history',
   routes: [
+    //测试路由
+    // { path: '/login', name: 'login',component: Login },
+    //{ path: '/test', name: 'test',  component: Test },
+
+    //首页
     { path: '/', name: 'lead',component: Lead },
-    { path: '/login', name: 'login',component: Login },
-    { path: '/guide/login', name: 'guidelogin',component: GuideLogin },
-
-    { path: '/travel/login', name: 'travellogin',component: TravelLogin },
-
-
     { path: '/upload/:orderNo', name: 'upload',component: Upload },
-    { path: '/test', name: 'test',  component: Test },
+
+    //导游路由
+    { path: '/guide/login', name: 'guidelogin',component: GuideLogin },
     { path: '/home',  name: 'home', component: Home },
     { path: '/search', name: 'search', component: Search},
     { path: '/observe',name: 'observe',component: Observe },
@@ -94,7 +113,17 @@ export default new Router({
     {  path: '/idCard-list/:id', name: 'idCard-list', component: idCardList},
     {  path: '/idCard-enter/:id', name: 'idCard-enter', component: idCardEnter},
 
+    //导游copy的旅游
+    // { path: '/home',  name: 'home', component: Home },
+    { path: '/guide/logincopy', name: 'guidelogincopy',component: GuideLoginCopy },
+    { path: '/home/copy', name: 'home-copy',component: HomeCopy },
+    { path: '/fix/copy', name: 'fixcopy',component: FixCopy },
+    { path: '/order/copy', name: 'order-copy',component: OrderCopy },
+    { path: '/my/copy', name: 'my-copy',component: MyCopy },
+
+
   //  以下是旅行社的路由
+    { path: '/travel/login', name: 'travellogin',component: TravelLogin },
     { path: '/travel-home',  name: 'thome', component: Thome },
     { path: '/travel-observe',  name: 'tobserve', component: Tobserve },
     { path: '/travel-score',  name: 'tscore', component: Tscore },
@@ -105,16 +134,21 @@ export default new Router({
     { path: '/travel-order-detail/:id',  name: 't-order-detail',component: TOrderDetail},
     { path: '/travelInfo',  name: 'travelInfo',component: TravelInfo},
 
+    //旅行社copy
+    { path: '/travel/logincopy', name: 'travellogincopy',component: TravelLoginCopy },
+    { path: '/travel/home', name: 'travelhome',component: TravelHome },
+    { path: '/travel/observe', name: 'travelobserve',component: TravelObserve },
+    { path: '/travel/score', name: 'travelscore',component: TravelScore },
+    { path: '/travel/order', name: 'travelorder',component: TravelOrder },
+    { path: '/travel/my', name: 'travelmy',component: TravelMy },
 
 
-    { path: '/guide/logincopy', name: 'guidelogincopy',component: GuideLoginCopy },
-    { path: '/observe/copy', name: 'observe-copy',component: ObserveCopy },
-    { path: '/observe/copy', name: 'observe-copy',component: ObserveCopy },
-    { path: '/observe/copy/mint', name: 'observe-copy-mint',component: ObserveCopyMint },
-    { path: '/fix/copy', name: 'fix-copy',component: FixCopy },
-    { path: '/home/copy', name: 'home-copy',component: HomeCopy },
-    { path: '/my/copy', name: 'my-copy',component: MyCopy },
-    { path: '/order/copy', name: 'order-copy',component: OrderCopy },
+    //以下是待处理的路由
+    // { path: '/observe/copy', name: 'observe-copy',component: ObserveCopy },
+    // { path: '/observe/copy', name: 'observe-copy',component: ObserveCopy },
+    // { path: '/observe/copy/mint', name: 'observe-copy-mint',component: ObserveCopyMint },
+
+
 
 
   ]

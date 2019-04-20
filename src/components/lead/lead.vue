@@ -19,10 +19,10 @@
     name: "lead",
     methods:{
       guideHandle(){
-        this.$router.push({path:'/guide/login'})
+        this.$router.push({path:'/guide/logincopy'})
       },
       travelHandle(){
-        this.$router.push({path:'/travel/login'})
+        this.$router.push({path:'/travel/logincopy'})
       }
     }
 

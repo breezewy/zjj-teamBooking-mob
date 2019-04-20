@@ -1,7 +1,7 @@
 <template>
     <div class="idCard-enter-container">
       <header class="header">
-        <h1>完善旅客信息</h1>
+        <h1>完善游客信息</h1>
         <i @click="back" class="cubeic-back"></i>
       </header>
       <div class="wrapper">
@@ -98,11 +98,11 @@
         <div class="edit_btn">
           <div class="order_btn" @click="addGuest">
             <i class="iconfont icon-tianjia"></i>
-            <span class="on_add">添加旅客</span>
+            <span class="on_add">添加游客</span>
           </div>
           <div class="order_btn" @click="completeGuest()">
             <i class="iconfont icon-wancheng"></i>
-            <span class="on_complete">查看旅客列表</span>
+            <span class="on_complete">查看游客列表</span>
           </div>
         </div>
       </div>

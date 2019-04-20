@@ -25,7 +25,7 @@
               </span>
             </span>
         </div>
-        <div class="list">
+        <div class="list" >
             <div class="inner clear-fix" v-for="(item,index) in whiteList">
               <span class="name">{{item.name}}</span>
               <div class="info">
@@ -34,6 +34,7 @@
               </div>
               <span class="delete" @click="deleteHandle(item)">删除</span>
             </div>
+
             <!--<div class="inner clear-fix">-->
 
               <!--<span class="name">张阿狗</span>-->
@@ -43,6 +44,7 @@
               <!--</div>-->
             <!--</div>-->
         </div>
+
       </div>
     </div>
 </template>
@@ -86,7 +88,7 @@
         this.$router.push({ name: 'idCard-enter', params: { id:  id}})
       },
       returnToOrder(){
-        this.$router.push({path:'/order'})
+        this.$router.push({path:'/order/copy'})
       },
       deleteHandle(item){
         let name = item.name
