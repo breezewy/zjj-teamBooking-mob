@@ -34,8 +34,8 @@
             <span class="text">已撤销</span>
           </div>
         </div>
-        <div class="order-list">
-          <ul>
+        <div class="order-list" v-if="orderListFlag">
+          <ul v-if="orderList.length">
             <li class="order-item" @click="goOrderDetail(item.id)"
                 v-for="item in orderList"
                 :class="{'color-blue': item.billStatus =='03',
@@ -74,6 +74,9 @@
 
             </li>
           </ul>
+          <div v-if="!orderList.length" class="no-result-wrapper">
+            <no-result title="抱歉，暂无搜索结果"></no-result>
+          </div>
         </div>
 
       </div>
@@ -95,6 +98,7 @@
   import { Toast } from 'mint-ui'
   import TabBar from '@/base/travelTabBar/travelTabBar'
   import VTop from '@/base/vtop/vtop'
+  import NoResult from '@/base/no-result/no-result'
   import moment from 'moment'
   import {addDate } from "../../common/js/format";
   const perpage = 1000
@@ -115,7 +119,8 @@
         formatDateList:[],               //格式化的日期格式
         calendarShow: false,
         selectedTabBar:'travel/order',
-        lastDate:''             //最后一个日期
+        lastDate:'',             //最后一个日期
+        orderListFlag:false
 
       }
     },
@@ -261,10 +266,15 @@
           console.log(res)
           if(res.code !== '200'){
             Toast(res.msg)
+            this.orderListFlag = true
+            return
           }
           this.orderList = res.data.records
+          this.orderListFlag = true
         }).catch((err) =>{
-          Toast(err)
+          this.orderListFlag = true
+          Toast('服务器异常，请稍后再试')
+
         })
       },
       shijianCK(){
@@ -318,7 +328,8 @@
     },
     components:{
       TabBar,
-      VTop
+      VTop,
+      NoResult
     },
   };
 </script>
@@ -404,8 +415,8 @@
             /*background-color:#84F329*/
             background-color:#a9ffb4
           .color-red
-            /*background-color:#FF00FF*/
-            background-color:#ffe4ac
+            background-color:#FF00FF
+            //background-color:#ffe4ac
           .color-cancel
             /*background-color:#C6C3C6*/
             background-color:#c5c3c6
@@ -427,8 +438,8 @@
           /*background-color:#84F329*/
           background-color:#a9ffb4
         .color-red
-          /*background-color:#FF00FF*/
-          background-color:#ffe4ac
+          background-color:#FF00FF
+          /*background-color:#ffe4ac*/
         .color-cancel
           /*background-color:#C6C3C6*/
           background-color:#c5c3c6
@@ -473,6 +484,11 @@
               margin-right:4px;
             .handle-item-right
               margin-left:4px;
+        .no-result-wrapper
+          position: absolute
+          width: 100%
+          top: 50%
+          transform: translateY(-50%)
 
 
 

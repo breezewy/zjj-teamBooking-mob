@@ -7,7 +7,7 @@
       </header>
 
       <!--这是首页的copy页面-->
-      <div class="wrapper">
+      <div class="wrapper" v-if="flag">
         <div class="notice">
           <h1 class="title">预定须知</h1>
           <ul class="list">
@@ -23,13 +23,13 @@
         <div class="rule">
           <h1 class="title">开票规则</h1>
           <ul class="list">
-            <li class="item">
-              请凭入园单红联，出票当月到票房开具发票，隔月不予补开。
-              <!--1.通过首页开票按钮进入页面输入开票订单号进行开票-->
+            <li class="item" v-for="(item, index) in  receiptRuleList">
+              {{index+1}}、{{item.content}}
             </li>
             <!--<li class="item">-->
-              <!--2.进入订单列表根据游玩日期查询订单信息，点击开发票按钮进行开票-->
+              <!--请凭入园单红联，出票当月到票房开具发票，隔月不予补开。-->
             <!--</li>-->
+
           </ul>
           <!--<div class="handle">-->
             <!--<span class="btn">立即开票</span>-->
@@ -83,7 +83,7 @@
 
           </div>
           <div class="handle">
-            <span class="btn" v-if="(noConfirmOrderInfo.billStatus=='01' || noConfirmOrderInfo.billStatus=='02') && leftTime/1000>=0">去核团</span>
+            <span class="btn" @click="nuclearByNow" v-if="(noConfirmOrderInfo.billStatus=='01' || noConfirmOrderInfo.billStatus=='02') && leftTime/1000>=0">去核团</span>
             <!--<span class="btn" >去核团</span>-->
           </div>
           <img src="./../../common/image/today_float_copy.png" class="today-float" alt="">
@@ -97,6 +97,8 @@
 <script>
   import TabBar from '@/base/tabbar/tabbar'
   import { Toast,MessageBox  } from 'mint-ui'
+  import {isPositive} from "../../utils/validation";
+
   export default {
     name: "home-copy",
     components:{
@@ -110,24 +112,45 @@
         performDate:'',             //游玩的日期
         orderId:'',
         lastTime:'',                 //显示的日期
-        timestamp2:'',                //核团的日期
+        timestamp2:'12',                //核团的日期
         timer: null,                 //定时器
         leftTime:'',
-        bookingRuleList:[]
+        bookingRuleList:[],
+        receiptRuleList:[],             //开票规则
+        flag: true,              //显示标志位
       }
     },
     created(){
+      // /wap/receiptRule
       this.getBookingRule()
+      this.getReceiptRule()
+
       this.getNoConfirmOrder()
     },
     methods:{
       getBookingRule(){
-        this.$http.get('/wap/bookingRule').then(({ data: res }) => {
+        // setTimeout(()=>{
+          this.$http.get('/wap/bookingRule').then(({ data: res }) => {
+            this.flag=true
+            if(res.code !== '200'){
+              Toast(res.msg)
+              return
+            }
+            this.bookingRuleList = res.data
+          }).catch(() =>{
+            Toast('服务器异常，请稍后再试')
+            this.flag=true
+          })
+        // },1000)
+
+      },
+      getReceiptRule(){
+        this.$http.get('/wap/receiptRule').then(({ data: res }) => {
           if(res.code !== '200'){
             Toast(res.msg)
             return
           }
-          this.bookingRuleList = res.data
+          this.receiptRuleList = res.data.list
         }).catch(() =>{})
       },
       getNoConfirmOrder(){
@@ -148,6 +171,10 @@
             let checkTime = this.noConfirmOrderInfo.checkTime
             let formatCheckTime = checkTime+':00:00'
             let totalCheckTime = playDate+' '+formatCheckTime
+            totalCheckTime = totalCheckTime.replace(/-/g,'/')
+            console.log(totalCheckTime)
+            // alert(totalCheckTime)
+            // alert(typeof(totalCheckTime))
 
             if(this.noConfirmOrderInfo.billStatus=='01' || this.noConfirmOrderInfo.billStatus=='02'){
               let date = new Date(totalCheckTime);
@@ -159,7 +186,6 @@
           }
 
         }).catch(() =>{
-          Toast('服务器异常，请稍后再试')
         })
       },
       countTime(){
@@ -169,7 +195,10 @@
         this.leftTime = leftTime
         //定义变量 d,h,m,s保存倒计时的时间
         var d,h,m,s;
+      // ^[0-9]+\.?[0-9]{0,9}$
         if (leftTime/1000>=0) {
+
+        // if (isPositive(leftTime/1000)) {
           // console.log(leftTime)
           d = Math.floor(leftTime/1000/60/60/24);
           h = Math.floor(leftTime/1000/60/60%24);
@@ -241,7 +270,7 @@
         color: #1c9ae7;
         font-size: 16px
     .wrapper
-      height: calc(100% - 50px)
+      height: calc(100% - 90px)
       //height: calc(100%)
       overflow-x: hidden
       overflow-y: auto
@@ -302,7 +331,7 @@
       .rule
         position relative
         /*margin: 1.25rem .4rem 1.25rem .4rem;*/
-        margin: .65rem .4rem 2.65rem .4rem;
+        margin: .65rem .4rem .65rem .4rem;
         background-color #fff;
         padding :.875rem  .85rem 1.575rem .85rem;
         border-radius 8px;
@@ -358,7 +387,7 @@
       .today
         position relative
         /*margin: 1.25rem .4rem 1.25rem .4rem;*/
-        margin: .65rem .4rem 2.65rem .4rem;
+        margin: .65rem .4rem .65rem .4rem;
         background-color #fff;
         padding :.875rem  .85rem .875rem .85rem;
         border-radius 8px;

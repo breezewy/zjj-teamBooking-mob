@@ -51,7 +51,7 @@
       return {
         showFlag: false,
         refreshDelay: 120,
-        selected:'',
+        // selected:'',
       }
     },
     props:{
@@ -60,6 +60,10 @@
           default:() =>{
             return []
           }
+      },
+      selected:{
+        type:String,
+        default: ''
       }
     },
 

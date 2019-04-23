@@ -41,6 +41,9 @@
                   </div>
                 </li>
               </ul>
+              <div v-show="!performCodeList.length" class="no-result-wrapper">
+                <no-result title="抱歉，暂无搜索结果"></no-result>
+              </div>
             </cube-scroll>
 
           </div>
@@ -63,13 +66,15 @@
   import { Toast} from 'mint-ui'
   import Scroll from '@/base/scroll/scroll'
   import VTop from '@/base/vtop/vtop'
+  import NoResult from '@/base/no-result/no-result'
   import {addDate } from "../../common/js/format";
   import moment from 'moment'
   export default {
     name: "t-ticket-list",
     components:{
       VTop,
-      Scroll
+      Scroll,
+      NoResult
     },
     computed:{
       options() {
@@ -226,59 +231,5 @@
 
 <style lang="stylus"  rel="stylesheet/stylus">
   @import "./../../assets/ticket-list"
-  .ticket-list-container
-    position: absolute
-    top: 0
-    left: 0
-    width: 100%
-    height: 100%
-    background: #efeff4
-    .header
-      position: relative;
-      height: 40px;
-      line-height: 40px;
-      text-align: center;
-      background-color: #edf0f4;
-      box-shadow: 0 1px 6px #ccc;
-      -webkit-backface-visibility: hidden;
-      backface-visibility: hidden;
-      z-index: 5;
-      h1
-        font-size: 16px
-        font-weight: 700;
-      .cubeic-back
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 0 15px;
-        color: #1c9ae7;
-        font-size: 16px
-    .wrapper
-      height: calc(100% - 40px);
-      overflow-x: hidden;
-      overflow-y: auto;
-      .search-box-wrapper
-        display: flex
-        margin: 10px 10px;
-        align-items: center
-        box-sizing: border-box
-        padding: 10px
-        height: 32px;
-        background-color: #fff
-        border-radius: 8px;
-        border:1px solid #ddd;
-        .icon-search
-          font-size: 14px
-          color: #222
-        .box
-          margin: 5px;
-          padding 5px;
-          line-height: 18px;
-          color: #666
-          font-size: 14px;
-        .week
-          font-size:14px;
-          color: #666
-
 
 </style>

@@ -40,7 +40,7 @@
 </template>
 
 <script>
-  import {MessageBox} from 'mint-ui'
+  import {MessageBox, Toast} from 'mint-ui'
   import TabBar from '@/base/travelTabBar/travelTabBar'
   import {clearLoginInfo} from "../../utils";
   export default {
@@ -80,10 +80,11 @@
         })
       },
       updatePassWord(){
-        this.$createToast({
-          txt: '暂未开放',
-          type: 'txt'
-        }).show()
+        this.$router.push({path:'/travel-password'})
+        // this.$createToast({
+        //   txt: '暂未开放',
+        //   type: 'txt'
+        // }).show()
       },
       loginOut(){
         MessageBox({

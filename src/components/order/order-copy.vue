@@ -34,8 +34,8 @@
             <span class="text">已撤销</span>
           </div>
         </div>
-        <div class="order-list">
-          <ul>
+        <div class="order-list" v-if="orderListFlag">
+          <ul v-if="orderList.length">
             <li class="order-item" @click="goOrderDetail(item.id)"
                 v-for="item in orderList"
                 :class="{'color-blue': item.billStatus =='03',
@@ -64,16 +64,22 @@
               <div class="clear-fix handle">
 
                 <!--<span class="idCard-list handle-item">-->
-                <span class="handle-item-left handle-item" @click.stop="goTourist(item)">
+                <span class="handle-item-left handle-item" v-show="item.jump" @click.stop="goTourist(item)">
                   <span class="idCard-list">游客列表</span>
                 </span>
-                <span class="handle-item-right handle-item" @click.stop="goEnter(item)">
-                   <span class="entering">去录入</span>
+                <span class="handle-item-right handle-item" v-show="item.jump" @click.stop="goEnter(item)">
+                   <span   class="entering">去录入</span>
+                </span>
+                <span class="handle-item-none" v-show="!item.jump">
+
                 </span>
               </div>
 
             </li>
           </ul>
+          <div v-if="!orderList.length" class="no-result-wrapper">
+            <no-result title="抱歉，暂无搜索结果"></no-result>
+          </div>
         </div>
 
       </div>
@@ -96,10 +102,11 @@
   import TabBar from '@/base/tabbar/tabbar'
   import VTop from '@/base/vtop/vtop'
   import moment from 'moment'
+  import NoResult from '@/base/no-result/no-result'
   import {addDate } from "../../common/js/format";
   const perpage = 1000
   export default {
-    name: "order",
+    name: "order-copy",
     data(){
       return {
         today:'',
@@ -109,6 +116,7 @@
         title: '订单列表',
         current:1,                  //第几页
         orderList: [],
+        orderListFlag:false,
         select_date:'',            //sessionStorage的内容
         performDate:'',
         dataArray:[],                 //未格式化的日期格式
@@ -245,7 +253,7 @@
           }
 
         }).catch((err)=>{
-
+          Toast('服务器异常，请稍后再试')
         })
       },
       getOrderList(date){
@@ -258,13 +266,16 @@
           date : date
         };
         this.$http.post(`/wap/listOrders`,data).then(({ data: res }) => {
-          console.log(res)
           if(res.code !== '200'){
             Toast(res.msg)
+            this.orderListFlag = true
+            return
           }
           this.orderList = res.data.records
+          this.orderListFlag = true
         }).catch((err) =>{
-          Toast(err)
+          Toast('服务器异常，请稍后再试')
+          this.orderListFlag = true
         })
       },
       shijianCK(){
@@ -318,7 +329,8 @@
     },
     components:{
       TabBar,
-      VTop
+      VTop,
+      NoResult
     },
   };
 </script>
@@ -404,8 +416,8 @@
             /*background-color:#84F329*/
             background-color:#a9ffb4
           .color-red
-            /*background-color:#FF00FF*/
-            background-color:#ffe4ac
+            background-color:#FF00FF
+            /*background-color:#ffe4ac*/
           .color-cancel
             /*background-color:#C6C3C6*/
             background-color:#c5c3c6
@@ -427,8 +439,8 @@
           /*background-color:#84F329*/
           background-color:#a9ffb4
         .color-red
-          /*background-color:#FF00FF*/
-          background-color:#ffe4ac
+          background-color:#FF00FF
+          /*background-color:#ffe4ac*/
         .color-cancel
           /*background-color:#C6C3C6*/
           background-color:#c5c3c6
@@ -455,28 +467,36 @@
             line-height: 30px;
           .handle
             display:flex
-            margin-top 7px;
-            margin-bottom 4px;
+            /*margin-top 7px;*/
+            margin-top 10px;
+            /*margin-bottom 4px;*/
+            margin-bottom 6px;
+            .handle-item-none
+              flex:1
             .handle-item
               flex:1
 
-              height 1.325rem;
+              /*height 1.325rem;*/
               /*line-height 1.325rem;*/
-              line-height 1.4rem;
-              background-color:#1a9ef0
-              //background linear-gradient(90deg, #2090d2, #1f98e1 50%, #2090d2);
+              /*line-height 1.4rem;*/
+              height :1.5rem
+              line-height 1.5rem
 
+              //background linear-gradient(90deg, #2090d2, #1f98e1 50%, #2090d2);
+              background-color:#1a9ef0
               color:#fff;
               border-radius:.65rem;
               text-align center
             .handle-item-left
+
               margin-right:4px;
             .handle-item-right
               margin-left:4px;
-
-
-
-
+        .no-result-wrapper
+          position: absolute
+          width: 100%
+          top: 50%
+          transform: translateY(-50%)
 
 
 </style>

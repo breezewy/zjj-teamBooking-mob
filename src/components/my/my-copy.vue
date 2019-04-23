@@ -80,10 +80,11 @@
         })
       },
       updatePassWord(){
-        this.$createToast({
-          txt: '暂未开放',
-          type: 'txt'
-        }).show()
+        // this.$createToast({
+        //   txt: '暂未开放',
+        //   type: 'txt'
+        // }).show()
+        this.$router.push({path:'/reset-password'})
       },
       loginOut(){
         MessageBox({

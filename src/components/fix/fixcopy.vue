@@ -48,7 +48,7 @@
         <div class="btn-search" @click="searchTicket()">
           <span class="go-search">搜索行程</span>
         </div>
-        <playlist :teamTypeSelect="teamTypeSelect" @item="itemSelected" ref="playlist"></playlist>
+        <playlist :teamTypeSelect="teamTypeSelect" :selected="teamType"  @item="itemSelected" ref="playlist"></playlist>
         <tab-bar :selected="selectedTabBar" ></tab-bar>
       </div>
     </div>

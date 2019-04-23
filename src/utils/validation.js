@@ -6,6 +6,12 @@ export function isMobile (s) {
   return /^1[0-9]{10}$/.test(s)
 }
 
+// 判断是否是正数
+export function isPositive (s) {
+  return /^[0-9]+\.?[0-9]{0,9}$/.test(s)
+}
+
+
 /**
  * 整数
  * @param {*} s

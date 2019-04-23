@@ -27,6 +27,7 @@ import TicketList from '@/components/ticket-list/ticket-list'
 import TicketDetail from '@/components/ticket-detail/ticket-detail'
 import  TestScroll from '@/components/test-scroll/test-scroll'
 import BaseInfo from '@/components/base-info/base-info'
+import ResetPassword from '@/components/reset-password/reset-password'
 
 //以下是导游copy的数据
 import  GuideLoginCopy from '@/components/guidelogin/guidelogincopy'
@@ -49,6 +50,7 @@ import TTicketList from '@/views/t-ticket-list/t-ticket-list'
 import TTicketDetail from '@/views/t-ticket-detail/t-ticket-detail'
 import TOrderDetail from '@/views/t-order-detail/t-order-detail'
 import TravelInfo from '@/views/travelInfo/travelInfo'
+import TravelPassword from '@/views/travel-password/travel-password'
 
 
 //以下是旅行社copy的数据
@@ -112,6 +114,8 @@ export default new Router({
     {  path: '/test-scroll', name: 'test-scroll', component: TestScroll},
     {  path: '/idCard-list/:id', name: 'idCard-list', component: idCardList},
     {  path: '/idCard-enter/:id', name: 'idCard-enter', component: idCardEnter},
+    {  path: '/reset-password', name: 'reset-password', component: ResetPassword},
+
 
     //导游copy的旅游
     // { path: '/home',  name: 'home', component: Home },
@@ -133,6 +137,7 @@ export default new Router({
     { path: '/travel-ticket-detail',  name: 't-ticket-detail',component: TTicketDetail},
     { path: '/travel-order-detail/:id',  name: 't-order-detail',component: TOrderDetail},
     { path: '/travelInfo',  name: 'travelInfo',component: TravelInfo},
+    { path: '/travel-password',  name: 'travel-password',component: TravelPassword},
 
     //旅行社copy
     { path: '/travel/logincopy', name: 'travellogincopy',component: TravelLoginCopy },

@@ -72,6 +72,7 @@
         const orderNo = this.$route.params.id
         this.$http.get(`/wap/idCard/${orderNo}`).then(({ data: res }) => {
           if (res.code !== '200') {
+            Toast(res.msg)
             return;
           }
           this.whiteList = res.data.idCards

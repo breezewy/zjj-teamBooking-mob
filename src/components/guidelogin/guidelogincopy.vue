@@ -13,7 +13,7 @@
               <span class="text">请输入身份证</span>
             </div>
             <div class="entry">
-              <input type="text" v-model="idCard" class="entry_input">
+              <input type="text" v-model.trim="idCard" class="entry_input">
             </div>
           </div>
 
@@ -24,7 +24,7 @@
               <span class="eye"></span>
             </div>
             <div class="entry">
-              <input type="password" v-model="password" class="entry_input">
+              <input type="password" v-model.trim="password" class="entry_input">
 
 
             </div>
@@ -44,7 +44,7 @@
               <span class="text">请输入手机号</span>
             </div>
             <div class="entry">
-              <input type="number" v-model="mobile" class="entry_input">
+              <input type="number" v-model.trim="mobile" class="entry_input">
             </div>
           </div>
 
@@ -56,7 +56,7 @@
             </div>
             <div class="message clear-fix">
               <!--<input type="password" class="entry_input">-->
-              <input v-model="captcha" class="capture_input">
+              <input v-model.trim="captcha" class="capture_input">
               <div class="message-send" @click="sendCode()">{{codeText}}</div>
             </div>
           </div>
