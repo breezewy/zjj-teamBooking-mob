@@ -11,10 +11,10 @@ import Test from '@/components/test'
 import Lead from '@/components/lead/lead'
 
 //导游页面
-import GuideLogin from '@/components/guidelogin/guidelogin'
-import Home from '@/components/home/home'
+// import GuideLogin from '@/components/guidelogin/guidelogin'
+// import Home from '@/components/home/home'
 import Search from '@/components/search/search'
-import Observe from '@/components/observe/observe'
+// import Observe from '@/components/observe/observe'
 import Score from '@/components/score/score'
 import Order from '@/components/order/order'
 import OrderDetail from '@/components/order-detail/order-detail'
@@ -61,6 +61,7 @@ import TravelScore from '@/views/tscore/travelscore'
 import TravelOrder from '@/views/torder/travelorder'
 import TravelMy from '@/views/tmy/travelmy'
 
+import NotFoundComponent from '@/components/notFound/notFound'
 
 
 
@@ -94,24 +95,24 @@ export default new Router({
     //{ path: '/test', name: 'test',  component: Test },
 
     //首页
-    { path: '/', name: 'lead',component: Lead },
-    { path: '/upload/:orderNo', name: 'upload',component: Upload },
+    // { path: '/', name: 'lead',component: Lead },
+    // { path: '/upload/:orderNo', name: 'upload',component: Upload },
 
     //导游路由
-    { path: '/guide/login', name: 'guidelogin',component: GuideLogin },
-    { path: '/home',  name: 'home', component: Home },
+    // { path: '/guide/login', name: 'guidelogin',component: GuideLogin },
+    // { path: '/home',  name: 'home', component: Home },
     { path: '/search', name: 'search', component: Search},
-    { path: '/observe',name: 'observe',component: Observe },
+    // { path: '/observe',name: 'observe',component: Observe },
     { path: '/score',  name: 'score',  component: Score},
-    { path: '/order', name: 'order', component: Order},
+    // { path: '/order', name: 'order', component: Order},
     { path: '/order-detail/:id',  name: 'order-detail',component: OrderDetail },
-    { path: '/my',  name: 'my', component: My },
-    { path: '/guideInfo', name: 'guideInfo', component: GuideInfo},
-    { path: '/fix', name: 'fix',component: Fix },
+    // { path: '/my',  name: 'my', component: My },
+    // { path: '/guideInfo', name: 'guideInfo', component: GuideInfo},
+    // { path: '/fix', name: 'fix',component: Fix },
     { path: '/ticket-list',  name: 'ticket-list',component: TicketList},
     { path: '/ticket-detail',  name: 'ticket-detail',component: TicketDetail},
-    { path: '/base-info',  name: 'base-info',component: BaseInfo},
-    {  path: '/test-scroll', name: 'test-scroll', component: TestScroll},
+    // { path: '/base-info',  name: 'base-info',component: BaseInfo},
+    // {  path: '/test-scroll', name: 'test-scroll', component: TestScroll},
     {  path: '/idCard-list/:id', name: 'idCard-list', component: idCardList},
     {  path: '/idCard-enter/:id', name: 'idCard-enter', component: idCardEnter},
     {  path: '/reset-password', name: 'reset-password', component: ResetPassword},
@@ -127,12 +128,12 @@ export default new Router({
 
 
   //  以下是旅行社的路由
-    { path: '/travel/login', name: 'travellogin',component: TravelLogin },
-    { path: '/travel-home',  name: 'thome', component: Thome },
-    { path: '/travel-observe',  name: 'tobserve', component: Tobserve },
-    { path: '/travel-score',  name: 'tscore', component: Tscore },
-    { path: '/travel-order',  name: 'torder', component: Torder },
-    { path: '/travel-my',  name: 'tmy', component: Tmy },
+  //   { path: '/travel/login', name: 'travellogin',component: TravelLogin },
+  //   { path: '/travel-home',  name: 'thome', component: Thome },
+  //   { path: '/travel-observe',  name: 'tobserve', component: Tobserve },
+  //   { path: '/travel-score',  name: 'tscore', component: Tscore },
+  //   { path: '/travel-order',  name: 'torder', component: Torder },
+  //   { path: '/travel-my',  name: 'tmy', component: Tmy },
     { path: '/travel-ticket-list',  name: 't-ticket-list',component: TTicketList},
     { path: '/travel-ticket-detail',  name: 't-ticket-detail',component: TTicketDetail},
     { path: '/travel-order-detail/:id',  name: 't-order-detail',component: TOrderDetail},
@@ -152,7 +153,7 @@ export default new Router({
     // { path: '/observe/copy', name: 'observe-copy',component: ObserveCopy },
     // { path: '/observe/copy', name: 'observe-copy',component: ObserveCopy },
     // { path: '/observe/copy/mint', name: 'observe-copy-mint',component: ObserveCopyMint },
-
+    { path: '*', component: NotFoundComponent }
 
 
 

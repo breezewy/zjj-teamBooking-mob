@@ -70,20 +70,21 @@
               <span class="text" style="margin-right: 3px;">{{noConfirmOrderInfo.performDate}}</span>
               <span class="value" style="margin-right: 3px;">{{noConfirmOrderInfo.performTime}}</span>
             </div>
-            <div class="item">
+            <div class="item" v-if="noConfirmOrderInfo.checkTime">
               <span class="text">截止时间：</span>
               <span class="value">{{noConfirmOrderInfo.performDate}}</span>
               <span class="value">{{noConfirmOrderInfo.checkTime}}:00:00</span>
             </div>
-            <div class="item">
+            <div class="item" v-if="noConfirmOrderInfo.checkTime">
               <span class="text">倒计时：</span>
               <span class="value">[ <span style="color:#e40000">{{lastTime}}</span> ]</span>
-              <span class="value" v-if="leftTime>=0" style="margin-left: 5px;">请及时核团</span>
+              <span class="value" v-if="leftTime/1000>=0" style="margin-left: 5px;">请及时核团</span>
             </div>
 
           </div>
           <div class="handle">
-            <span class="btn" @click="nuclearByNow" v-if="(noConfirmOrderInfo.billStatus=='01' || noConfirmOrderInfo.billStatus=='02') && leftTime/1000>=0">去核团</span>
+            <span class="btn" @click="nuclearByNow" v-if="(noConfirmOrderInfo.billStatus=='01' || noConfirmOrderInfo.billStatus=='02') && noConfirmOrderInfo.checkTime && leftTime/1000>=0">去核团</span>
+            <span class="btn" @click="nuclearByNow" v-if="(noConfirmOrderInfo.billStatus=='01' || noConfirmOrderInfo.billStatus=='02') && !noConfirmOrderInfo.checkTime && noCheckTimeFlag">去核团</span>
             <!--<span class="btn" >去核团</span>-->
           </div>
           <img src="./../../common/image/today_float_copy.png" class="today-float" alt="">
@@ -112,12 +113,13 @@
         performDate:'',             //游玩的日期
         orderId:'',
         lastTime:'',                 //显示的日期
-        timestamp2:'12',                //核团的日期
+        timestamp2:'',                //核团的日期
         timer: null,                 //定时器
         leftTime:'',
         bookingRuleList:[],
         receiptRuleList:[],             //开票规则
         flag: true,              //显示标志位
+        noCheckTimeFlag:false       //当没有核团时间控制是否 去核团显示
       }
     },
     created(){
@@ -169,20 +171,37 @@
             this.orderId = this.noConfirmOrderInfo.id
             let playDate = this.performDate
             let checkTime = this.noConfirmOrderInfo.checkTime
-            let formatCheckTime = checkTime+':00:00'
-            let totalCheckTime = playDate+' '+formatCheckTime
-            totalCheckTime = totalCheckTime.replace(/-/g,'/')
-            console.log(totalCheckTime)
-            // alert(totalCheckTime)
-            // alert(typeof(totalCheckTime))
+            if(checkTime){
+              let formatCheckTime = checkTime+':00:00'
+              let totalCheckTime = playDate+' '+formatCheckTime
+              totalCheckTime = totalCheckTime.replace(/-/g,'/')
+              console.log(totalCheckTime)
+              // alert(totalCheckTime)
+              // alert(typeof(totalCheckTime))
 
-            if(this.noConfirmOrderInfo.billStatus=='01' || this.noConfirmOrderInfo.billStatus=='02'){
-              let date = new Date(totalCheckTime);
-              this.timestamp2 = date.getTime()
-              this.countTime()
+              if(this.noConfirmOrderInfo.billStatus=='01' || this.noConfirmOrderInfo.billStatus=='02'){
+                let date = new Date(totalCheckTime);
+                this.timestamp2 = date.getTime()
+                this.countTime()
+              }else{
+                this.lastTime = '核团时间已过期'
+              }
             }else{
-              this.lastTime = '核团时间已过期'
+              console.log(checkTime)
+              let nowNoCheck = new Date().getTime()
+              let  performNoCheckTime = this.noConfirmOrderInfo.performTime.split('-')[0]+':00'
+              let totalNoCheckTime = playDate+' '+performNoCheckTime;
+              totalNoCheckTime = totalNoCheckTime.replace(/-/g,'/')
+              let dateNoCheckTime = new Date(totalNoCheckTime).getTime();
+              if(nowNoCheck > dateNoCheckTime){
+                this.noCheckTimeFlag = false
+              }else{
+                this.noCheckTimeFlag = true
+              }
+
+
             }
+
           }
 
         }).catch(() =>{
@@ -226,10 +245,6 @@
        * 立即核团
        */
       nuclearByNow(){
-        if(this.leftTime/1000 <= 0){
-          Toast('核团时间已过，无法核团')
-          return
-        }
         sessionStorage.setItem('SET_DATE',this.performDate)
         // this.$router.push({ name: 'order-detail', params: { heId: '111111',id:this.orderId }})
         this.$router.push({ name: 'order-detail', params: {id:this.orderId }})

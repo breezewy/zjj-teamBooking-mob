@@ -1,6 +1,7 @@
 <template>
   <transition name="list-fade">
-    <div class="playlist" @click="hide" v-show="showFlag">
+    <!--<div class="playlist" @click="hide" v-show="showFlag">-->
+    <div class="playlist" v-show="showFlag">
       <div class="list-wrapper" @click.stop>
         <div class="list-header">
           <h1 class="title">
@@ -12,7 +13,7 @@
         <scroll ref="listContent" :data="teamTypeSelect" class="list-content" :refreshDelay="refreshDelay">
           <!--<transition-group ref="list" name="list" tag="ul">-->
           <div style="font-size: 14px;">
-            <cube-radio-group v-model="selected" :options="teamTypeSelect" />
+            <cube-radio-group v-model="currentValue" :options="teamTypeSelect" />
           </div>
 
             <!--<li :key="item.id" class="item" v-for="(item,index) in teamTypeSelect"-->
@@ -51,7 +52,21 @@
       return {
         showFlag: false,
         refreshDelay: 120,
-        // selected:'',
+        currentValue:this.selected,
+      }
+    },
+
+    watch:{
+      currentValue(newVal){
+        console.log(newVal)
+        for(const value of this.teamTypeSelect){
+          if(value.value === newVal){
+            this.selectText= value.label
+          }
+        }
+
+        this.$emit('item' ,newVal,this.selectText)
+        // this.$emit('item' ,newVal,this.selectText)
       }
     },
     props:{
@@ -86,69 +101,19 @@
       },
       hide() {
         this.showFlag = false
-        if(!this.selected){
-          return;
-        }
-        for(const value of this.teamTypeSelect){
-           if(value.value === this.selected){
-              this.selectText= value.label
-           }
-        }
+        // if(!this.selected){
+        //   return;
+        // }
+        // for(const value of this.teamTypeSelect){
+        //    if(value.value === this.selected){
+        //       this.selectText= value.label
+        //    }
+        // }
+        //
+        // this.$emit('item' ,this.selected,this.selectText)
+      }
+    },
 
-        this.$emit('item' ,this.selected,this.selectText)
-      },
-      // showConfirm() {
-      //   this.$refs.confirm.show()
-      // },
-      // confirmClear() {
-      //   this.deleteSongList()
-      //   this.hide()
-      // },
-      // getCurrentIcon(item) {
-      //   if (this.currentSong.id === item.id) {
-      //     return 'icon-play'
-      //   }
-      //   return ''
-      // },
-      // selectItem(item, index) {
-      //   if (this.mode === playMode.random) {
-      //     index = this.playlist.findIndex((song) => {
-      //       return song.id === item.id
-      //     })
-      //   }
-      //   this.setCurrentIndex(index)
-      //   this.setPlayingState(true)
-      // },
-      // scrollToCurrent(current) {
-      //   const index = this.sequenceList.findIndex((song) => {
-      //     return current.id === song.id
-      //   })
-      //   this.$refs.listContent.scrollToElement(this.$refs.list.$el.children[index], 300)
-      // },
-      // deleteOne(item) {
-      //   this.deleteSong(item)
-      //   if (!this.playlist.length) {
-      //     this.hide()
-      //   }
-      // },
-      // addSong() {
-      //   this.$refs.addSong.show()
-      // },
-      // ...mapActions([
-      //   'deleteSong',
-      //   'deleteSongList'
-      // ])
-    },
-    watch: {
-      // currentSong(newSong, oldSong) {
-      //   if (!this.showFlag || newSong.id === oldSong.id) {
-      //     return
-      //   }
-      //   setTimeout(() => {
-      //     this.scrollToCurrent(newSong)
-      //   }, 20)
-      // }
-    },
     components: {
       Scroll,
     }

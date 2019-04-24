@@ -219,6 +219,8 @@
             arr.push({label: teams[key] ,value: key})
           }
           this.teamTypeSelect = arr
+        }).catch(() =>{
+          Toast('服务器异常，请稍后再试')
         })
       },
       _showTeamTypeList(){

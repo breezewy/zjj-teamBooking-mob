@@ -16,13 +16,14 @@
             <span class="item">团队类型：{{orders.teamTypeName}}</span>
             <!--<span class="item"> 证件类型：导游证 </span>-->
             <span class="item">行程类型：{{orders.routingType=='0'? '加点':orders.routingType=='1'? '行程':''}}</span>
-            <span class="item">最晚核团时间：{{orders.performDate}} {{orders.checkTime}}:00</span>
+            <span class="item" v-show="orders.checkTime">最晚核团时间：{{orders.performDate}} {{orders.checkTime}}:00</span>
             <!--<span class="item">退单原因：</span>-->
             <span class="item"  @click="$refs.tip.show()" style="color:#1c9ae7">
               原始信息：{{orders.oldData}}
             </span>
-            <cube-tip ref="tip" direction="bottom" style="left:30px;right:30px;
-              top:248px;z-index: 10;max-height: none">{{orders.oldData}}</cube-tip>
+            <cube-tip ref="tip" direction="bottom" :style="{top: orders.checkTime? '248px':'202px'}" style="left:30px;right:30px;
+            z-index: 10;max-height: none">{{orders.oldData}}</cube-tip>
+
 
           </div>
           <div class="order-info" style="margin-bottom: 80px;">
@@ -216,7 +217,8 @@
        *  获取团队类型select
        */
       getTeamTypeSelect(){
-        return this.$http.get(`/common/teamType`).then(({ data: res }) => {
+        let type = 'teamType'
+        return this.$http.get(`/wap/dict/get/${type}`).then(({ data: res }) => {
           if(res.code !== '200'){
             this.$createToast({
               txt: res.msg,
@@ -224,11 +226,12 @@
             }).show()
           }
           let data = res.data
-          let arr = []
-          for(var key in data){
-            arr.push({id:key , name: data[key] })
-          }
-          this.teamTypeSelectData= arr
+          console.log(data)
+          // let arr = []
+          // for(var key in data){
+          //   arr.push({id:key , name: data[key] })
+          // }
+          this.teamTypeSelectData= data
 
         })
       },
@@ -243,8 +246,8 @@
           }
           this.orders = res.data.orders
           for(const value of this.teamTypeSelectData){
-            if(value.id == this.orders.teamType){
-              this.orders.teamTypeName = value.name
+            if(value.dictValue == this.orders.teamType){
+              this.orders.teamTypeName = value.dictName
             }
           }
           console.log(this.orders)
@@ -277,18 +280,18 @@
        * 订单详情中的修改
        */
       modify(){
-        let formatCheckTime = this.checkTime+':00:00'
-        let totalCheckTime = this.performDate+' '+formatCheckTime
-        let date = new Date(totalCheckTime);
-        this.timestamp2 = date.getTime()
-        var now = new Date().getTime();
-        let count = this.timestamp2-now;
-        this.leftTime = count
-        console.log(this.leftTime)
-        if(this.leftTime/1000<=0){
-          Toast('已超过核团时间')
-          return
-        }
+        // let formatCheckTime = this.checkTime+':00:00'
+        // let totalCheckTime = this.performDate+' '+formatCheckTime
+        // let date = new Date(totalCheckTime);
+        // this.timestamp2 = date.getTime()
+        // var now = new Date().getTime();
+        // let count = this.timestamp2-now;
+        // this.leftTime = count
+        // console.log(this.leftTime)
+        // if(this.leftTime/1000<=0){
+        //   Toast('已超过核团时间')
+        //   return
+        // }
         if(this.orders.performDate){
           this.performCode = this.orders.performCode
           this.showSeesion(this.orders.performDate)
@@ -410,14 +413,6 @@
             })
           }
         }).catch(err => {});
-
-
-
-
-
-
-
-
 
       }
     }
