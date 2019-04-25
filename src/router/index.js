@@ -95,7 +95,7 @@ export default new Router({
     //{ path: '/test', name: 'test',  component: Test },
 
     //首页
-    // { path: '/', name: 'lead',component: Lead },
+    { path: '/', name: 'lead',component: Lead },
     // { path: '/upload/:orderNo', name: 'upload',component: Upload },
 
     //导游路由
