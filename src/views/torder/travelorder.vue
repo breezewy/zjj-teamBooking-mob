@@ -106,6 +106,8 @@
     name: "travelorder",
     data(){
       return {
+        sysName:'',
+
         today:'',
         tomorrow:'',
         dayAfterTomorrow:'',  //后天
@@ -179,7 +181,7 @@
       //     }
       //     this.dataArray = res.data
       //     if(this.dataArray.length){
-      //       this.select_date =  sessionStorage.getItem('SET_DATE')
+      //       this.select_date =  sessionStorage.getItem('')
       //       if(this.select_date){
       //         this.performDate = this.select_date
       //       }else{

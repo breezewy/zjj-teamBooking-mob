@@ -7,7 +7,7 @@
       </header>
       <div class="wrapper">
         <div class="start-info">
-          <div class="name">桂林千古情演出</div>
+          <div class="name">{{sysName}}</div>
           <div class="date-content clear-fix" @click="shijianCK">
             <!--<p class="date border-bottom-1px">{{performDate}}</p>-->
             <p class="date">{{performDate}}</p>
@@ -77,6 +77,8 @@
     },
     data(){
       return {
+        sysName:'', // 系统名称
+
         today:'',
         tomorrow:'',
         dayAfterTomorrow:'',  //后天
@@ -96,7 +98,8 @@
 
         teamType:'',
         teamTypeText:'单选 >',
-        teamTypeSelect:[]
+        teamTypeSelect:[],
+
       }
     },
     created(){
@@ -114,8 +117,19 @@
         this.getDate()
       }
       this.teamTypeInfo()
+      this.getSysName()
     },
     methods:{
+      getSysName(){
+        this.$http.get(`/wap/sysName`).then(({ data: res }) => {
+          if(res.code !== '200'){
+            Toast(res.msg)
+            return
+          }
+          this.sysName = res.data.name
+          console.log(res)
+        }).catch(() =>{})
+      },
       /**
        *  搜索票
        */
