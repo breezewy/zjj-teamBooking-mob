@@ -1,6 +1,6 @@
 # sc-team-booking-mobile
 
-> 团队预定系统
+> 桂林千古情景区
 
 ## Build Setup
 

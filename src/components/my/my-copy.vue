@@ -87,6 +87,7 @@
         this.$router.push({path:'/reset-password'})
       },
       loginOut(){
+        const that = this
         MessageBox({
           title: '提示',
           message: '确定退出登录?',
@@ -103,7 +104,26 @@
               }
               sessionStorage.clear()
               clearLoginInfo()
-              this.$router.replace({ path: '/' })
+              // this.$router.replace({ path: '/' })
+              // this.$router.replace({  name: 'lead', params: { isOut: true }})
+
+              // 判断是否在小程序内
+              // wx.miniProgram.getEnv(function (res) {
+              //   alert(12)
+              //   console.log(res)
+              //   // console.log(res.miniprogram) // true
+              //   if(res.miniprogram){
+              //     wx.miniProgram.reLaunch({url: '/pages/home/home'})
+              //   }else{
+              //     that.$router.replace({ path: '/' })
+              //   }
+              // })
+
+              if(navigator.userAgent.toLowerCase().indexOf('miniprogram') != -1){
+                wx.miniProgram.reLaunch({url: '/pages/home/home'})
+              } else{
+                that.$router.replace({ path: '/' });
+              }
             }).catch(() => {})
           }
         })

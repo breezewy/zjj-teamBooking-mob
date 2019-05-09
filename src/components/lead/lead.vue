@@ -11,19 +11,58 @@
 
       <span class="guide type" @click="guideHandle()">导游</span>
       <span class="travel type" @click="travelHandle()">旅行社</span>
+      <!--<div class="mini-program">-->
+        <!--<span class="program" @click="returnMiniProgram()">返回小程序首页？</span>-->
+      <!--</div>-->
     </div>
 </template>
 
 <script>
   export default {
     name: "lead",
+    data(){
+      return {
+        // showMiniProgram: false
+      }
+    },
+    created(){
+      //防止后退
+      // window.history.pushState(null, null, document.URL);
+      // window.addEventListener('popstate', function () {
+      //   history.pushState(null, null, document.URL);
+      // });
+
+      //判断该网页是否在在小程序内
+      // if (!window.WeixinJSBridge || !WeixinJSBridge.invoke) {
+      //   document.addEventListener('WeixinJSBridgeReady', this.ready, false)
+      // } else {
+      //
+      //   this.ready()
+      // }
+    },
     methods:{
+      ready(){
+        if(this.$route.params.isOut){
+          this.returnMiniProgram();
+          return;
+        }
+        // console.log(window.__wxjs_environment === 'miniprogram') // true
+        // if(window.__wxjs_environment === 'miniprogram'){
+        //   this.showMiniProgram = true
+        // }else{
+        //   this.showMiniProgram = false
+        // }
+      },
       guideHandle(){
         this.$router.push({path:'/guide/logincopy'})
       },
       travelHandle(){
         this.$router.push({path:'/travel/logincopy'})
-      }
+      },
+      returnMiniProgram(){
+
+        wx.miniProgram.reLaunch({url: '/pages/home/home'})
+      },
     }
 
   };
@@ -70,6 +109,17 @@
       border-radius :15px
     .travel
       background-color:#f07800
+    .mini-program
+      display block
+      color #ffffff
+      font-size 16px;
+      text-align center
+      .program
+        /*display inline-block*/
+        /*margin 0 auto*/
+        border-bottom 1px solid #ffffff
+        padding-bottom 1px;
+
 
 
 

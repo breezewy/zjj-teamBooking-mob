@@ -65,8 +65,18 @@ http.interceptors.response.use(response => {
   if (response.data.code === '401' || response.data.code === '10001') {
 
     clearLoginInfo()
-    router.replace({ path: '/' })
     Toast(response.data.msg)
+    // router.replace({ path: '/' })
+    // router.replace({  name: 'lead', params: { isOut: true }})
+    // 判断是否在小程序内
+    if(navigator.userAgent.toLowerCase().indexOf('miniprogram') != -1){
+      wx.miniProgram.reLaunch({url: '/pages/home/home'})
+    } else{
+      router.replace({ path: '/' });
+    }
+
+    // wx.miniProgram.reLaunch({url: '/pages/home/home'})
+
     return Promise.reject(response.data.msg)
   }
 
