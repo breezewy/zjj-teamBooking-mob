@@ -10,21 +10,23 @@
           <div class="item">
             <div class="title">
               <span class="icon iconfont icon-shouji"></span>
-              <span class="text">请输入身份证</span>
+              <!--<span class="text">请输入身份证</span>-->
+              <span class="text">身份证</span>
             </div>
             <div class="entry">
-              <input type="text" v-model.trim="idCard" class="entry_input">
+              <input type="text" placeholder="请输入身份证" v-model.trim="idCard" class="entry_input">
             </div>
           </div>
 
           <div class="item">
             <div class="title">
               <span class="icon iconfont icon-icon-test"></span>
-              <span class="text">请输入密码</span>
-              <span class="eye"></span>
+              <!--<span class="text">请输入密码</span>-->
+              <span class="text">密码</span>
+              <!--<span class="eye"></span>-->
             </div>
             <div class="entry">
-              <input type="password" v-model.trim="password" class="entry_input">
+              <input type="password" placeholder="请输入密码" v-model.trim="password" class="entry_input">
 
 
             </div>
@@ -41,22 +43,22 @@
           <div class="item">
             <div class="title">
               <span class="icon iconfont icon-shouji"></span>
-              <span class="text">请输入手机号</span>
+              <span class="text">手机号</span>
             </div>
             <div class="entry">
-              <input type="number" v-model.trim="mobile" class="entry_input">
+              <input type="number" v-model.trim="mobile" placeholder="请输入手机号" class="entry_input">
             </div>
           </div>
 
           <div class="item">
             <div class="title">
               <span class="icon iconfont icon-icon-test"></span>
-              <span class="text">请输入验证码</span>
+              <span class="text">验证码</span>
               <!--<span class="eye"></span>-->
             </div>
             <div class="message clear-fix">
               <!--<input type="password" class="entry_input">-->
-              <input v-model.trim="captcha" class="capture_input">
+              <input v-model.trim="captcha" placeholder="请输入验证码" class="capture_input">
               <div class="message-send" @click="sendCode()">{{codeText}}</div>
             </div>
           </div>
@@ -265,8 +267,10 @@
             vertical-align middle
           .text
             margin-left 5px;
-            color:#ababab
-            font-size .6rem;
+            /*color:#ababab*/
+            /*font-size .6rem;*/
+            font-size .65rem
+            color:#666
         .entry
           margin :3px 5px 20px 5px;
           /*padding :5px 0;*/
@@ -277,7 +281,11 @@
           border-bottom: 1px solid #ddd
           .entry_input
             width: 100%;
+            /*padding-left .4rem*/
             outline none
+            &::placeholder
+             color:#ababab;
+             font-size .6rem
 
         .message
           position relative
@@ -290,10 +298,13 @@
           .capture_input
             outline none;
             width 9.25rem;
+            &::placeholder
+              color:#ababab;
+              font-size .6rem
           .message-send
            position absolute
            right :0;
-           top:.25rem;
+           top:.5rem;
            width: 3.5rem;
            text-align: right;
            font-size .6rem;
