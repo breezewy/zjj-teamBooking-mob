@@ -1,6 +1,6 @@
 # sc-team-booking-mobile
 
-> 桂林千古情景区
+> 宋城千古情景区
 
 ## Build Setup
 
