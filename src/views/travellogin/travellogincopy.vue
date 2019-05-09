@@ -11,21 +11,21 @@
         <div class="item">
           <div class="title">
             <span class="icon iconfont icon-shouji"></span>
-            <span class="text">请输入旅行社</span>
+            <span class="text">旅行社</span>
           </div>
           <div class="entry">
-            <input type="text" v-model="username" class="entry_input">
+            <input type="text" placeholder="请输入旅行社名称" v-model="username" class="entry_input">
           </div>
         </div>
 
         <div class="item">
           <div class="title">
             <span class="icon iconfont icon-icon-test"></span>
-            <span class="text">请输入密码</span>
+            <span class="text">密码</span>
             <!--<span class="eye"></span>-->
           </div>
           <div class="entry">
-            <input type="password" v-model="password" class="entry_input">
+            <input type="password" placeholder="请输入密码" v-model="password" class="entry_input">
           </div>
         </div>
         <div class="sign_area" @click="signInByIdName">
@@ -149,8 +149,10 @@
             vertical-align middle
           .text
             margin-left 5px;
-            color:#ababab
-            font-size .6rem;
+            color:#666
+            /*color:#ababab*/
+            /*font-size .6rem;*/
+            font-size .65rem;
         .entry
           margin :3px 5px 20px 5px;
           /*padding :5px 0;*/
@@ -162,6 +164,9 @@
           .entry_input
             width: 100%;
             outline none
+            &::placeholder
+              color:#ababab;
+              font-size .6rem
 
         .message
           position relative
