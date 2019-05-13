@@ -31,9 +31,9 @@
             <!--</li>-->
 
           </ul>
-          <!--<div class="handle">-->
-            <!--<span class="btn">立即开票</span>-->
-          <!--</div>-->
+          <div class="handle">
+            <a class="btn" href="http://receipt.51dmq.com/receipt/index.htm">立即开票</a>
+          </div>
           <img src="./../../common/image/rule_float_copy.png" class="rule-float" alt="">
           <img src="./../../common/image/rule_bottom_copy.png" class="rule-bottom" alt="">
         </div>
@@ -348,7 +348,8 @@
         /*margin: 1.25rem .4rem 1.25rem .4rem;*/
         margin: .65rem .4rem .65rem .4rem;
         background-color #fff;
-        padding :.875rem  .85rem 1.575rem .85rem;
+        /*padding :.875rem  .85rem 1.575rem .85rem;*/
+        padding :.875rem  .85rem .875rem .85rem;
         border-radius 8px;
         box-shadow: 0 1px 6px #ddd;
         .title
