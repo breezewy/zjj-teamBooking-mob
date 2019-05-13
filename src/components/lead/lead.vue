@@ -39,8 +39,25 @@
       //
       //   this.ready()
       // }
+
+      // this.addEventBack()
+
     },
     methods:{
+      addEventBack(){
+        pushHistory();
+        window.addEventListener("popstate",this.addBackKey, false);
+        function pushHistory() {
+          var state = {
+            title: "title",
+            url: "#"
+          };
+          window.history.pushState(state, "title", "#jjjj");
+        }
+      },
+      addBackKey(){
+        wx.miniProgram.reLaunch({url: '/pages/home/home'})
+      },
       ready(){
         if(this.$route.params.isOut){
           this.returnMiniProgram();
