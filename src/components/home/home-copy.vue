@@ -31,7 +31,7 @@
             <!--</li>-->
 
           </ul>
-          <div class="handle">
+          <div class="handle" v-if="showInvoicingBtn">
             <a class="btn" href="http://receipt.51dmq.com/receipt/index.htm">立即开票</a>
           </div>
           <img src="./../../common/image/rule_float_copy.png" class="rule-float" alt="">
@@ -119,7 +119,8 @@
         bookingRuleList:[],
         receiptRuleList:[],             //开票规则
         flag: true,              //显示标志位
-        noCheckTimeFlag:false       //当没有核团时间控制是否 去核团显示
+        noCheckTimeFlag:false,       //当没有核团时间控制是否 去核团显示
+        showInvoicingBtn:false
       }
     },
     created(){
@@ -152,6 +153,7 @@
             Toast(res.msg)
             return
           }
+          this.showInvoicingBtn = res.data.show
           this.receiptRuleList = res.data.list
         }).catch(() =>{})
       },
@@ -198,10 +200,7 @@
               }else{
                 this.noCheckTimeFlag = true
               }
-
-
             }
-
           }
 
         }).catch(() =>{

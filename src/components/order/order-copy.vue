@@ -414,7 +414,8 @@
             background-color:#b5d6ff
           .color-green
             /*background-color:#84F329*/
-            background-color:#a9ffb4
+            /*background-color:#a9ffb4*/
+            background-color:#fff
           .color-red
             background-color:#FF00FF
             /*background-color:#ffe4ac*/
@@ -437,7 +438,8 @@
           background-color:#b5d6ff
         .color-green
           /*background-color:#84F329*/
-          background-color:#a9ffb4
+          /*background-color:#a9ffb4*/
+          background-color:#fff
         .color-red
           background-color:#FF00FF
           /*background-color:#ffe4ac*/
