@@ -23,9 +23,8 @@
       <div class="rule">
         <h1 class="title">开票规则</h1>
         <ul class="list">
-          <li class="item">
-            请凭入园单红联，出票当月到票房开具发票，隔月不予补开。
-            <!--1.通过首页开票按钮进入页面输入开票订单号进行开票-->
+          <li class="item" v-for="(item, index) in  receiptRuleList">
+            {{index+1}}、{{item.content}}
           </li>
           <!--<li class="item">-->
           <!--2.进入订单列表根据游玩日期查询订单信息，点击开发票按钮进行开票-->
@@ -61,11 +60,13 @@
         timestamp2:'',                //核团的日期
         timer: null,                 //定时器
         leftTime:'',
-        bookingRuleList:[]
+        bookingRuleList:[],
+        receiptRuleList:[],  //开票规则
       }
     },
     created(){
       this.getBookingRule()
+      this.getReceiptRule()
     },
     methods:{
       getBookingRule(){
@@ -75,6 +76,15 @@
             return
           }
           this.bookingRuleList = res.data
+        }).catch(() =>{})
+      },
+      getReceiptRule(){
+        this.$http.get('/wap/receiptRule').then(({ data: res }) => {
+          if(res.code !== '200'){
+            Toast(res.msg)
+            return
+          }
+          this.receiptRuleList = res.data.list
         }).catch(() =>{})
       },
       order(){
