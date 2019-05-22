@@ -28,11 +28,19 @@
             <span class="text">证件号</span>
             <span class="value">{{guideInfo.certNo}}</span>
           </div>
+
+          <!--新增身份证字段-->
+          <div class="idInfo item clear-fix">
+            <span class="text">身份证</span>
+            <span class="value">{{guideInfo.idCard}}</span>
+          </div>
+
           <img src="./../../common/image/111.png" class="notice_float_copy" alt="">
         </div>
         <div class="handle">
           <span class="handle-item" @click="updatePassWord()">修改密码</span>
           <span class="handle-item" @click="loginOut()">退出登录</span>
+          <span class="handle-item" @click="checkId()">验证身份</span>  
         </div>
       </div>
       <tab-bar :selected="selectedTabBar"></tab-bar>
@@ -58,6 +66,9 @@
       this.getUseInfo()
     },
     methods:{
+      checkId(){
+        this.$router.push({path:'/collectId/collectId'})
+      },
       // scoreDetail(){
       //   this.$createToast({
       //     txt: '暂未开放',
@@ -205,7 +216,7 @@
           left:-.6rem;
       .handle
         position absolute
-        top:12rem;
+        top:13rem;
         left:0;
         width 100%
         .handle-item

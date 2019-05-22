@@ -76,6 +76,7 @@
 
 <script>
   import { Toast } from  'mint-ui'
+  import { MessageBox } from 'mint-ui'
   import Cookies from 'js-cookie'
   import {IdentityCodeValid, isMobile} from "../../utils/validation";
   export default {
@@ -96,6 +97,23 @@
       }
     },
     methods:{
+      checkIdCard(){
+        this.$http.get('/wap/guide/info')
+                  .then((res)=>{
+                    if(res.data.code!=='200'){
+                      Toast(res.data.msg)
+                      return 
+                    }
+                    if(!res.data.data.idCard||res.data.data.idCard.length<1){
+                      MessageBox.confirm('请先进行身份认证！').then(()=>{
+                        this.$router.push({path:'/collectId/collectId'})
+                      })
+                    }
+                  })
+                  .catch(()=>{
+                    Toast('您可以在"我的/验证身份" 进行身份验证！' )
+                  })
+      },
       changeLoginType(val){
         console.log(val)
         this.isActive =val
@@ -151,6 +169,7 @@
           userType: 'guide',
           loginType:'mobile'
         };
+        this.checkIdCard()
         this.$http.post('/auth/login', data).then(({ data: res }) => {
           if (res.code !== '200') {
             Toast(res.msg)

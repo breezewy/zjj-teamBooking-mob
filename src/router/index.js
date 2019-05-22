@@ -28,6 +28,7 @@ import TicketDetail from '@/components/ticket-detail/ticket-detail'
 import  TestScroll from '@/components/test-scroll/test-scroll'
 import BaseInfo from '@/components/base-info/base-info'
 import ResetPassword from '@/components/reset-password/reset-password'
+import CollectId from '@/components/collectId/collectId'
 
 //以下是导游copy的数据
 import  GuideLoginCopy from '@/components/guidelogin/guidelogincopy'
@@ -125,6 +126,9 @@ export default new Router({
     { path: '/fix/copy', name: 'fixcopy',component: FixCopy },
     { path: '/order/copy', name: 'order-copy',component: OrderCopy },
     { path: '/my/copy', name: 'my-copy',component: MyCopy },
+
+    // 导游身份信息采集
+    { path: '/collectId/collectId',name:'collectId',component:CollectId},
 
 
   //  以下是旅行社的路由
