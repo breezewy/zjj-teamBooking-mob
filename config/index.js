@@ -13,7 +13,11 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
+<<<<<<< HEAD
     host: '193.1.0.164', // can be overwritten by process.env.HOST
+=======
+    host: '193.1.0.98', // can be overwritten by process.env.HOST
+>>>>>>> 54b1af8201725d322ca31d173b2c3ca45c0b3cb5
     port: 8889, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,

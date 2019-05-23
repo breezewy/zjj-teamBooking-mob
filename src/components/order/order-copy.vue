@@ -23,7 +23,7 @@
           </div>
           <div class="item">
             <span class="color-block color-green"></span>
-            <span class="text">候补</span>
+            <span class="text">待定</span>
           </div>
           <div class="item">
             <span class="color-block color-red"></span>

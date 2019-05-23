@@ -65,7 +65,11 @@
         timer: null,                 //定时器
         leftTime:'',
         bookingRuleList:[],
+<<<<<<< HEAD
         receiptRuleList:[],             //开票规则
+=======
+        receiptRuleList:[],  //开票规则
+>>>>>>> 54b1af8201725d322ca31d173b2c3ca45c0b3cb5
       }
     },
     created(){
