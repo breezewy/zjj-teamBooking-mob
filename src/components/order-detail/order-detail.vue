@@ -16,7 +16,7 @@
           <span class="item">旅行社：{{orders.travelName }}</span>
           <span class="item">游玩日期：{{orders.performDate}}</span>
           <span class="item">场次：{{orders.performTime}}</span>
-          <span class="item">团队类型：{{orders.teamType | getTeamType(value)}}</span>
+          <span class="item">团队类型：{{orders.teamType | getTeamType}}</span>
           <!--<span class="item"> 证件类型：导游证 </span>-->
           <span class="item">行程类型：{{orders.tripType==0 ? '行程':orders.tripType==1 ? '加点':''}}</span>
           <span
@@ -101,8 +101,9 @@
             v-model="performCode"
           >
             <option
-              v-for="show in performCodeSelect"
+              v-for="(show,index) in performCodeSelect"
               :value="show.value"
+              :key="index"
             >
               {{show.text}}
             </option>
@@ -117,7 +118,7 @@
                     <div class="item-content">
                       <div class="item-media"></div>
                       <div class="item-inner clear-fix">
-                        <div class="item-title label">{{item.areaName? item.areaName.split('-')[1] :''}}</div>
+                        <div class="item-title label">{{item.areaName? item.areaName.split('-')[0] :''}}</div>
                         <div class="item-input">
                           <input
                             type="text"

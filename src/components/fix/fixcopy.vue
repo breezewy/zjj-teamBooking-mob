@@ -135,11 +135,11 @@
        */
       searchTicket(){
         if(this.routingType===''){
-          Toast('请选择行程')
+          Toast('请选择行程类型')
           return
         }
         if(!this.teamType){
-          Toast('请选择团队')
+          Toast('请选择团队类型')
           return
         }
         let filter = {
