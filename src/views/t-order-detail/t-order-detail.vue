@@ -10,17 +10,17 @@
             <h1>订单信息</h1>
             <span class="item">订单编号：{{orders.id}}</span>
             <span class="item">订单明细编号：{{orders.billNo}}</span>
-            <span class="item">旅行社：{{orders.travelName }}</span>
+            <span class="item">导游：{{orders.guideName }}</span>
             <span class="item">游玩日期：{{orders.performDate}}</span>
             <span class="item">场次：{{orders.performTime}}</span>
             <span class="item">团队类型：{{orders.teamTypeName}}</span>
             <!--<span class="item"> 证件类型：导游证 </span>-->
-            <span class="item">行程类型：{{orders.routingType=='0'? '加点':orders.routingType=='1'? '行程':''}}</span>
+            <span class="item">行程类型：{{orders.tripType==0 ? '行程':orders.tripType==1 ? '加点':''}}</span>
             <span class="item" v-show="orders.checkTime">最晚核团时间：{{orders.performDate}} {{orders.checkTime}}:00</span>
             <!--<span class="item">退单原因：</span>-->
-            <span class="item"  @click="$refs.tip.show()" style="color:#1c9ae7">
-              原始信息：{{orders.oldData}}
-            </span>
+<!--            <span class="item"  @click="$refs.tip.show()" style="color:#1c9ae7">-->
+<!--              原始信息：{{orders.oldData}}-->
+<!--            </span>-->
             <cube-tip ref="tip" direction="bottom" :style="{top: orders.checkTime? '248px':'202px'}" style="left:30px;right:30px;
               z-index: 10;max-height:none">{{orders.oldData}}</cube-tip>
           </div>

@@ -12,22 +12,22 @@
 
       <div class="info">
         <div class="name item clear-fix">
-          <span class="text">姓名</span>
+          <span class="text">名称</span>
           <span class="value">{{travelInfo.name}}</span>
         </div>
-        <div class="phone item clear-fix">
-          <span class="text">手机号</span>
-          <span class="value">{{travelInfo.telNo}}</span>
-        </div>
+<!--        <div class="phone item clear-fix">-->
+<!--          <span class="text">手机号</span>-->
+<!--          <span class="value">{{travelInfo.telNo}}</span>-->
+<!--        </div>-->
 
         <div class="type item clear-fix">
           <span class="text">编码</span>
           <span class="value">{{travelInfo.code}}</span>
         </div>
-        <div class="cerNo item clear-fix">
-          <span class="text">积分</span>
-          <span class="value">{{travelInfo.pointSum}}</span>
-        </div>
+<!--        <div class="cerNo item clear-fix">-->
+<!--          <span class="text">积分</span>-->
+<!--          <span class="value">{{travelInfo.pointSum}}</span>-->
+<!--        </div>-->
         <img src="./../../common/image/111.png" class="notice_float_copy" alt="">
       </div>
       <div class="handle">
