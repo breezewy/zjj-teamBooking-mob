@@ -30,10 +30,10 @@
             <span class="color-block color-green"></span>
             <span class="text">待定</span>
           </div>
-          <!-- <div class="item">
+          <div class="item">
             <span class="color-block color-red"></span>
             <span class="text">已销售</span>
-          </div> -->
+          </div>
           <div class="item">
             <span class="color-block color-cancel"></span>
             <span class="text">已撤销</span>
