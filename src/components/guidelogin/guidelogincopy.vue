@@ -106,15 +106,14 @@ export default {
             MessageBox.confirm("请先进行身份认证！").then(() => {
               this.$router.push({ path: "/collectId/collectId" });
             });
+            MessageBox.cancel("请先进行身份认证！").then(() => {
+              Toast('您可以在"我的/验证身份" 进行身份验证！');
+            });
           }
         })
-
-        .catch(() => {
-          Toast('您可以在"我的/验证身份" 进行身份验证！');
-        });
+        .catch(() => {});
     },
     changeLoginType(val) {
-      console.log(val);
       this.isActive = val;
     },
     signInByIdCard() {
@@ -145,6 +144,7 @@ export default {
             return;
           }
           Cookies.set("token", res.data.token);
+
           sessionStorage.setItem("loginType", "guide");
           this.$router.replace({ path: "/home/copy" });
         })
@@ -171,7 +171,6 @@ export default {
         userType: "guide",
         loginType: "mobile"
       };
-      this.checkIdCard();
       this.$http
         .post("/auth/login", data)
         .then(({ data: res }) => {

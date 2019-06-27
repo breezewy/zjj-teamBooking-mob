@@ -197,7 +197,6 @@ export default {
           return;
         }
         this.guideInfo = res.data;
-        console.log(this.guideInfo);
         this.guideId = res.data.id;
       });
     },
@@ -336,7 +335,6 @@ export default {
               text: "加载中...",
               spinnerType: "snake"
             });
-            console.log(data);
             this.$http
               .post("/wap/downOrder", data)
               .then(({ data: res }) => {
@@ -385,7 +383,6 @@ export default {
           value.count = 0;
         }
         this.detailRequestList = items;
-        console.log(this.detailRequestList);
       });
     },
     focusTravel() {

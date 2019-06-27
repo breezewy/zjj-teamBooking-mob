@@ -3,10 +3,7 @@
     <div class="order-detail-container">
       <header class="header">
         <h1>订单详情</h1>
-        <i
-          @click="back"
-          class="cubeic-back"
-        ></i>
+        <i @click="back" class="cubeic-back"></i>
       </header>
       <div class="wrapper">
         <div class="order-info">
@@ -30,7 +27,7 @@
             style="color:#1c9ae7"
           >
             原始信息：{{orders.oldData}}
-          </span> -->
+          </span>-->
           <cube-tip
             ref="tip"
             direction="bottom"
@@ -38,75 +35,45 @@
             style="left:30px;right:30px;
             z-index: 10;max-height: none"
           >{{orders.oldData}}</cube-tip>
-
         </div>
-        <div
-          class="order-info"
-          style="margin-bottom: 80px;"
-        >
+        <div class="order-info" style="margin-bottom: 80px;">
           <h1>订单明细</h1>
           <span class="item scene">场次：{{orders.performTime}}</span>
-          <div
-            class="seat-detail"
-            v-for="item in orderDetails"
-          >
-            <span
-              class="item"
-              style="color:red"
-            >座位区：{{item.areaName}}</span>
+          <div class="seat-detail" v-for="item in orderDetails">
+            <span class="item" style="color:red">座位区：{{item.areaName}}</span>
             <span class="item">预定人数：{{item.bookCount}}</span>
             <span class="item">核团人数：{{item.lastCount}}</span>
             <!--<span class="item">排位人数：{{item.arrangeCount}}</span>-->
             <span class="item">销售人数：{{item.saleCount}}</span>
           </div>
-
         </div>
-        <div
-          class="handle-contain"
-          v-show="orders.check"
-        >
+        <div class="handle-contain" v-show="orders.check">
           <!--<div class="handle-contain" >-->
           <!--<div class="handle-detail" v-if="orders.billStatus=='01'">-->
           <div class="handle-detail">
-            <span
-              class="bill btn"
-              @click="modify()"
-            >去核团</span>
-            <span
-              class="bill btn"
-              @click="cancelOrder()"
-            >取消订单</span>
+            <span class="bill btn" @click="modify()">去核团</span>
+            <span class="bill btn" @click="cancelOrder()">取消订单</span>
             <!--<span class="nuclei btn" @click="nucleiGroup()">核团</span>-->
           </div>
-
         </div>
         <!--<div class="handle-contain"  v-if="orders.billStatus=='04'">-->
         <!--<div class="handle-detail">-->
         <!--<a class="bill btn" :href="'http://receipt.51dmq.com/receipt/index.htm?bookBillNo='+orders.billNo">开取发票</a>-->
         <!--</div>-->
         <!--</div>-->
-
       </div>
-      <div
-        class="popup"
-        :class="{ 'popup-show': popupShow }"
-      >
+      <div class="popup" :class="{ 'popup-show': popupShow }">
         <div class="date-select clear-fix">
           <span class="text">演出场次</span>
           <!--<select class="select" name="" id="">-->
           <!--<option value="">19:30-20:30</option>-->
           <!--</select>-->
-          <select
-            class="select"
-            v-model="performCode"
-          >
+          <select class="select" v-model="performCode">
             <option
               v-for="(show,index) in performCodeSelect"
               :value="show.value"
               :key="index"
-            >
-              {{show.text}}
-            </option>
+            >{{show.text}}</option>
           </select>
         </div>
         <div class="card">
@@ -118,7 +85,9 @@
                     <div class="item-content">
                       <div class="item-media"></div>
                       <div class="item-inner clear-fix">
-                        <div class="item-title label">{{item.areaName? item.areaName.split('-')[0] :''}}</div>
+                        <div
+                          class="item-title label"
+                        >{{item.areaName? item.areaName.split('-')[0] :''}}</div>
                         <div class="item-input">
                           <input
                             type="text"
@@ -136,14 +105,8 @@
           </div>
         </div>
         <div class="handle">
-          <span
-            @click="cancel"
-            class="handle-btn reset-btn"
-          >取消</span>
-          <span
-            @click="updateHandle"
-            class="handle-btn order-btn"
-          >更新核团</span>
+          <span @click="cancel" class="handle-btn reset-btn">取消</span>
+          <span @click="updateHandle" class="handle-btn order-btn">更新核团</span>
         </div>
       </div>
     </div>
@@ -151,8 +114,8 @@
 </template>
 
 <script>
-import { Toast, MessageBox } from "mint-ui"
-import { isInteger } from "@/utils/validation"
+import { Toast, MessageBox } from "mint-ui";
+import { isInteger } from "@/utils/validation";
 export default {
   name: "order-detail",
   data() {
@@ -170,15 +133,15 @@ export default {
       performDate: "",
       checkTime: "", //核团时间
       timestamp2: ""
-    }
+    };
   },
   created() {
     // if(this.$route.params.heId==='111111'){
     //   this.popupShow = true
     // }
     Promise.all([this.getTeamTypeSelect()]).then(() => {
-      this.getOrderDetailInfo()
-    })
+      this.getOrderDetailInfo();
+    });
   },
   // watch:{
   //   leftTime(){
@@ -196,13 +159,13 @@ export default {
   // },
   methods: {
     back() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     },
     /***
      *      取消订单
      */
     cancelOrder() {
-      let id = this.$route.params.id
+      let id = this.$route.params.id;
       MessageBox({
         $type: "prompt",
         title: "请输入取消订单原因",
@@ -220,23 +183,22 @@ export default {
               id: id
             })
             .then(({ data: res }) => {
-              console.log(res)
               if (res.code !== "200") {
                 // this.getDataList()
-                Toast(res.msg)
-                return
+                Toast(res.msg);
+                return;
               }
 
-              Toast("取消订单成功")
+              Toast("取消订单成功");
               setTimeout(() => {
-                this.$router.push("/order/copy")
-              }, 500)
+                this.$router.push("/order/copy");
+              }, 500);
             })
             .catch(() => {
-              Toast("服务器异常，请稍后再试")
-            })
+              Toast("服务器异常，请稍后再试");
+            });
         }
-      })
+      });
 
       // MessageBox.confirm('确定取消订单吗?').then(action => {
       // if(action ==='confirm'){
@@ -265,59 +227,57 @@ export default {
      *  获取团队类型select
      */
     getTeamTypeSelect() {
-      let type = "teamType"
+      let type = "teamType";
       return this.$http.get(`/wap/dict/get/${type}`).then(({ data: res }) => {
         if (res.code !== "200") {
           this.$createToast({
             txt: res.msg,
             type: "txt"
-          }).show()
+          }).show();
         }
-        let data = res.data
-        console.log(data)
+        let data = res.data;
         // let arr = []
         // for(var key in data){
         //   arr.push({id:key , name: data[key] })
         // }
-        this.teamTypeSelectData = data
-      })
+        this.teamTypeSelectData = data;
+      });
     },
     getOrderDetailInfo() {
-      let id = this.$route.params.id
+      let id = this.$route.params.id;
       this.$http.get(`/wap/order/${id}`).then(({ data: res }) => {
         if (res.code !== "200") {
           this.$createToast({
             txt: res.msg,
             type: "txt"
-          }).show()
+          }).show();
         }
-        this.orders = res.data.orders
+        this.orders = res.data.orders;
         for (const value of this.teamTypeSelectData) {
           if (value.dictValue == this.orders.teamType) {
-            this.orders.teamTypeName = value.dictName
+            this.orders.teamTypeName = value.dictName;
           }
         }
-        console.log(this.orders)
 
-        let orderDetails = res.data.orderDetails
+        let orderDetails = res.data.orderDetails;
         for (const value of orderDetails) {
           if (!value.lastCount) {
-            value.lastCount = 0
+            value.lastCount = 0;
           }
         }
 
-        this.orderDetails = orderDetails
-        this.checkTime = this.orders.checkTime
-        this.performDate = this.orders.performDate
+        this.orderDetails = orderDetails;
+        this.checkTime = this.orders.checkTime;
+        this.performDate = this.orders.performDate;
 
-        let formatCheckTime = this.checkTime + ":00:00"
-        let totalCheckTime = this.performDate + " " + formatCheckTime
+        let formatCheckTime = this.checkTime + ":00:00";
+        let totalCheckTime = this.performDate + " " + formatCheckTime;
 
-        let date = new Date(totalCheckTime)
-        this.timestamp2 = date.getTime()
-        var now = new Date().getTime()
-        this.leftTime = this.timestamp2 - now
-      })
+        let date = new Date(totalCheckTime);
+        this.timestamp2 = date.getTime();
+        var now = new Date().getTime();
+        this.leftTime = this.timestamp2 - now;
+      });
     },
 
     /**
@@ -337,36 +297,36 @@ export default {
       //   return
       // }
       if (this.orders.performDate) {
-        this.performCode = this.orders.performCode
-        this.showSeesion(this.orders.performDate)
+        this.performCode = this.orders.performCode;
+        this.showSeesion(this.orders.performDate);
       }
-      this.popupShow = true
+      this.popupShow = true;
     },
     showSeesion(date) {
       this.$http
         .get(`/wap/performPlan/${date}`)
         .then(({ data: res }) => {
           if (res.code !== "200") {
-            Toast(res.msg)
-            return
+            Toast(res.msg);
+            return;
           }
 
-          let performCodeList = res.data
+          let performCodeList = res.data;
           this.performCodeSelect = performCodeList.map(item => {
-            return { text: item.performTime, value: item.performCode }
-          })
+            return { text: item.performTime, value: item.performCode };
+          });
         })
-        .catch(() => {})
+        .catch(() => {});
     },
 
     update() {
       if (this.orders.performDate) {
-        this.performCode = this.orders.performCode
-        this.showSeesion(this.orders.performDate)
+        this.performCode = this.orders.performCode;
+        this.showSeesion(this.orders.performDate);
       }
       setTimeout(() => {
-        this.popupShow = true
-      }, 0)
+        this.popupShow = true;
+      }, 0);
     },
     // nucleiGroup(){
     //   MessageBox.confirm('确定执行核团操作?').then(action => {
@@ -396,44 +356,44 @@ export default {
     // },
     //获取弹出框的
     cancel() {
-      this.popupShow = false
+      this.popupShow = false;
     },
     /**
      *  这是弹出框中的更新
      */
     updateHandle() {
-      let copyDataOrderDetails = JSON.parse(JSON.stringify(this.orderDetails))
-      let formatArr = []
+      let copyDataOrderDetails = JSON.parse(JSON.stringify(this.orderDetails));
+      let formatArr = [];
       for (const value of copyDataOrderDetails) {
         formatArr.push({
           areaCode: value.areaCode,
           areaName: value.areaName,
           count: value.lastCount,
           bookCount: value.bookCount
-        })
+        });
       }
 
       for (const value of formatArr) {
         if (!isInteger(value.count)) {
-          Toast("席位不能为空且都为整数")
-          return
+          Toast("席位不能为空且都为整数");
+          return;
         }
       }
-      let isMoreThanZero = false
+      let isMoreThanZero = false;
 
       for (const value of formatArr) {
         if (value.count > 0) {
-          isMoreThanZero = true
+          isMoreThanZero = true;
         }
       }
 
       if (!isMoreThanZero) {
-        Toast("席位至少有一个大于0")
-        return
+        Toast("席位至少有一个大于0");
+        return;
       }
 
       let htmls =
-        "请先确认人数，如有变动请先修改以上信息再进行核团，核团后将不可再次修改，是否确定？"
+        "请先确认人数，如有变动请先修改以上信息再进行核团，核团后将不可再次修改，是否确定？";
       MessageBox.confirm("", {
         message: htmls,
         title: "下单信息"
@@ -445,7 +405,7 @@ export default {
               detailRequestList: formatArr,
               orderId: this.orders.id,
               performCode: this.performCode
-            }
+            };
             this.$http
               .put(`/wap/confirmOrder`, data)
               .then(({ data: res }) => {
@@ -454,34 +414,34 @@ export default {
                     title: "提示",
                     message: res.msg,
                     closeOnClickModal: false
-                  })
-                  return
+                  });
+                  return;
                 }
-                Toast("核团成功")
+                Toast("核团成功");
                 setTimeout(() => {
-                  this.$router.push({ path: "/order/copy" })
-                }, 700)
+                  this.$router.push({ path: "/order/copy" });
+                }, 700);
               })
-              .catch(() => {})
+              .catch(() => {});
           }
         })
-        .catch(err => {})
+        .catch(err => {});
     }
   },
   filters: {
     getTeamType: function(value) {
       if (value === "101117") {
-        return "老年团"
+        return "老年团";
       } else if (value === "101113") {
-        return "成人团"
+        return "成人团";
       } else if (value === "101122") {
-        return "外宾团"
+        return "外宾团";
       } else if (value === "101126") {
-        return "学生团"
+        return "学生团";
       }
     }
   }
-}
+};
 </script>
 
 <style lang="stylus"  rel="stylesheet/stylus">

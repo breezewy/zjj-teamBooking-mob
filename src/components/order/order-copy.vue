@@ -14,12 +14,7 @@
         <!--</div>-->
         <div class="order-date">
           <i class="iconfont icon-cx icon-search"></i>
-          <input
-            id="my-input"
-            class="my-input-date"
-            type="text"
-            placeholder="游玩日期"
-          />
+          <input id="my-input" class="my-input-date" type="text" placeholder="游玩日期">
         </div>
         <div class="order-status">
           <div class="item">
@@ -39,10 +34,7 @@
             <span class="text">已撤销</span>
           </div>
         </div>
-        <div
-          class="order-list"
-          v-if="orderListFlag"
-        >
+        <div class="order-list" v-if="orderListFlag">
           <ul v-if="orderList.length">
             <li
               class="order-item"
@@ -57,20 +49,21 @@
                 <span class="date">{{item.performDate}}</span>
                 <span class="show">场次：{{item.performTime}}</span>
               </div>
-              <div class="name">
-                {{item.travelName }}
-              </div>
+              <div class="name">{{item.travelName }}</div>
               <div class="order">
-                <span class="status">订单状态: {{item.billStatus ==0 ? '未出票': item.billStatus ==1? '已出票':
+                <span class="status">
+                  订单状态: {{item.billStatus ==0 ? '未出票': item.billStatus ==1? '已出票':
                   item.billStatus ==2? '已取消': item.billStatus ==3? '超时自动取消': item.billStatus ==7?'(只出门票)':''
-                  }}</span>
-                <span class="type">订单类型: {{item.billType ==0?'团队预定':item.bookType ==1?'散客预定': item.bookType ==2?'在线预定':''}}</span>
+                  }}
+                </span>
+                <span
+                  class="type"
+                >订单类型: {{item.billType ==0?'团队预定':item.bookType ==1?'散客预定': item.bookType ==2?'在线预定':''}}</span>
               </div>
               <!--<div class="clear-fix">-->
               <!--<span class="entering" v-if="item.jump"  style="display: block;float:right" @click.stop="goEnter(item)">去录入</span>-->
               <!--</div>-->
               <div class="clear-fix handle">
-
                 <!--<span class="idCard-list handle-item">-->
                 <span
                   class="handle-item-left handle-item"
@@ -86,24 +79,14 @@
                 >
                   <span class="entering">去录入</span>
                 </span>
-                <span
-                  class="handle-item-none"
-                  v-show="!item.jump"
-                >
-
-                </span>
+                <span class="handle-item-none" v-show="!item.jump"></span>
               </div>
-
             </li>
           </ul>
-          <div
-            v-if="!orderList.length"
-            class="no-result-wrapper"
-          >
+          <div v-if="!orderList.length" class="no-result-wrapper">
             <no-result title="抱歉，暂无搜索结果"></no-result>
           </div>
         </div>
-
       </div>
       <tab-bar :selected="selectedTabBar"></tab-bar>
     </div>
@@ -116,17 +99,16 @@
     <!--<div id="calendar"></div>-->
     <!--</div>-->
   </div>
-
 </template>
 
 <script>
-import { Toast } from "mint-ui"
-import TabBar from "@/base/tabbar/tabbar"
-import VTop from "@/base/vtop/vtop"
-import moment from "moment"
-import NoResult from "@/base/no-result/no-result"
-import { addDate } from "../../common/js/format"
-const perpage = 1000
+import { Toast } from "mint-ui";
+import TabBar from "@/base/tabbar/tabbar";
+import VTop from "@/base/vtop/vtop";
+import moment from "moment";
+import NoResult from "@/base/no-result/no-result";
+import { addDate } from "../../common/js/format";
+const perpage = 1000;
 export default {
   name: "order-copy",
   data() {
@@ -146,10 +128,10 @@ export default {
       calendarShow: false,
       selectedTabBar: "order/copy",
       lastDate: "" //最后一个日期
-    }
+    };
   },
   mounted() {
-    let p = this
+    let p = this;
     // this.$nextTick(() =>{
     //   // $("#my-input").calendar({
     //   //   value: ['2019-04-17']
@@ -166,11 +148,11 @@ export default {
     // })
   },
   created() {
-    this.select_date = sessionStorage.getItem("SET_DATE")
-    this.today = moment().format("YYYY-MM-DD")
-    this.tomorrow = addDate(new Date())
-    this.dayAfterTomorrow = addDate(new Date(), 2)
-    this.getDate()
+    this.select_date = sessionStorage.getItem("SET_DATE");
+    this.today = moment().format("YYYY-MM-DD");
+    this.tomorrow = addDate(new Date());
+    this.dayAfterTomorrow = addDate(new Date(), 2);
+    this.getDate();
     // if(this.select_date){
     //   $('#my-input').val(this.select_date);
     //   this.getOrderList(this.select_date)
@@ -186,10 +168,10 @@ export default {
      *  去录入
      */
     goEnter(item) {
-      this.$router.push({ name: "idCard-enter", params: { id: item.id } })
+      this.$router.push({ name: "idCard-enter", params: { id: item.id } });
     },
     goTourist(item) {
-      this.$router.push({ name: "idCard-list", params: { id: item.id } })
+      this.$router.push({ name: "idCard-list", params: { id: item.id } });
     },
     // /**
     //  *
@@ -228,27 +210,26 @@ export default {
     //   })
     // },
     getDate() {
-      const that = this
+      const that = this;
       this.$http
         .get(`/wap/maxDay`)
         .then(({ data: res }) => {
           if (res.code !== "200") {
-            Toast(res.msg)
-            return
+            Toast(res.msg);
+            return;
           }
 
-          this.dataArray = res.data
+          this.dataArray = res.data;
           if (this.dataArray.length) {
-            let dataArray = this.dataArray
-            this.lastDate = dataArray[dataArray.length - 1]
-            console.log(this.lastDate)
-            this.select_date = sessionStorage.getItem("SET_DATE")
+            let dataArray = this.dataArray;
+            this.lastDate = dataArray[dataArray.length - 1];
+            this.select_date = sessionStorage.getItem("SET_DATE");
             if (this.select_date) {
-              this.performDate = this.select_date
-              $("#my-input").val(this.performDate)
+              this.performDate = this.select_date;
+              $("#my-input").val(this.performDate);
             } else {
-              this.performDate = this.today
-              $("#my-input").val(this.performDate)
+              this.performDate = this.today;
+              $("#my-input").val(this.performDate);
             }
 
             $("#my-input").calendar({
@@ -256,24 +237,24 @@ export default {
               maxDate: that.lastDate,
               dateFormat: "yyyy-mm-dd",
               onChange: function(p, values, displayValues) {
-                sessionStorage.setItem("SET_DATE", values[0])
-                that.getOrderList(values[0])
+                sessionStorage.setItem("SET_DATE", values[0]);
+                that.getOrderList(values[0]);
               }
-            })
+            });
             // this.week =  new Date(this.performDate).getDay()              //这里获取星期几
 
             // sessionStorage.setItem('SET_DATE',this.performDate)
             this.formatDateList = this.dataArray.map(item => {
-              return { date: item }
-            })
-            this.getOrderList(this.performDate)
+              return { date: item };
+            });
+            this.getOrderList(this.performDate);
           } else {
             // this.performDate = '暂无游玩日期'                   //不可能，不限考虑
           }
         })
         .catch(err => {
-          Toast("服务器异常，请稍后再试")
-        })
+          Toast("服务器异常，请稍后再试");
+        });
     },
     getOrderList(date) {
       // POST /wap/listOrders
@@ -283,63 +264,63 @@ export default {
           size: perpage
         },
         date: date
-      }
+      };
       this.$http
         .post(`/wap/listOrders`, data)
         .then(({ data: res }) => {
           if (res.code !== "200") {
-            Toast(res.msg)
-            this.orderListFlag = true
-            return
+            Toast(res.msg);
+            this.orderListFlag = true;
+            return;
           }
-          this.orderList = res.data.records
-          this.orderListFlag = true
+          this.orderList = res.data.records;
+          this.orderListFlag = true;
         })
         .catch(err => {
-          Toast("服务器异常，请稍后再试")
-          this.orderListFlag = true
-        })
+          Toast("服务器异常，请稍后再试");
+          this.orderListFlag = true;
+        });
     },
     shijianCK() {
-      const p = this
+      const p = this;
       this.$http
         .get(`/wap/maxDay`)
         .then(({ data: res }) => {
           if (res.code === "200") {
-            this.dataArray = res.data
+            this.dataArray = res.data;
             this.formatDateList = this.dataArray.map(item => {
-              return { date: item }
-            })
-            this.calendarShow = true
-            let data = this.formatDateList
+              return { date: item };
+            });
+            this.calendarShow = true;
+            let data = this.formatDateList;
             let options = {
               onClick: function(evl, date, price) {
-                p.calendarShow = false
-                p.performDate = date
-                p.week = new Date(date).getDay()
-                sessionStorage.setItem("SET_DATE", p.performDate)
-                p.getOrderList(date)
+                p.calendarShow = false;
+                p.performDate = date;
+                p.week = new Date(date).getDay();
+                sessionStorage.setItem("SET_DATE", p.performDate);
+                p.getOrderList(date);
               },
               optionsdays: data,
               monthnum: 2,
               selecteday: p.performDate
-            }
-            $("#calendar").calendar(options)
+            };
+            $("#calendar").calendar(options);
           }
         })
-        .catch(() => {})
+        .catch(() => {});
     },
     /**
      * 点击日期中插件中的叉号
      */
     calendarColse() {
-      this.calendarShow = false
+      this.calendarShow = false;
     },
     /**
      * 跳转到订单详情
      */
     goOrderDetail(id) {
-      this.$router.push({ path: `/order-detail/${id}` })
+      this.$router.push({ path: `/order-detail/${id}` });
 
       // .entering
       //  float: right;
@@ -354,7 +335,7 @@ export default {
     VTop,
     NoResult
   }
-}
+};
 </script>
 
 <style scoped lang="stylus"  rel="stylesheet/stylus">
