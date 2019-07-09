@@ -93,26 +93,6 @@ export default {
     };
   },
   methods: {
-    checkIdCard() {
-      this.$http
-        .get("/wap/guide/info")
-
-        .then(res => {
-          if (res.data.code !== "200") {
-            Toast(res.data.msg);
-            return;
-          }
-          if (!res.data.data.idCard || res.data.data.idCard.length < 1) {
-            MessageBox.confirm("请先进行身份认证！").then(() => {
-              this.$router.push({ path: "/collectId/collectId" });
-            });
-            MessageBox.cancel("请先进行身份认证！").then(() => {
-              Toast('您可以在"我的/验证身份" 进行身份验证！');
-            });
-          }
-        })
-        .catch(() => {});
-    },
     changeLoginType(val) {
       this.isActive = val;
     },
