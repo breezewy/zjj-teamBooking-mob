@@ -11,8 +11,8 @@ import App from './App'
 // Vue.component('MtButton', Button)
 // Vue.component('MtCell', Cell)
 
-import router from './router'
-import store from './store'
+import router from './router/index.js'
+import store from './store/index'
 
 import './cube-ui'
 import './mint-ui'
@@ -45,5 +45,7 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App }
+  components: {
+    App
+  }
 })

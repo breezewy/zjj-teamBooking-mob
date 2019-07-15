@@ -1,10 +1,14 @@
 import axios from 'axios'
 import isPlainObject from 'lodash/isPlainObject'
 import qs from 'qs'
-import router from '@/router'
-import { clearLoginInfo } from '@/utils'
+import router from '@/router/index.js'
+import {
+  clearLoginInfo
+} from '@/utils'
 import Cookies from 'js-cookie'
-import {Toast} from 'mint-ui'
+import {
+  Toast
+} from 'mint-ui'
 const http = axios.create({
   baseURL: process.env.API_ROOT,
   timeout: 5000
@@ -23,7 +27,9 @@ http.interceptors.request.use(config => {
   if (config.method === 'get') {
     config.params = {
       ...config.params,
-      ...{ '_t': new Date().getTime() }
+      ...{
+        '_t': new Date().getTime()
+      }
     }
   }
   if (isPlainObject(config.params)) {
@@ -69,10 +75,14 @@ http.interceptors.response.use(response => {
     // router.replace({ path: '/' })
     // router.replace({  name: 'lead', params: { isOut: true }})
     // 判断是否在小程序内
-    if(navigator.userAgent.toLowerCase().indexOf('miniprogram') != -1){
-      wx.miniProgram.reLaunch({url: '/pages/home/home'})
-    } else{
-      router.replace({ path: '/' });
+    if (navigator.userAgent.toLowerCase().indexOf('miniprogram') != -1) {
+      wx.miniProgram.reLaunch({
+        url: '/pages/home/home'
+      })
+    } else {
+      router.replace({
+        path: '/'
+      });
     }
 
     // wx.miniProgram.reLaunch({url: '/pages/home/home'})
