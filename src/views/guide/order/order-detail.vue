@@ -151,7 +151,7 @@ export default {
 
               Toast("取消订单成功");
               setTimeout(() => {
-                this.$router.push("/order/copy");
+                this.$router.push("/guide/order-list");
               }, 500);
             })
             .catch(() => {
@@ -314,7 +314,7 @@ export default {
                 }
                 Toast("核团成功");
                 setTimeout(() => {
-                  this.$router.push({ path: "/order/copy" });
+                  this.$router.push({ path: "/guide/order-list" });
                 }, 700);
               })
               .catch(() => {});

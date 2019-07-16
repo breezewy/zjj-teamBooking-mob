@@ -158,7 +158,7 @@ export default {
      */
     goDetail(item) {
       sessionStorage.setItem("ticketDetail", JSON.stringify(item));
-      this.$router.push({ path: "/travel-ticket-detail" });
+      this.$router.push({ path: "/travel/ticket-detail" });
     },
     showSession(date) {
       this.$http

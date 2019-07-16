@@ -126,10 +126,10 @@ export default {
      *  去录入
      */
     goEnter(item) {
-      this.$router.push({ name: "idCard-enter", params: { id: item.id } });
+      this.$router.push({ name: "guide-id-enter", params: { id: item.id } });
     },
     goTourist(item) {
-      this.$router.push({ name: "idCard-list", params: { id: item.id } });
+      this.$router.push({ name: "guide-id-list", params: { id: item.id } });
     },
 
     getDate() {
@@ -238,7 +238,7 @@ export default {
      * 跳转到订单详情
      */
     goOrderDetail(id) {
-      this.$router.push({ path: `/order-detail/${id}` });
+      this.$router.push({ path: `/guide/order-detail/${id}` });
     }
   },
   components: {

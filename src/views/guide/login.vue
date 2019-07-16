@@ -152,7 +152,7 @@ export default {
           }
           Cookies.set("token", res.data.token);
           sessionStorage.setItem("loginType", "guide");
-          this.$router.replace({ path: "/home/copy" });
+          this.$router.replace({ path: "/guide/home" });
         })
         .catch(() => {
           Toast("服务器异常，请稍后再试");

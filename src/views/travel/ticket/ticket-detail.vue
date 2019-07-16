@@ -314,7 +314,7 @@ export default {
               sessionStorage.setItem("SET_DATE", this.performDate);
               Toast("下单成功");
               setTimeout(() => {
-                this.$router.push({ path: "/travel/order" });
+                this.$router.push({ path: "/travel/order-list" });
               }, 1000);
             })
             .catch(() => {});

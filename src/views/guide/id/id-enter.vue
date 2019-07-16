@@ -275,7 +275,7 @@ export default {
      */
     completeGuest() {
       let id = this.$route.params.id;
-      this.$router.push({ name: "idCard-list", params: { id: id } });
+      this.$router.push({ name: "guide-id-list", params: { id: id } });
     },
     addGuest() {
       if (!this.order.name) {

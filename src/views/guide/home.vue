@@ -149,7 +149,7 @@ export default {
           if (!res.data.data.idCard || res.data.data.idCard.length < 1) {
             MessageBox.confirm("请先进行身份认证！")
               .then(() => {
-                this.$router.push({ path: "/collectId/collectId" });
+                this.$router.push({ path: "/guide/collect-id" });
               })
               .catch(err => {
                 if (err == "cancel") {
@@ -272,14 +272,17 @@ export default {
      */
     viewOrder() {
       sessionStorage.setItem("SET_DATE", this.performDate);
-      this.$router.push({ path: "/order/copy" });
+      this.$router.push({ path: "/guide/order-list" });
     },
     /**
      * 立即核团
      */
     nuclearByNow() {
       sessionStorage.setItem("SET_DATE", this.performDate);
-      this.$router.push({ name: "order-detail", params: { id: this.orderId } });
+      this.$router.push({
+        name: "guide-order-detail",
+        params: { id: this.orderId }
+      });
     },
     order() {
       this.$router.push({ path: "/guide/booking" });

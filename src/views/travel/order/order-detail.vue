@@ -198,7 +198,7 @@ export default {
               }
               Toast("核团成功");
               setTimeout(() => {
-                this.$router.push({ path: "/order" });
+                this.$router.push({ path: "/travel/order-list" });
               }, 700);
             })
             .catch(() => {});
@@ -238,7 +238,7 @@ export default {
           }
           Toast("核团成功");
           setTimeout(() => {
-            this.$router.push({ path: "/travel-order" });
+            this.$router.push({ path: "/travel/order-list" });
           }, 700);
         })
         .catch(() => {});

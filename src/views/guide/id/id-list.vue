@@ -80,10 +80,10 @@ export default {
      */
     goAddGuest() {
       let id = this.$route.params.id;
-      this.$router.push({ name: "idCard-enter", params: { id: id } });
+      this.$router.push({ name: "guide-id-enter", params: { id: id } });
     },
     returnToOrder() {
-      this.$router.push({ path: "/order/copy" });
+      this.$router.push({ path: "/guide/order-list" });
     },
     deleteHandle(item) {
       let name = item.name;
