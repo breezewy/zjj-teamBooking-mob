@@ -1,6 +1,6 @@
 # sc-team-booking-mobile
 
-> 杭州宋城景区
+> 张家界千古情景区
 
 ## Build Setup
 
