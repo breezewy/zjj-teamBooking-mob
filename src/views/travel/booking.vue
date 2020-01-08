@@ -32,6 +32,12 @@
             <span class="team">团队类型</span>
             <span class="icon">{{teamTypeText}}</span>
           </div>
+          <div class="team-type" >
+            <span class="team">团号</span>
+            <input type="tel"  maxlength="6" class="num" v-model.trim="num1">
+            <span>+</span>
+            <input type="tel"  maxlength="8" class="num" v-model.trim="num2">
+          </div>
         </div>
         <div class="btn-search" @click="searchTicket()">
           <span class="go-search">搜索行程</span>
@@ -91,6 +97,8 @@ export default {
       ], //行程类型下拉框
 
       teamType: "",
+      num1:"",
+      num2:"",
       teamTypeText: "单选 >",
       teamTypeSelect: []
     };
@@ -131,16 +139,21 @@ export default {
      */
     searchTicket() {
       if (this.routingType === "") {
-        Toast("请选择行程");
+        Toast("请选择行程类型");
         return;
       }
       if (!this.teamType) {
-        Toast("请选择团队");
+        Toast("请选择团队类型");
+        return;
+      }
+      if(this.num1 === "" || this.num2 === ""){
+        Toast("请输入团号");
         return;
       }
       let filter = {
         performDate: this.performDate,
         teamType: this.teamType,
+        teamNo:this.num2 + '+' + this.num1,
         routingType: this.routingType,
         teamTypeText: this.teamTypeText,
         routingTypeText: this.routingType === 0 ? "加点" : "行程"
@@ -339,7 +352,16 @@ export default {
           color: #656565;
           font-weight: bold;
         }
-
+        .num{
+          display:inline-block;
+          width:4.5rem;
+          border:1px solid #888;
+          margin:5px 0;
+          padding:3px 2px;
+        }
+        .num:focus{
+          outline:none;
+        }
         .icon {
           /* font-size :16px; */
           /* color: #8a8989 */

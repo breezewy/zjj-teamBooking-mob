@@ -121,6 +121,7 @@ export default {
       travelInfo: {},
       travelInfoId: "", //旅行社id
 
+      teamNo:"",//团号
       performCodeList: [],
       seatInputCount: 0,
       ticketDetail: {},
@@ -162,6 +163,7 @@ export default {
     this.teamTypeText = this.filter.teamTypeText;
     this.routingTypeText = this.filter.routingTypeText;
     this.teamType = this.filter.teamType; //团队类型
+    this.teamNo = this.filter.teamNo;
     this.routingType = this.filter.routingType;
 
     this.ticketDetail = JSON.parse(sessionStorage.getItem("ticketDetail"));
@@ -208,8 +210,6 @@ export default {
      * 提交订单
      */
     reserve() {
-      console.log(isInteger(20));
-      console.log(this.detailRequestList);
       let copyDetailRequestList = JSON.parse(
         JSON.stringify(this.detailRequestList)
       );
@@ -239,12 +239,16 @@ export default {
         Toast("该演出场次下没有席位，不能下单");
         return;
       }
-      for (const value of arr) {
-        if (!isInteger(value.count)) {
-          Toast("席位不能为空且都为整数");
-          return;
-        }
+      if(this.teamNo === ""){
+        Toast("团号不能为空");
+        return;
       }
+      // for (const value of arr) {
+      //   if (!isInteger(value.count)) {
+      //     Toast("席位不能为空且都为整数");
+      //     return;
+      //   }
+      // }
 
       let isMoreThanZero = false;
 
@@ -256,16 +260,16 @@ export default {
         }
       }
 
+      if (!isMoreThanZero) {
+        Toast("席位至少有一个大于0");
+        return;
+      }
       if (!this.guideInfo) {
         Toast("导游信息不能为空");
         return;
       }
       if (!this.touristOrigin) {
         Toast("客源地不能为空");
-        return;
-      }
-      if (!isMoreThanZero) {
-        Toast("席位至少有一个大于0");
         return;
       }
 
@@ -289,6 +293,7 @@ export default {
             areaCode: this.area.areaCode, //客源地
             performDate: this.performDate, //游玩日期
             teamType: this.teamType, //团队类型
+            teamNo:this.teamNo,
             routingType: this.routingType, //行程类型
             performCode: this.performCode,
             detailRequestList: arr, //席位总数组

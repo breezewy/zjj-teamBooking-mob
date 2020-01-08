@@ -32,6 +32,14 @@
             <span class="team">团队类型</span>
             <span class="icon">{{teamTypeText}}</span>
           </div>
+          <div class="team-type" >
+            <span class="team">团号</span>
+            <input type="tel"  maxlength="6" class="num" v-model.trim="num1">
+            <span>+</span>
+            <input type="tel"  maxlength="8" class="num" v-model.trim="num2">
+          </div>
+
+
         </div>
 
         <div class="btn-search" @click="searchTicket()">
@@ -58,8 +66,15 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { Toast } from "mint-ui";
 import { addDate } from "../../common/js/format";
+import { Field } from 'vant';
+import { Row, Col } from 'vant';
+
+
+Vue.use(Field);
+Vue.use(Row).use(Col);
 import moment from "moment";
 import TeamList from "@/bases/teamlist/teamlist";
 import TabBar from "@/bases/tab/guide-tab";
@@ -92,6 +107,8 @@ export default {
       ], //行程类型下拉框
 
       teamType: "",
+      num1:"",
+      num2:"",
       teamTypeText: "单选 >",
       teamTypeSelect: []
     };
@@ -139,9 +156,14 @@ export default {
         Toast("请选择团队类型");
         return;
       }
+      if(this.num1 === "" || this.num2 === ""){
+        Toast("请输入团号");
+        return;
+      }
       let filter = {
         performDate: this.performDate,
         teamType: this.teamType,
+        teamNo:this.num2 + '+' + this.num1,
         routingType: this.routingType,
         teamTypeText: this.teamTypeText,
         routingTypeText: this.routingType === 0 ? "加点" : "行程"
@@ -349,6 +371,16 @@ export default {
           font-weight: bold;
         }
 
+        .num{
+          display:inline-block;
+          width:4.5rem;
+          border:1px solid #888;
+          margin:5px 0;
+          padding:3px 2px;
+        }
+        .num:focus{
+          outline:none;
+        }
         .icon {
           /* font-size :16px; */
           /* color: #8a8989 */

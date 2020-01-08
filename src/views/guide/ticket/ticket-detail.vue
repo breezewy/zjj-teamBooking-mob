@@ -126,6 +126,7 @@ export default {
       detailRequestList: [], //座位详情
       isShowSeat: false,
       teamTypeText: "",
+      teamNo:"",
       routingTypeText: "",
       //后面添加的
       travelAgency: "",
@@ -154,6 +155,7 @@ export default {
     this.teamTypeText = this.filter.teamTypeText;
     this.routingTypeText = this.filter.routingTypeText;
     this.teamType = this.filter.teamType; //团队类型
+    this.teamNo = this.filter.teamNo;
     this.routingType = this.filter.routingType;
     this.ticketDetail = JSON.parse(sessionStorage.getItem("ticketDetail"));
     if (!this.ticketDetail) {
@@ -254,6 +256,10 @@ export default {
         Toast("演出场次不能为空");
         return;
       }
+      if(this.teamNo === ""){
+        Toast("团号不能为空");
+        return;
+      }
       if (!this.detailRequestList.length) {
         Toast("该演出场次下没有席位，不能下单");
         return;
@@ -267,18 +273,16 @@ export default {
           isMoreThanZero = true;
         }
       }
-
+      if (!isMoreThanZero) {
+        Toast("席位至少有一个大于0");
+        return;
+      }
       if (!this.travelAgency) {
         Toast("旅行社名称不能为空");
         return;
       }
       if (!this.touristOrigin) {
         Toast("客源地不能为空");
-        return;
-      }
-
-      if (!isMoreThanZero) {
-        Toast("席位至少有一个大于0");
         return;
       }
       var htmls = `<div class><p style="line-height: 2">${this.performDate} ${
@@ -302,6 +306,7 @@ export default {
               areaCode: this.area.areaCode, //客源地
               performDate: this.performDate, //游玩日期
               teamType: this.teamType, //团队类型
+              teamNo:this.teamNo,
               routingType: this.routingType, //行程类型
               performCode: this.performCode,
               detailRequestList: arr, //席位总数组
