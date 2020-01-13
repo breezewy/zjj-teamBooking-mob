@@ -14,12 +14,12 @@
             <span
               class="start-time"
             >{{ticketDetail.performTime? ticketDetail.performTime.split('-')[0] :'' }}</span>
-            <span class="line"></span>
+            <!-- <span class="line"></span>
             <span class="total">1小时</span>
             <span class="line"></span>
             <span
               class="end-time"
-            >{{ticketDetail.performTime? ticketDetail.performTime.split('-')[1] :''}}</span>
+            >{{ticketDetail.performTime? ticketDetail.performTime.split('-')[1] :''}}</span> -->
           </div>
           <div class="info clear-fix">
             <span class="name">{{ticketDetail.performDate}}</span>
@@ -36,7 +36,7 @@
           <li class="seat-item" v-for="(item,index) in detailRequestList" :key="index">
             <span class="seat-name">{{item.areaName}}</span>
             <span class="introduce"></span>
-            <input type="number" v-model.number="item.bookCount" class="input-count" />
+            <input type="number" v-model.number="item.count" class="input-count" />
           </li>
         </ul>
       </div>
@@ -216,7 +216,7 @@ export default {
         arr.push({
           areaCode: value.areaCode,
           areaName: value.areaName,
-          count: value.bookCount
+          count: value.count
         });
       }
 

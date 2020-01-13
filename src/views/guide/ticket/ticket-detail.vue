@@ -28,11 +28,10 @@
         <ul>
           <li class="seat-item" v-for="(item,index) in detailRequestList" :key="index">
             <span class="seat-name">{{item.areaName}}</span>
-            <span class="introduce">{{item.retSeats >0 ? '有票':'无票'}}</span>
+            <span class="introduce"></span>
             <input
               type="number"
-              v-model.number="item.inputCount"
-              placeholder="输入"
+              v-model.number="item.count"
               class="input-count"
             />
           </li>
@@ -235,11 +234,11 @@ export default {
       let arr = [];
       for (const value of copyDetailRequestList) {
         //只有席位数大于0的时候，才会存入arr数组
-        if (value.inputCount > 0) {
+        if (value.count > 0) {
           arr.push({
             areaCode: value.areaCode,
             areaName: value.areaName,
-            count: value.inputCount
+            count: value.count
           });
         }
       }
@@ -273,6 +272,7 @@ export default {
           isMoreThanZero = true;
         }
       }
+      
       if (!isMoreThanZero) {
         Toast("席位至少有一个大于0");
         return;
@@ -364,6 +364,7 @@ export default {
           value.count = 0;
         }
         this.detailRequestList = items;
+        console.log(this.detailRequestList)
       });
     },
     focusTravel() {

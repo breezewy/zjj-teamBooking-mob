@@ -36,10 +36,10 @@
               >
                 <div class="time-slot">
                   <span class="start-time">{{item.performTime? item.performTime.split('-')[0] :'' }}</span>
-                  <span class="line"></span>
+                  <!-- <span class="line"></span>
                   <span class="total">{{item.intervalTime}}</span>
                   <span class="line"></span>
-                  <span class="end-time">{{item.performTime? item.performTime.split('-')[1] :''}}</span>
+                  <span class="end-time">{{item.performTime? item.performTime.split('-')[1] :''}}</span> -->
                 </div>
                 <div class="info clear-fix">
                   <span class="name">{{item.performDate}}</span>
@@ -130,7 +130,6 @@ export default {
     this.tomorrow = addDate(new Date());
     this.dayAfterTomorrow = addDate(new Date(), 2);
     this.filter = JSON.parse(sessionStorage.getItem("filter"));
-    console.log(this.filter);
     this.performDate = this.filter.performDate;
     this.teamTypeText = this.filter.teamTypeText;
     this.routingTypeText = this.filter.routingTypeText;
@@ -222,7 +221,6 @@ export default {
               p.showSession(date);
               p.week = new Date(date).getDay();
               p.filter.performDate = date;
-              console.log("无敌");
               sessionStorage.setItem("filter", JSON.stringify(p.filter));
             },
             optionsdays: data,
