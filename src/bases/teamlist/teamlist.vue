@@ -21,9 +21,9 @@
           </div>
         </scroll>
 
-        <div @click="hide" class="list-close">
+        <!-- <div @click="hide" class="list-close">
           <span>确定</span>
-        </div>
+        </div> -->
       </div>
     </div>
   </transition>
@@ -44,10 +44,11 @@ export default {
 
   watch: {
     currentValue(newVal) {
-      console.log(newVal);
+      // console.log(newVal);
       for (const value of this.teamTypeSelect) {
         if (value.value === newVal) {
           this.selectText = value.label;
+          this.showFlag = false;
         }
       }
 

@@ -36,7 +36,7 @@
             <span class="mobile">{{item.mobile}}</span>
             <span class="idCard">{{item.idCard}}</span>
           </div>
-          <span class="delete" @click="deleteHandle(item)">删除</span>
+          <!-- <span class="delete" @click="deleteHandle(item)">删除</span> -->
         </div>
       </div>
     </div>
@@ -85,29 +85,29 @@ export default {
     returnToOrder() {
       this.$router.push({ path: "/guide/order-list" });
     },
-    deleteHandle(item) {
-      let name = item.name;
-      let id = item.id;
-      MessageBox.confirm(`确定删除${name}身份信息?`).then(action => {
-        if (action === "confirm") {
-          this.$http
-            .delete(`/wap/cardNo/${id}`)
-            .then(({ data: res }) => {
-              console.log(id);
-              if (res.code !== "200") {
-                Toast(res.msg);
-                return;
-              }
-              this.getWapIdCard();
-              Toast("删除成功");
-            })
-            .catch(() => {
-              Toast("服务器异常，请稍后再试");
-            });
-        }
-        console.log(action);
-      });
-    }
+    // deleteHandle(item) {
+    //   let name = item.name;
+    //   let id = item.id;
+    //   MessageBox.confirm(`确定删除${name}身份信息?`).then(action => {
+    //     if (action === "confirm") {
+    //       this.$http
+    //         .delete(`/wap/cardNo/${id}`)
+    //         .then(({ data: res }) => {
+    //           console.log(id);
+    //           if (res.code !== "200") {
+    //             Toast(res.msg);
+    //             return;
+    //           }
+    //           this.getWapIdCard();
+    //           Toast("删除成功");
+    //         })
+    //         .catch(() => {
+    //           Toast("服务器异常，请稍后再试");
+    //         });
+    //     }
+    //     console.log(action);
+    //   });
+    // }
   }
 };
 </script>

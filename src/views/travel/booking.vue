@@ -34,9 +34,9 @@
           </div>
           <div class="team-type" >
             <span class="team">团号</span>
-            <input type="tel"  maxlength="6" class="num" v-model.trim="num1">
+            <input type="tel"  maxlength="6" class="num" v-model.trim="num1"  style="font-size:15px" placeholder="请输入验证码">
             <span>+</span>
-            <input type="tel"  maxlength="8" class="num" v-model.trim="num2">
+            <input type="tel"  maxlength="8" class="num" v-model.trim="num2" style="font-size:15px" placeholder="请输入团号">
           </div>
         </div>
         <div class="btn-search" @click="searchTicket()">

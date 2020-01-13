@@ -17,13 +17,14 @@
           <span class="text">手机号</span>
           <span class="value">{{guideInfo.mobile}}</span>
         </div>
-
+        <!-- 
         <div class="type item clear-fix">
           <span class="text">证件类型</span>
           <span
             class="value"
           >{{guideInfo.certType=='106001'?'导游证': guideInfo.certType=='106002'? '身份证': guideInfo.certType=='106003'?'学生证':''}}</span>
-        </div>
+        </div> 
+        -->
         <div class="cerNo item clear-fix">
           <span class="text">证件号</span>
           <span class="value">{{guideInfo.certNo}}</span>
