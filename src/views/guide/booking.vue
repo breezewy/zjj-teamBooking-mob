@@ -157,7 +157,7 @@ export default {
         return;
       }
       if(this.num1 === "" || this.num2 === ""){
-        Toast("请输入团号");
+        Toast("请输入验证码和团号");
         return;
       }
       let filter = {

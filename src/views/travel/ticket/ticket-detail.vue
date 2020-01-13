@@ -35,8 +35,8 @@
         <ul>
           <li class="seat-item" v-for="(item,index) in detailRequestList" :key="index">
             <span class="seat-name">{{item.areaName}}</span>
-            <span class="introduce">有票</span>
-            <input type="number" v-model.number="item.inputCount" class="input-count" />
+            <span class="introduce"></span>
+            <input type="number" v-model.number="item.bookCount" class="input-count" />
           </li>
         </ul>
       </div>
@@ -189,7 +189,6 @@ export default {
             return;
           }
           this.travelInfo = res.data;
-          console.log(this.travelInfo);
           this.travelInfoId = res.data.id;
         })
         .catch(() => {});
@@ -202,7 +201,6 @@ export default {
             return;
           }
           this.performCodeList = res.data;
-          console.log(this.performCodeList);
         })
         .catch(() => {});
     },
@@ -218,7 +216,7 @@ export default {
         arr.push({
           areaCode: value.areaCode,
           areaName: value.areaName,
-          count: value.inputCount
+          count: value.bookCount
         });
       }
 
@@ -299,7 +297,6 @@ export default {
             detailRequestList: arr, //席位总数组
             remark: this.remark //备注
           };
-          console.log(data);
           Indicator.open({
             text: "加载中...",
             spinnerType: "snake"
@@ -346,7 +343,6 @@ export default {
           value.count = 0;
         }
         this.detailRequestList = items;
-        console.log(this.detailRequestList);
       });
     },
     focusGuide() {
