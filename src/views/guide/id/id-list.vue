@@ -29,27 +29,62 @@
           </span>
         </span>
       </div>
-      <div class="list">
+      <!-- <div class="list">
         <div class="inner clear-fix" v-for="(item,index) in whiteList" :key="index">
           <span class="name">{{item.name}}</span>
           <div class="info">
             <span class="mobile">{{item.mobile}}</span>
             <span class="idCard">{{item.idCard}}</span>
           </div>
-          <!-- <span class="delete" @click="deleteHandle(item)">删除</span> -->
+           <span class="delete" @click="deleteHandle(item)">删除</span>
         </div>
-      </div>
+      </div> -->
+      <van-checkbox-group v-model="result" @change="change">
+        <van-cell-group>
+          <van-cell
+            v-for="(item,index) in whiteList"
+            clickable
+            :key="item.id"
+            :title="item.name"
+            :value="item.idCard"
+            @click="toggle(index)"
+          >
+            <van-checkbox slot="right-icon"  :name="item.id" ref="checkboxes" />
+          </van-cell>
+        </van-cell-group>
+      </van-checkbox-group>
+      <van-button type="primary" size="large" @click="handlePut">提交</van-button>
     </div>
   </div>
 </template>
 
 <script>
 import { Toast, MessageBox } from "mint-ui";
+import Checkbox from 'vant/lib/checkbox';
+import CheckboxGroup from 'vant/lib/checkbox-group';
+import Cell from 'vant/lib/cell';
+import CellGroup from 'vant/lib/cell-group';
+import Button from 'vant/lib/button';
+
+import 'vant/lib/button/style';
+import 'vant/lib/checkbox/style';
+import 'vant/lib/checkbox-group/style';
+import 'vant/lib/cell/style';
+import 'vant/lib/cell-group/style';
+
 export default {
   name: "idCard-list",
+  components:{
+    [Checkbox.name]:Checkbox,
+    [CheckboxGroup.name]:CheckboxGroup,
+    [Cell.name]:Cell,
+    [CellGroup.name]:CellGroup,
+    [Button.name]:Button
+  },
   data() {
     return {
       whiteList: [],
+      result:[],
       total: "", // 总数
       count: "", //已添加
       noAdd: "" // 未添加
@@ -59,6 +94,27 @@ export default {
     this.getWapIdCard();
   },
   methods: {
+    handlePut(){
+      if(this.result.length === 0){
+        Toast('请选择提交项');
+        return 
+      }
+      this.$http.put('/wap/confirmTourists',this.result).then(({data:res}) => {
+        if (res.code !== "200") {
+          Toast(res.msg);
+          return;
+        }
+        Toast('提交成功');
+      })
+    },
+    //复选框选中切换
+    toggle(index){
+      this.$refs.checkboxes[index].toggle();
+    },
+    //监听复选框变化，获取到选中的选项id
+    change(res){
+      this.result = res
+    },
     back() {
       this.$router.go(-1);
     },
@@ -69,7 +125,7 @@ export default {
           Toast(res.msg);
           return;
         }
-        this.whiteList = res.data.idCards;
+        this.whiteList= res.data.idCards;
         this.total = res.data.total;
         this.count = res.data.count;
         this.noAdd = this.total - this.count;
@@ -114,4 +170,13 @@ export default {
 
 <style lang="stylus"  rel="stylesheet/stylus">
 @import '../../../assets/idCard-list.styl';
+.van-cell__title{
+  flex:0.4;
+}
+.van-cell__value{
+  text-align:left;
+}
+.checkbox{
+  margin-left:20px;
+}
 </style>
