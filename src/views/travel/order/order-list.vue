@@ -41,7 +41,11 @@
                 <span class="date">{{item.performDate}}</span>
                 <span class="show">场次：{{item.performTime}}</span>
               </div>
-              <div class="name">导游：{{item.guideName }}</div>
+              <div class="show-info">
+                <span>导游：{{item.guideName }}</span>
+                <span>人数：{{item.total }}</span>
+              </div>
+
               <div class="order">
                 <span class="status">
                   订单状态: {{item.billStatus ==0 ? '未出票': item.billStatus ==1? '已出票':

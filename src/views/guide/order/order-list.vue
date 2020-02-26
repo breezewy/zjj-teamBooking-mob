@@ -41,13 +41,19 @@
                 <span class="show">场次：{{item.performTime}}</span>
               </div>
               <div class="name">
-                {{item.travelName }}
+                旅行社：{{item.travelName }}
+              </div>
+               <div class="name">
+                人数：{{item.total }}
               </div>
               <div class="order">
-                <span class="status">订单状态: {{item.billStatus =='01'? '预定状态': item.billStatus =='02'? '准预定':
+                <!-- <span class="status">订单状态: {{item.billStatus =='01'? '预定状态': item.billStatus =='02'? '准预定':
                   item.billStatus =='03'? '已审核': item.billStatus =='04'? '已销售': item.billStatus =='05'?'已撤销':''
+                  }}</span> -->
+                <span class="status">订单状态: {{item.billStatus =='0'? '未出票': item.billStatus =='1'? '已出票':
+                  item.billStatus =='2'? '已取消': item.billStatus =='3'? '超时自动取消': item.billStatus =='7'?'只出门票':''
                   }}</span>
-                <span class="type">订单类型: {{item.bookType =='01'?'预定':item.bookType =='02'?'准预定': item.bookType =='03'?'候补':''}}</span>
+                <span class="type">订单类型: {{item.billType == '0'?'团队预定':item.billType =='1'?'散客预定': item.billType =='2'?'在线预订':''}}</span>
               </div>
               <div class="clear-fix handle">
                 <span class="handle-item-left handle-item" v-show="item.jump" @click.stop="goTourist(item)">
