@@ -32,12 +32,12 @@
             <span class="team">团队类型</span>
             <span class="icon">{{teamTypeText}}</span>
           </div>
-          <div class="team-type" >
+          <!-- <div class="team-type" >
             <span class="team">团号</span>
             <input type="tel"  maxlength="6" class="num" v-model.trim="num1" placeholder="请输入验证码" style="font-size:15px">
             <span>+</span>
             <input type="tel"  maxlength="8" class="num" v-model.trim="num2" placeholder="请输入团号" style="font-size:15px">
-          </div>
+          </div> -->
 
 
         </div>
@@ -107,8 +107,8 @@ export default {
       ], //行程类型下拉框
 
       teamType: "",
-      num1:"",
-      num2:"",
+      // num1:"",
+      // num2:"",
       teamTypeText: "单选 >",
       teamTypeSelect: []
     };
@@ -156,14 +156,14 @@ export default {
         Toast("请选择团队类型");
         return;
       }
-      if(this.num1 === "" || this.num2 === ""){
-        Toast("请输入验证码和团号");
-        return;
-      }
+      // if(this.num1 === "" || this.num2 === ""){
+      //   Toast("请输入验证码和团号");
+      //   return;
+      // }
       let filter = {
         performDate: this.performDate,
         teamType: this.teamType,
-        teamNo:this.num2 + '+' + this.num1,
+        // teamNo:this.num2 + '+' + this.num1,
         routingType: this.routingType,
         teamTypeText: this.teamTypeText,
         routingTypeText: this.routingType === 0 ? "加点" : "行程"

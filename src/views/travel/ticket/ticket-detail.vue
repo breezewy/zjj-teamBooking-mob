@@ -350,7 +350,7 @@ export default {
       this.guideInfo = ""; //清空旅行社名称
       this.placeholdertype = "输入导游名称或者手机号";
       this.searchtype = "guide";
-      this.searchTitle = "搜素导游";
+      this.searchTitle = "搜索导游";
       this.isSearchShow = true;
     },
     focusTourist() {
@@ -358,7 +358,7 @@ export default {
       this.touristOrigin = ""; //清空客源地名称
       this.placeholdertype = "输入客源地";
       this.searchtype = "origin";
-      this.searchTitle = "搜素客源地";
+      this.searchTitle = "搜索客源地";
       this.isSearchShow = true;
     },
     searchBack() {

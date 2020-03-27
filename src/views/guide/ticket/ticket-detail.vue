@@ -24,6 +24,25 @@
           </div>
         </li>
       </ul>
+      <div class="card">
+        <div class="card-content">
+          <div class="card-content-inner" style="padding: 5px 15px">
+            <div class="teamNum">
+              <div class="title">团号验证</div>
+                <input
+                  type="text"
+                  v-model="teamNo"
+                  class="teamNumInput"
+                  placeholder="请输入团号"
+                />
+                <div class="btn" @click="handleSearch">团号查询</div>
+            </div>
+            <div class="teamInfo">
+              <div>总人数：{{totalNum}}人</div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="seat-list" v-show="isShowSeat">
         <ul>
           <li class="seat-item" v-for="(item,index) in detailRequestList" :key="index">
@@ -125,8 +144,9 @@ export default {
       detailRequestList: [], //座位详情
       isShowSeat: false,
       teamTypeText: "",
-      teamNo:"",
       routingTypeText: "",
+      teamNo:"",  // 团号
+      totalNum: 0, // 团号查询总人数 
       //后面添加的
       travelAgency: "",
       touristOrigin: "",
@@ -154,7 +174,6 @@ export default {
     this.teamTypeText = this.filter.teamTypeText;
     this.routingTypeText = this.filter.routingTypeText;
     this.teamType = this.filter.teamType; //团队类型
-    this.teamNo = this.filter.teamNo;
     this.routingType = this.filter.routingType;
     this.ticketDetail = JSON.parse(sessionStorage.getItem("ticketDetail"));
     if (!this.ticketDetail) {
@@ -228,6 +247,10 @@ export default {
      * 提交订单
      */
     reserve() {
+      if(this.totalNum === 0){
+        Toast("请先输入团号查询总人数");
+        return;
+      }
       let copyDetailRequestList = JSON.parse(
         JSON.stringify(this.detailRequestList)
       );
@@ -255,16 +278,11 @@ export default {
         Toast("演出场次不能为空");
         return;
       }
-      if(this.teamNo === ""){
-        Toast("团号不能为空");
-        return;
-      }
       if (!this.detailRequestList.length) {
         Toast("该演出场次下没有席位，不能下单");
         return;
       }
       let isMoreThanZero = false;
-
       let arrCountSeat = [];
       for (const value of arr) {
         if (value.count > 0) {
@@ -272,7 +290,14 @@ export default {
           isMoreThanZero = true;
         }
       }
-      
+      let total = 0
+      arrCountSeat.forEach(item => {
+        total += item.value
+      })
+      if(total > this.totalNum) {
+        Toast("席位人数超过了总人数，请重新输入");
+        return;
+      }
       if (!isMoreThanZero) {
         Toast("席位至少有一个大于0");
         return;
@@ -380,7 +405,7 @@ export default {
       this.touristOrigin = ""; //清空客源地名称
       this.placeholdertype = "输入客源地";
       this.searchtype = "origin";
-      this.searchTitle = "搜素客源地";
+      this.searchTitle = "搜索客源地";
       this.isSearchShow = true;
     },
     searchBack() {
@@ -413,6 +438,19 @@ export default {
         this.travelAgency = item.name;
         this.travel = item;
       }
+    },
+    handleSearch() {
+      if(this.teamNo.length == 0 ){
+         Toast('请先输入团号');
+         return
+      }
+      this.$http.get(`/wap/getByTeam/${this.teamNo}`).then(res => {
+        if (res.data.code !== "200") {
+          Toast(res.data.msg);
+          return;
+        }
+        this.totalNum = res.data.data
+      })
     }
   }
 };
