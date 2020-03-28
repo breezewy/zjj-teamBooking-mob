@@ -5,7 +5,7 @@
       <i @click="back" class="cubeic-back"></i>
     </header>
     <div class="wrapper">
-      <div class="upload-mask" v-show="mask" @click="maskClick"></div>
+      <div class="upload-mask" v-show="mask || disabled" @click="maskClick"></div>
       <cube-upload
         ref="upload"
         v-model="files"
@@ -111,9 +111,13 @@ export default {
       //   name:'',
       // }
       //测试图片上传
-      imgList: []
+      imgList: [],
+      disabled:true
     };
   },
+  created() {
+    this.getOrderStatus(this.$route.params.id)
+  },  
   computed: {
     mask() {
       if (this.order.type != 0) {
@@ -121,12 +125,39 @@ export default {
       }
       return false;
     }
+    // id(){
+    //   return  this.$route.params.id
+    // }
   },
   methods: {
+    getOrderStatus(id) {
+      this.$http.get(`/wap/getOrderStatus/${id}`).then( ({data:res}) =>{ 
+          if (res.code !== "200") {
+            Toast(res.msg);
+            return;
+          }
+          if(res.data === 0) {
+            this.disabled = false
+          }else{
+            this.disabled = true  //禁用按钮
+            let ordBtn =  document.querySelector('.edit_btn .order_btn')  // 添加游客按钮
+            ordBtn.style.backgroundColor = '#ddd'  // 添加游客按钮 背景色灰色
+
+            let cardBtn = document.querySelector('.card_btn')   // 拍照按钮
+            cardBtn.style.backgroundColor = '#ddd' // 拍照按钮 背景色灰色
+            cardBtn.style.border = 'none'  //拍照按钮 取消边框
+            cardBtn.style.color = '#fff'  //拍照按钮 字体变白色
+          }
+      })
+    },
     back() {
       this.$router.go(-1);
     },
     maskClick() {
+      if(this.disabled) {
+        Toast("当前订单状态禁止录入");
+        return 
+      }
       if (this.mask) {
         Toast("只有身份证件可进行拍照录入");
       }
@@ -146,7 +177,6 @@ export default {
     },
     fileSubmitted(file) {
       file.base64Value = file.file.base64;
-      // console.log(file)
     },
 
     addedHandler() {
@@ -208,7 +238,6 @@ export default {
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
           let data = canvas.toDataURL("image/jpeg", quality);
           that.imgList.push(data);
-          console.log(that.imgList);
         };
       };
     },
@@ -278,6 +307,10 @@ export default {
       this.$router.push({ name: "guide-id-list", params: { id: id } });
     },
     addGuest() {
+      if(this.disabled) {
+        Toast("当前订单状态禁止添加游客");
+        return 
+      }
       if (!this.order.name) {
         Toast("请输入姓名");
         return;
@@ -309,6 +342,7 @@ export default {
       }
 
       let id = this.$route.params.id;
+
       let data = {
         id: id,
         // cardRequestList:{
