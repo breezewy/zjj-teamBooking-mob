@@ -23,10 +23,10 @@
           </div>
           <div class="info clear-fix">
             <span class="name">{{ticketDetail.performDate}}</span>
-            <span class="seat">杭州</span>
+            <span class="seat">{{cityName}}</span>
           </div>
           <div class="detail clear-fix">
-            <span class="show-place">一号剧院</span>
+            <span class="show-place">{{ticketDetail.locationName}}</span>
             <span class="ticket-count">{{ticketDetail.performName}}</span>
           </div>
         </li>
@@ -141,7 +141,7 @@ export default {
     return {
       travelInfo: {},
       travelInfoId: "", //旅行社id
-
+      cityName:"" , //城市名
       performCodeList: [],
       seatInputCount: 0,
       ticketDetail: {},
@@ -202,6 +202,7 @@ export default {
     }
 
     this.getTravelInfo();
+    this.getCityName();
   },
   methods: {
     back() {
@@ -434,7 +435,18 @@ export default {
         }
         this.totalNum = res.data.data
       })
+    },
+    // 获取城市名
+    getCityName() {
+      this.$http.get("/wap/sysAreaName").then(({ data: res }) => {
+        if (res.code !== "200") {
+          Toast(res.msg);
+          return;
+        }
+        this.cityName = res.data.name;
+      });
     }
+
   }
 };
 </script>

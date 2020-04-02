@@ -59,7 +59,6 @@ export default {
         userType: "travel",
         loginType: "username"
       };
-      console.log(data)
       this.$http
         .post("/auth/login", data)
         .then(({ data: res }) => {

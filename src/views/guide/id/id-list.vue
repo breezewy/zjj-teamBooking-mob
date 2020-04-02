@@ -92,6 +92,7 @@ export default {
   },
   created() {
     this.getWapIdCard();
+    this.getUserInfo();
   },
   methods: {
     handlePut(){
@@ -105,7 +106,12 @@ export default {
           return;
         }
         Toast('提交成功');
-        this.$router.push(`/travel/order-detail/${this.$route.params.id}`)
+        console.log(this.type)
+        if(this.type == 1){
+          this.$router.push(`/guide/order-detail/${this.$route.params.id}`)
+        }else if(this.type == 2){
+          this.$router.push(`/travel/order-detail/${this.$route.params.id}`)
+        }
       })
     },
     //复选框选中切换
@@ -144,9 +150,19 @@ export default {
       let id = this.$route.params.id;
       this.$router.push({ name: "guide-id-enter", params: { id: id } });
     },
+    // 返回订单列表
     returnToOrder() {
       this.$router.go(-1)
     },
+    getUserInfo(){
+      this.$http.get('/wap/user/info').then(({ data: res })=>{
+         if(res.code != '200'){
+            Toast(res.msg);
+            return;
+         }
+         this.type = res.data.type
+      })
+    }
     // deleteHandle(item) {
     //   let name = item.name;
     //   let id = item.id;

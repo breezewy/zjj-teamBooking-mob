@@ -17,6 +17,7 @@
           </div>
           <div class="info clear-fix">
             <span class="name">{{ticketDetail.performDate}}</span>
+            <span class="seat">{{cityName}}</span>
           </div>
           <div class="detail clear-fix">
             <span class="show-place">{{ticketDetail.locationName}}</span>
@@ -134,6 +135,7 @@ export default {
   },
   data() {
     return {
+      cityName:"" , //城市名
       guideinfo: {},
       guideId: "",
       performCodeList: [],
@@ -168,6 +170,12 @@ export default {
       }
     };
   },
+    // 监听团号变动，查询的总人数清空
+  watch:{
+    teamNo(value){
+      this.totalNum = 0
+    }
+  },
   created() {
     this.filter = JSON.parse(sessionStorage.getItem("filter"));
     this.performDate = this.filter.performDate;
@@ -184,6 +192,7 @@ export default {
     }
 
     this.getUseInfo();
+    this.getCityName();
   },
   methods: {
     back() {
@@ -294,12 +303,12 @@ export default {
       arrCountSeat.forEach(item => {
         total += item.value
       })
-      if(total > this.totalNum) {
-        Toast("席位人数超过了总人数，请重新输入");
-        return;
-      }
       if (!isMoreThanZero) {
         Toast("席位至少有一个大于0");
+        return;
+      }
+      if(total != this.totalNum) {
+        Toast("行程单人数与预订人数不一致");
         return;
       }
       if (!this.travelAgency) {
@@ -450,6 +459,16 @@ export default {
         }
         this.totalNum = res.data.data
       })
+    },
+    // 获取城市名
+    getCityName() {
+      this.$http.get("/wap/sysAreaName").then(({ data: res }) => {
+        if (res.code !== "200") {
+          Toast(res.msg);
+          return;
+        }
+        this.cityName = res.data.name;
+      });
     }
   }
 };

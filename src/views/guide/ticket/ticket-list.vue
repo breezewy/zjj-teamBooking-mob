@@ -36,8 +36,8 @@
               >
                 <div class="time-slot">
                   <span class="start-time">{{item.performTime? item.performTime.split('-')[0] :'' }}</span>
-                  <span class="total">{{item.intervalTime}}</span>
-                  <span class="end-time">{{item.performTime? item.performTime.split('-')[1] :''}}</span>
+                  <!-- <span class="total">{{item.intervalTime}}</span>
+                  <span class="end-time">{{item.performTime? item.performTime.split('-')[1] :''}}</span> -->
                 </div>
                 <div class="info clear-fix">
                   <span class="name">{{item.performDate}}</span>

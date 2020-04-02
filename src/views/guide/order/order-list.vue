@@ -56,15 +56,12 @@
                 <span class="type">订单类型: {{item.billType == '0'?'团队预定':item.billType =='1'?'散客预定': item.billType =='2'?'在线预订':''}}</span>
               </div>
               <div class="clear-fix handle">
-                <span class="handle-item-left handle-item" v-show="item.jump" @click.stop="goTourist(item)">
-                  <span class="idCard-list">游客列表</span>
+                <span class="handle-item-left handle-item"  @click.stop="goTourist(item)">
+                  <span class="idCard-list">确认游客</span>
                 </span>
-                <span class="handle-item-right handle-item" v-show="item.jump" @click.stop="goEnter(item)">
+                <!-- <span class="handle-item-right handle-item" v-show="item.jump" @click.stop="goEnter(item)">
                    <span   class="entering">去录入</span>
-                </span>
-                <span class="handle-item-none" v-show="!item.jump">
-
-                </span>
+                </span> -->
               </div>
 
             </li>
