@@ -56,6 +56,21 @@
                   class="type"
                 >订单类型: {{item.billType ==0?'团队预定':item.bookType ==1?'散客预定': item.bookType ==2?'在线预定':''}}</span>
               </div>
+              <div class="clear-fix handle">
+                <span
+                  class="handle-item-left handle-item"
+                  @click.stop="goTourist(item)"
+                >
+                  <span class="idCard-list">确认游客</span>
+                </span>
+                <!-- <span
+                  class="handle-item-right handle-item"
+                  @click.stop="goEnter(item)"
+                >
+                  <span class="entering">确认游客</span>
+                </span> -->
+                <span class="handle-item-none" v-show="!item.jump"></span>
+              </div>
             </li>
           </ul>
           <div v-if="!orderList.length" class="no-result-wrapper">
@@ -134,7 +149,6 @@ export default {
           if (this.dataArray.length) {
             let dataArray = this.dataArray;
             this.lastDate = dataArray[dataArray.length - 1];
-            console.log(this.lastDate);
             this.select_date = sessionStorage.getItem("SET_DATE");
             if (this.select_date) {
               this.performDate = this.select_date;
@@ -178,7 +192,6 @@ export default {
       this.$http
         .post(`/wap/listOrders`, data)
         .then(({ data: res }) => {
-          console.log(res);
           if (res.code !== "200") {
             Toast(res.msg);
             this.orderListFlag = true;

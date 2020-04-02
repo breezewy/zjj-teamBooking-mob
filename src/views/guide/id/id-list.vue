@@ -6,10 +6,10 @@
     </header>
     <div class="wrapper">
       <div class="add_btn">
-        <div class="card_btn" @click="goAddGuest()">
+        <!-- <div class="card_btn" @click="goAddGuest()">
           <i class="iconfont icon-tianjia"></i>
           <span class="card_txt">继续添加旅客信息</span>
-        </div>
+        </div> -->
         <div class="card_btn" @click="returnToOrder()">
           <i class="iconfont icon-fanhui"></i>
           <span class="card_txt">返回订单列表</span>
@@ -18,16 +18,16 @@
       <div class="number">
         <span class="added item">
           <span class="num">
-            已添加
+            游客数量
             <span style="font-size: 16px">{{count}}</span> 人
           </span>
         </span>
-        <span class="no-added item">
+        <!-- <span class="no-added item">
           <span class="wait">
             未添加
             <span style="font-size: 16px">{{noAdd}}</span> 人
           </span>
-        </span>
+        </span> -->
       </div>
       <!-- <div class="list">
         <div class="inner clear-fix" v-for="(item,index) in whiteList" :key="index">
@@ -105,6 +105,7 @@ export default {
           return;
         }
         Toast('提交成功');
+        this.$router.push(`/travel/order-detail/${this.$route.params.id}`)
       })
     },
     //复选框选中切换
@@ -129,6 +130,11 @@ export default {
         this.total = res.data.total;
         this.count = res.data.count;
         this.noAdd = this.total - this.count;
+        this.whiteList.forEach(item =>{
+          if(item.guideCheck){
+            this.result.push(item.id)
+          }
+        })
       });
     },
     /**
@@ -139,7 +145,7 @@ export default {
       this.$router.push({ name: "guide-id-enter", params: { id: id } });
     },
     returnToOrder() {
-      this.$router.push({ path: "/guide/order-list" });
+      this.$router.go(-1)
     },
     // deleteHandle(item) {
     //   let name = item.name;

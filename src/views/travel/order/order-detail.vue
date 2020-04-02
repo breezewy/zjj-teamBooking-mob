@@ -39,6 +39,12 @@
             <span class="item">销售人数：{{item.saleCount}}</span>
           </div>
         </div>
+        <div class="handle-contain" v-if="orders.check || (showBtn && orders.billStatus=='01')">
+          <div class="handle-detail">
+            <span class="bill btn" v-show="orders.check" @click="modify()">去核团</span>
+            <span class="bill btn" @click="cancelOrder()" v-if="orders.billStatus=='01' && showBtn">取消订单</span>
+          </div>
+        </div>
       </div>
       <div class="popup" :class="{ 'popup-show': popupShow }">
         <div class="date-select">
@@ -99,7 +105,12 @@ export default {
       // cloneOrderDetails:[],     //克隆的订单详情数据
       copyInGetDetailInfo: [], //克隆的座位详情数据
       performCode: "00017945",
-      performCodeSelect: [] //场次下拉框数据
+      performDate: "",
+      performCodeSelect: [], //场次下拉框数据
+      showBtn: true, //是否显示取消订单按钮
+      checkTime:"",  //核团时间
+      timestamp2: "",
+      leftTime: "", //剩余核团时间
     };
   },
   created() {
@@ -131,6 +142,45 @@ export default {
     back() {
       this.$router.go(-1);
     },
+        /***
+     *      取消订单
+     */
+    cancelOrder() {
+      let id = this.$route.params.id;
+      MessageBox({
+        $type: "prompt",
+        title: "请输入取消订单原因",
+        message: " ",
+        closeOnClickModal: false, //点击model背景层不关闭MessageBox
+        showCancelButton: true, //显示取消按钮
+        showInput: true
+      }).then(({ value, action }) => {
+        /* value 为填写的值，进行下一步操作*/
+        // if(action =='confirm' && value =='888888'){
+        if (action == "confirm") {
+          this.$http
+            .put(`/wap/cancel`, {
+              cancelReason: value,
+              id: id
+            })
+            .then(({ data: res }) => {
+              if (res.code !== 200) {
+                // this.getDataList()
+                Toast(res.msg);
+                return;
+              }
+
+              Toast("取消订单成功");
+              setTimeout(() => {
+                this.$router.push("/travel/order-list");
+              }, 500);
+            })
+            .catch(() => {
+              Toast("服务器异常，请稍后再试");
+            });
+        }
+      });
+    },
     getOrderDetailInfo() {
       let id = this.$route.params.id;
       this.$http.get(`/wap/order/${id}`).then(({ data: res }) => {
@@ -142,11 +192,29 @@ export default {
         }
         this.orders = res.data.orders;
         this.orderDetails = res.data.orderDetails;
+        //已排位的时候，不显示取消订单按钮
+        this.showBtn = res.data.orders.planSeatStatus === "01" ? true : false;
         for (const value of this.teamTypeSelectData) {
           if (value.dictValue == this.orders.teamType) {
             this.orders.teamTypeName = value.dictName;
           }
         }
+        for (const value of orderDetails) {
+          if (!value.lastCount) {
+            value.lastCount = 0;
+          }
+        }
+
+        this.checkTime = this.orders.checkTime;
+        this.performDate = this.orders.performDate;
+
+        let formatCheckTime = this.checkTime + ":00:00";
+        let totalCheckTime = this.performDate + " " + formatCheckTime;
+
+        let date = new Date(totalCheckTime);
+        this.timestamp2 = date.getTime();
+        var now = new Date().getTime();
+        this.leftTime = this.timestamp2 - now;
       });
     },
 

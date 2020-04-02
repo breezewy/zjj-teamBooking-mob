@@ -32,12 +32,12 @@
             <span class="team">团队类型</span>
             <span class="icon">{{teamTypeText}}</span>
           </div>
-          <div class="team-type" >
+          <!-- <div class="team-type" >
             <span class="team">团号</span>
             <input type="tel"  maxlength="6" class="num" v-model.trim="num1"  style="font-size:15px" placeholder="请输入验证码">
             <span>+</span>
             <input type="tel"  maxlength="8" class="num" v-model.trim="num2" style="font-size:15px" placeholder="请输入团号">
-          </div>
+          </div> -->
         </div>
         <div class="btn-search" @click="searchTicket()">
           <span class="go-search">搜索行程</span>
@@ -97,8 +97,8 @@ export default {
       ], //行程类型下拉框
 
       teamType: "",
-      num1:"",
-      num2:"",
+      // num1:"",
+      // num2:"",
       teamTypeText: "单选 >",
       teamTypeSelect: []
     };
@@ -130,7 +130,6 @@ export default {
             return;
           }
           this.sysName = res.data.name;
-          console.log(res);
         })
         .catch(() => {});
     },
@@ -146,10 +145,10 @@ export default {
         Toast("请选择团队类型");
         return;
       }
-      if(this.num1 === "" || this.num2 === ""){
-        Toast("请输入验证码和团号");
-        return;
-      }
+      // if(this.num1 === "" || this.num2 === ""){
+      //   Toast("请输入验证码和团号");
+      //   return;
+      // }
       let filter = {
         performDate: this.performDate,
         teamType: this.teamType,

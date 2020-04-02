@@ -59,7 +59,6 @@ export default {
         }
 
         this.travelInfo = res.data;
-        console.log(this.travelInfo);
       });
     },
     updatePassWord() {

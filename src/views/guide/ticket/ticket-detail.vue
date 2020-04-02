@@ -389,7 +389,6 @@ export default {
           value.count = 0;
         }
         this.detailRequestList = items;
-        console.log(this.detailRequestList)
       });
     },
     focusTravel() {
