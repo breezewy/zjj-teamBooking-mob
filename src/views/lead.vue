@@ -3,7 +3,7 @@
     <div class="logo-container">
       <img class="login" src="../common/image/logo.png" alt />
     </div>
-    <div class="name">团队预定系统</div>
+    <div class="name">团队预订系统</div>
 
     <span class="guide type" @click="guideHandle()">导游</span>
     <span class="travel type" @click="travelHandle()">旅行社</span>

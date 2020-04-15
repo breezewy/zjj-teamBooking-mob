@@ -54,7 +54,7 @@
                 </span>
                 <span
                   class="type"
-                >订单类型: {{item.billType ==0?'团队预定':item.bookType ==1?'散客预定': item.bookType ==2?'在线预定':''}}</span>
+                >订单类型: {{item.billType ==0?'团队预订':item.bookType ==1?'散客预订': item.bookType ==2?'在线预订':''}}</span>
               </div>
               <div class="clear-fix handle">
                 <span
@@ -126,7 +126,7 @@ export default {
   },
   methods: {
     /**
-     *  去录入
+     *  实名录入
      */
     goEnter(item) {
       this.$router.push({ name: "guide-id-enterr", params: { id: item.id } });

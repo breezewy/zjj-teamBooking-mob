@@ -2,7 +2,7 @@
   <div>
     <div class="fix-start-copy-container">
       <header class="header">
-        <h1>预定中心</h1>
+        <h1>预订中心</h1>
       </header>
       <div class="wrapper">
         <div class="start-info">

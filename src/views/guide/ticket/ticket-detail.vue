@@ -109,7 +109,7 @@
       </div>
 
       <div class="order-btn">
-        <a href="javascript:;" class="reverse" @click="reserve()">预定</a>
+        <a href="javascript:;" class="reverse" @click="reserve()">预订</a>
       </div>
     </div>
     <search

@@ -33,7 +33,7 @@
           <span class="item scene">场次：{{orders.performTime}}</span>
           <div class="seat-detail" v-for="(item,index) in orderDetails" :key="index">
             <span class="item" style="color:red">座位区：{{item.areaName}}</span>
-            <span class="item">预定人数：{{item.bookCount}}</span>
+            <span class="item">预订人数：{{item.bookCount}}</span>
             <span class="item">核团人数：{{item.lastCount}}</span>
             <!--<span class="item">排位人数：{{item.arrangeCount}}</span>-->
             <span class="item">销售人数：{{item.saleCount}}</span>

@@ -7,7 +7,7 @@
     <!--这是首页的copy页面-->
     <div class="wrapper" v-if="flag">
       <div class="notice">
-        <h1 class="title">预定须知</h1>
+        <h1 class="title">预订须知</h1>
         <ul class="list">
           <li
             class="item"
@@ -16,7 +16,7 @@
           >{{index+1}}、{{item.content}}</li>
         </ul>
         <div class="handle">
-          <span class="btn" @click="order()">立即预定</span>
+          <span class="btn" @click="order()">立即预订</span>
         </div>
         <img src="./../../common/image/notice_float_copy.png" class="notice-float" alt />
         <img src="./../../common/image/notice_bottom_copy.png" class="notice-bottom" alt />
@@ -56,7 +56,7 @@
             <span class="text">订单类型：</span>
             <span
               class="value"
-            >{{noConfirmOrderInfo.billType==0?'团队预定': noConfirmOrderInfo.billType==1? '散客预定':noConfirmOrderInfo.billType==2?"在线预定":'' }}</span>
+            >{{noConfirmOrderInfo.billType==0?'团队预订': noConfirmOrderInfo.billType==1? '散客预订':noConfirmOrderInfo.billType==2?"在线预订":'' }}</span>
           </div>
           <div class="item">
             <span class="text">{{noConfirmOrderInfo.travelName}}</span>

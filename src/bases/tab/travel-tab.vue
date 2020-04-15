@@ -35,7 +35,7 @@ export default {
           selfFont: "iconfont icon-home"
         },
         {
-          txt: "预定",
+          txt: "预订",
           page: "travel/booking",
           selfFont: "iconfont icon-yudingzhongxin1"
         },

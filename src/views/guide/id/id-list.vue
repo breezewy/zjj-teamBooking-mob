@@ -1,7 +1,7 @@
 <template>
   <div class="idCard-list-container">
     <header class="header">
-      <h1>旅客中心</h1>
+      <h1>游客列表</h1>
       <i @click="back" class="cubeic-back"></i>
     </header>
     <div class="wrapper">

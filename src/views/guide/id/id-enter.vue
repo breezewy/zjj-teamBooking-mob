@@ -35,7 +35,7 @@
       </cube-upload>
       <ul class="edit_list">
         <li class="edit_item">
-          <label for>联系人</label>
+          <label for>游客</label>
           <input class="list_in" type="text" v-model="order.name" placeholder="请填写姓名" />
         </li>
         <li class="edit_item">

@@ -7,7 +7,7 @@
     <!--这是首页的copy页面-->
     <div class="wrapper">
       <div class="notice">
-        <h1 class="title">预定须知</h1>
+        <h1 class="title">预订须知</h1>
         <ul class="list">
           <li
             class="item"
@@ -16,7 +16,7 @@
           >{{index+1}}、{{item.content}}</li>
         </ul>
         <div class="handle">
-          <span class="btn" @click="order()">立即预定</span>
+          <span class="btn" @click="order()">立即预订</span>
         </div>
         <img src="./../../common/image/notice_float_copy.png" class="notice-float" alt />
         <img src="./../../common/image/notice_bottom_copy.png" class="notice-bottom" alt />
