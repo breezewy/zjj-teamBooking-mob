@@ -1,7 +1,7 @@
 <template>
   <div class="lead-container">
     <div class="logo-container">
-      <img class="login" src="../common/image/logo.png" alt />
+      <img class="login" src="https://static.51dmq.com/sc-logo.png" alt />
     </div>
     <div class="name">团队预订系统</div>
 
@@ -60,7 +60,7 @@ export default {
   width: 100%;
   height: 100%;
   /* background: #efeff4 */
-  background: url('../common/image/lead.jpg') no-repeat #000;
+  background: url('https://static.51dmq.com/lead.jpg') no-repeat #000;
   background-size: 100% auto;
 
   .logo-container {
