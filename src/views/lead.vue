@@ -1,7 +1,7 @@
 <template>
   <div class="lead-container">
     <div class="logo-container">
-      <img class="login" src="https://static.51dmq.com/sc-logo.png" alt />
+      <img class="login" src="https://static.dmqwl.com/sc-logo4.png" alt />
     </div>
     <div class="name">团队预订系统</div>
 
