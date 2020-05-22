@@ -2,39 +2,63 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 //首页
-import Lead from '@/views/lead'
+// import Lead from '@/views/lead'
+const Lead = () => import('@/views/lead')
 
 //导游
-import GuideLogin from '@/views/guide/login'
-import GuideHome from '@/views/guide/home'
-import GuideBooking from '@/views/guide/booking'
-import GuideTicketList from '@/views/guide/ticket/ticket-list'
-import GuideTicketDetail from '@/views/guide/ticket/ticket-detail'
-import GuideScore from '@/views/guide/score'
-import GuideOrderList from '@/views/guide/order/order-list'
-import GuideOrderDetail from '@/views/guide/order/order-detail'
-import GuideIdList from '@/views/guide/id/id-list'
-import GuideIdEnter from '@/views/guide/id/id-enter'
-import GuideMy from '@/views/guide/my'
-import GuideChangePass from '@/views/guide/info/change-pass'
-import GuideCollectId from '@/views/guide/info/collectId'
+// import GuideLogin from '@/views/guide/login'
+const GuideLogin = () => import('@/views/guide/login')
+// import GuideHome from '@/views/guide/home'
+const GuideHome = () => import('@/views/guide/home')
+// import GuideBooking from '@/views/guide/booking'
+const GuideBooking = () => import('@/views/guide/booking')
+// import GuideTicketList from '@/views/guide/ticket/ticket-list'
+const GuideTicketList = () => import('@/views/guide/ticket/ticket-list')
+// import GuideTicketDetail from '@/views/guide/ticket/ticket-detail'
+const GuideTicketDetail = () => import('@/views/guide/ticket/ticket-detail')
+// import GuideScore from '@/views/guide/score'
+const GuideScore = () => import('@/views/guide/score')
+// import GuideOrderList from '@/views/guide/order/order-list'
+const GuideOrderList = () => import('@/views/guide/order/order-list')
+// import GuideOrderDetail from '@/views/guide/order/order-detail'
+const GuideOrderDetail = () => import('@/views/guide/order/order-detail')
+// import GuideIdList from '@/views/guide/id/id-list'
+const GuideIdList = () => import('@/views/guide/id/id-list')
+// import GuideIdEnter from '@/views/guide/id/id-enter'
+const GuideIdEnter = () => import('@/views/guide/id/id-enter')
+// import GuideMy from '@/views/guide/my'
+const GuideMy = () => import('@/views/guide/my')
+// import GuideChangePass from '@/views/guide/info/change-pass'
+const GuideChangePass = () => import('@/views/guide/info/change-pass')
+// import GuideCollectId from '@/views/guide/info/collectId'
+const GuideCollectId = () => import('@/views/guide/info/collectId')
 
 //旅行社
-import TravelLogin from '@/views/travel/login'
-import TravelHome from '@/views/travel/home'
-import TravelBooking from '@/views/travel/booking'
-import TravelTicketList from '@/views/travel/ticket/ticket-list'
-import TravelTicketDetail from '@/views/travel/ticket/ticket-detail'
-import TravelScore from '@/views/travel/score'
-import TravelOrderList from '@/views/travel/order/order-list'
-import TravelOrderDetail from '@/views/travel/order/order-detail'
-import TravelMy from '@/views/travel/my'
-import TravelChangePass from '@/views/travel/info/change-pass'
+// import TravelLogin from '@/views/travel/login'
+const TravelLogin = () => import('@/views/travel/login')
+// import TravelHome from '@/views/travel/home'
+const TravelHome = () => import('@/views/travel/home')
+// import TravelBooking from '@/views/travel/booking'
+const TravelBooking = () => import('@/views/travel/booking')
+// import TravelTicketList from '@/views/travel/ticket/ticket-list'
+const TravelTicketList = () => import('@/views/travel/ticket/ticket-list')
+// import TravelTicketDetail from '@/views/travel/ticket/ticket-detail'
+const TravelTicketDetail = () => import('@/views/travel/ticket/ticket-detail')
+// import TravelScore from '@/views/travel/score'
+const TravelScore = () => import('@/views/travel/score')
+// import TravelOrderList from '@/views/travel/order/order-list'
+const TravelOrderList = () => import('@/views/travel/order/order-list')
+// import TravelOrderDetail from '@/views/travel/order/order-detail'
+const TravelOrderDetail = () => import('@/views/travel/order/order-detail')
+// import TravelMy from '@/views/travel/my'
+const TravelMy = () => import('@/views/travel/my')
+// import TravelChangePass from '@/views/travel/info/change-pass'
+const TravelChangePass = () => import('@/views/travel/info/change-pass')
 
 
 //未找到
-import NoFound from '@/bases/no-found/no-found'
-
+// import NoFound from '@/bases/no-found/no-found'
+const NoFound = () => import('@/bases/no-found/no-found')
 
 Vue.use(Router)
 export default new Router({
