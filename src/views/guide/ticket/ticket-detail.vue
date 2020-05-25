@@ -29,15 +29,15 @@
         <div class="card-content">
           <div class="card-content-inner" style="padding: 5px 15px">
             <div class="teamNum">
-              <div class="title">团号验证</div>
+              <span class="title">团号验证</span>
                 <input
                   type="text"
                   v-model="teamNo"
                   class="teamNumInput"
                   placeholder="请输入团号"
                 />
-                <div class="btn" @click="handleSearch">团号查询</div>
             </div>
+            <div class="btn" @click="handleSearch">团号查询</div>
             <div class="teamInfo">
               <div>总人数：{{totalNum}}人</div>
             </div>

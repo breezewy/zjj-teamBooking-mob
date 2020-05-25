@@ -10,7 +10,7 @@
           <i class="iconfont icon-tianjia"></i>
           <span class="card_txt">继续添加旅客信息</span>
         </div> -->
-        <div class="card_btn" @click="returnToOrder()" v-if="Cookies.get('token')">
+        <div class="card_btn" @click="returnToOrder()" v-if="show">
           <i class="iconfont icon-fanhui"></i>
           <span class="card_txt">返回订单列表</span>
         </div>
@@ -39,7 +39,7 @@
            <span class="delete" @click="deleteHandle(item)">删除</span>
         </div>
       </div> -->
-      <van-checkbox-group v-model="result" @change="change">
+      <van-checkbox-group v-model="result" @change="change" ref="checkboxGroup">
         <van-cell-group>
           <van-cell
             v-for="(item,index) in whiteList"
@@ -53,18 +53,23 @@
           </van-cell>
         </van-cell-group>
       </van-checkbox-group>
+      <div class="toggleCheckbox">
+          <van-button plain type="primary" @click="checkAll">全选</van-button>
+          <van-button plain type="info" @click="toggleAll">取消全选</van-button>
+      </div>
       <van-button type="primary" size="large" @click="handlePut">提交</van-button>
     </div>
   </div>
 </template>
 
 <script>
-import { Toast, MessageBox } from "mint-ui";
+import { Toast, MessageBox} from "mint-ui";
 import Checkbox from 'vant/lib/checkbox';
 import CheckboxGroup from 'vant/lib/checkbox-group';
 import Cell from 'vant/lib/cell';
 import CellGroup from 'vant/lib/cell-group';
 import Button from 'vant/lib/button';
+import Cookies from 'js-cookie'
 
 import 'vant/lib/button/style';
 import 'vant/lib/checkbox/style';
@@ -87,7 +92,8 @@ export default {
       result:[],
       total: "", // 总数
       count: "", //已添加
-      noAdd: "" // 未添加
+      noAdd: "", // 未添加
+      show:Cookies.get('token') ? true : false
     };
   },
   created() {
@@ -106,7 +112,6 @@ export default {
           return;
         }
         Toast('提交成功');
-        console.log(this.type)
         if(this.type == 1){
           this.$router.push(`/guide/order-detail/${this.$route.params.id}`)
         }else if(this.type == 2){
@@ -166,31 +171,18 @@ export default {
          }
          this.type = res.data.type
       })
+    },
+    // 全选
+    checkAll(){
+      this.$refs.checkboxGroup.toggleAll(true);
+    },
+    // 取消全选
+    toggleAll() {
+      this.$refs.checkboxGroup.toggleAll(false);
     }
-    // deleteHandle(item) {
-    //   let name = item.name;
-    //   let id = item.id;
-    //   MessageBox.confirm(`确定删除${name}身份信息?`).then(action => {
-    //     if (action === "confirm") {
-    //       this.$http
-    //         .delete(`/wap/cardNo/${id}`)
-    //         .then(({ data: res }) => {
-    //           console.log(id);
-    //           if (res.code !== "200") {
-    //             Toast(res.msg);
-    //             return;
-    //           }
-    //           this.getWapIdCard();
-    //           Toast("删除成功");
-    //         })
-    //         .catch(() => {
-    //           Toast("服务器异常，请稍后再试");
-    //         });
-    //     }
-    //     console.log(action);
-    //   });
-    // }
-  }
+
+  },
+
 };
 </script>
 
@@ -204,5 +196,12 @@ export default {
 }
 .checkbox{
   margin-left:20px;
+}
+.toggleCheckbox{
+  display:flex;
+  margin:20px 0;
+  .van-button{
+    flex:1;
+  }
 }
 </style>
