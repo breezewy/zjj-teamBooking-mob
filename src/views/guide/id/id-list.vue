@@ -10,7 +10,7 @@
           <i class="iconfont icon-tianjia"></i>
           <span class="card_txt">继续添加旅客信息</span>
         </div> -->
-        <div class="card_btn" @click="returnToOrder()">
+        <div class="card_btn" @click="returnToOrder()" v-if="Cookies.get('token')">
           <i class="iconfont icon-fanhui"></i>
           <span class="card_txt">返回订单列表</span>
         </div>
@@ -152,6 +152,10 @@ export default {
     },
     // 返回订单列表
     returnToOrder() {
+      let token = Cookies.get('token')
+      if(!token){
+        return 
+      }
       this.$router.go(-1)
     },
     getUserInfo(){
