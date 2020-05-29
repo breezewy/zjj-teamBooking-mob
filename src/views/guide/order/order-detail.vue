@@ -558,13 +558,13 @@ export default {
 
       .handle-detail {
         display: flex;
-        margin: 20px 10px;
+        margin: 10px;
         font-size: 14px;
 
         .btn {
           flex: 1;
-          height: 27px;
-          line-height: 27px;
+          height: 40px;
+          line-height: 40px;
           text-align: center;
           border: 1px solid #0894ec;
           border-radius: 0.25rem 0 0 0.25rem;
